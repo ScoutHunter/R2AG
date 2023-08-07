@@ -1,73 +1,77 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Armor Combination Calculator</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #000;
-            color: #FFF;
-        }
+  <title>Armor Combination Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #000;
+      color: #FFF;
+    }
 
-        h1, h2, h3 {
-            text-align: center;
-        }
+    h1,
+    h2,
+    h3 {
+      text-align: center;
+    }
 
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
 
-        input {
-            width: 100px;
-            margin-bottom: 10px;
-        }
+    input {
+      width: 100px;
+      margin-bottom: 10px;
+    }
 
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-        }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
 
-        #resultContainer {
-            margin-top: 20px;
-        }
+    #resultContainer {
+      margin-top: 20px;
+    }
 
-        .itemName {
-            color: #FFFF00;
-        }
+    .itemName {
+      color: #FFFF00;
+    }
 
-        .redColor {
-            color: #FF0000;
-        }
+    .redColor {
+      color: #FF0000;
+    }
 
-        .orangeColor {
-            color: #FF8C00;
-        }
+    .orangeColor {
+      color: #FF8C00;
+    }
 
-        .purpleColor {
-            color: #800080;
-        }
+    .purpleColor {
+      color: #800080;
+    }
 
-        .greenColor {
-            color: #008000;
-        }
+    .greenColor {
+      color: #008000;
+    }
 
-        .greyColor {
-            color: #888888;
-        }
-    </style>
+    .greyColor {
+      color: #888888;
+    }
+  </style>
 </head>
-<body>
-    <h1>Armor Combination Calculator</h1>
-    <label for="weightInput">Enter Max Weight:</label>
-    <input type="number" id="weightInput">
-    <button onclick="calculateBestCombination()">Calculate</button>
-    <div id="resultContainer"></div>
 
-    <script>
-        const armor_list = {
-    'Head': [
+<body>
+  <h1>Armor Combination Calculator</h1>
+  <label for="weightInput">Enter Max Weight:</label>
+  <input type="number" id="weightInput">
+  <button onclick="calculateBestCombination()">Calculate</button>
+  <div id="resultContainer"></div>
+
+  <script>
+    const armor_list = {
+      'Head': [
         ["Academic", 11, 6, 1, 0, 0, 2, 3, 7],
         ["Bruiser", 15, 4, 1, 2, 0, 0, 1, 9],
         ["Crown of the Red Prince", 8, 25, -6, 25, -6, 13, -6, 5],
@@ -91,9 +95,9 @@
         ["Trainer", 7, 1, 0, 0, 0, 0, 1, 4],
         ["Void", 15, 4, 0, 1, 2, 0, 1, 8],
         ["     x", 0, 0, 0, 0, 0, 0, 0, 0]
-    ],
-    'Body': [
-        ["Academic",37, 11, 2, 0, 0, 3, 6, 21],
+      ],
+      'Body': [
+        ["Academic", 37, 11, 2, 0, 0, 3, 6, 21],
         ["Bruiser", 57, 10, 2, 6, 0, 0, 2, 29],
         ["Dendroid", 23, 11, 4, 0, 0, 2, 5, 12],
         ["Elder", 17, 10, 0, 4, 0, 4, 2, 9],
@@ -108,14 +112,14 @@
         ["Radiant", 59, 9, 2, 2, 4, 1, 0, 30],
         ["Realmwalker", 21, 12, 3, 2, 3, 4, 0, 11],
         ["Red Widow", 45, 10, 5, 0, 0, 4, 1, 23],
-        ["Space Worker", 22, 8, 1, 1, 4, 0, 2, 1,],
+        ["Space Worker", 22, 8, 1, 1, 4, 0, 2, 1, ],
         ["Survivor", 36, 11, 3, 2, 2, 2, 2, 19],
         ["Technician", 56, 10, 0, 2, 6, 0, 2, 30],
         ["Trainer", 36, 11, 3, 0, 4, 1, 3, 18],
         ["Void", 55, 11, 0, 3, 4, 0, 4, 28],
         ["     x", 0, 0, 0, 0, 0, 0, 0, 0]
-    ],
-    'Legs': [
+      ],
+      'Legs': [
         ["Academic", 17, 7, 2, 0, 0, 1, 4, 10],
         ["Bruiser", 27, 7, 1, 4, 0, 0, 2, 15],
         ["Dendroid", 13, 7, 3, 0, 2, 2, 0, 7],
@@ -137,8 +141,8 @@
         ["Trainer", 17, 5, 1, 0, 1, 1, 2, 8],
         ["Void", 26, 7, 0, 2, 2, 0, 3, 15],
         ["     x", 0, 0, 0, 0, 0, 0, 0, 0]
-    ],
-    'Gloves': [
+      ],
+      'Gloves': [
         ["Academic", 7, 3, 0, 0, 0, 1, 2, 4],
         ["Bruiser", 11, 4, 1, 2, 0, 0, 1, 7],
         ["Dendroid", 4, 3, 1, 0, 0, 1, 1, 3],
@@ -160,82 +164,77 @@
         ["Trainer", 7, 7, 2, 0, 3, 1, 1, 3],
         ["Void", 8, 3, 0, 1, 1, 0, 1, 6],
         ["     x", 0, 0, 0, 0, 0, 0, 0, 0]
-    ],
-        };
+      ],
+    };
 
-        function find_best_combination(armor_list, weight_limit) {
-            let best_combinations = [];
-            let max_damage_reduction = 0;
-
-            for (const head of armor_list['Head']) {
-                for (const body of armor_list['Body']) {
-                    for (const legs of armor_list['Legs']) {
-                        for (const gloves of armor_list['Gloves']) {
-                            const total_weight = head[8] + body[8] + legs[8] + gloves[8];
-
-                            if (total_weight <= weight_limit) {
-                                const total_damage_reduction =
-                                    head[1] + body[1] + legs[1] + gloves[1];
-
-                                if (total_damage_reduction > max_damage_reduction) {
-                                    max_damage_reduction = total_damage_reduction;
-                                    best_combinations = [{
-                                        'Head': head,
-                                        'Body': body,
-                                        'Legs': legs,
-                                        'Gloves': gloves
-                                    }];
-                                } else if (total_damage_reduction === max_damage_reduction) {
-                                    best_combinations.push({
-                                        'Head': head,
-                                        'Body': body,
-                                        'Legs': legs,
-                                        'Gloves': gloves
-                                    });
-                                }
-                            }
-                        }
-                    }
+    function find_best_combination(armor_list, weight_limit) {
+      let best_combinations = [];
+      let max_damage_reduction = 0;
+      for (const head of armor_list['Head']) {
+        for (const body of armor_list['Body']) {
+          for (const legs of armor_list['Legs']) {
+            for (const gloves of armor_list['Gloves']) {
+              const total_weight = head[8] + body[8] + legs[8] + gloves[8];
+              if (total_weight <= weight_limit) {
+                const total_damage_reduction =
+                  head[1] + body[1] + legs[1] + gloves[1];
+                if (total_damage_reduction > max_damage_reduction) {
+                  max_damage_reduction = total_damage_reduction;
+                  best_combinations = [{
+                    'Head': head,
+                    'Body': body,
+                    'Legs': legs,
+                    'Gloves': gloves
+                  }];
+                } else if (total_damage_reduction === max_damage_reduction) {
+                  best_combinations.push({
+                    'Head': head,
+                    'Body': body,
+                    'Legs': legs,
+                    'Gloves': gloves
+                  });
                 }
+              }
             }
-
-            return { best_combinations, max_damage_reduction };
+          }
         }
+      }
+      return {
+        best_combinations,
+        max_damage_reduction
+      };
+    }
 
     function display_combinations(best_combinations) {
-        const resultContainer = document.getElementById("resultContainer");
-        resultContainer.innerHTML = "";
-
-        if (best_combinations.length > 0) {
-            const maxDamageReduction = best_combinations[0].Head[1]
-                + best_combinations[0].Body[1]
-                + best_combinations[0].Legs[1]
-                + best_combinations[0].Gloves[1];
-
-            const header = document.createElement("h2");
-            header.textContent = `Total Damage Reduction: ${maxDamageReduction}`;
-            resultContainer.appendChild(header);
-
-            best_combinations.forEach((combination, index) => {
-                const armorSet = combination;
-                const totalBleed = (
-                    armorSet.Head[3] + armorSet.Body[3] + armorSet.Legs[3] + armorSet.Gloves[3]
-                );
-                const totalFire = (
-                    armorSet.Head[4] + armorSet.Body[4] + armorSet.Legs[4] + armorSet.Gloves[4]
-                );
-                const totalShock = (
-                    armorSet.Head[5] + armorSet.Body[5] + armorSet.Legs[5] + armorSet.Gloves[5]
-                );
-                const totalBlight = (
-                    armorSet.Head[6] + armorSet.Body[6] + armorSet.Legs[6] + armorSet.Gloves[6]
-                );
-                const totalToxin = (
-                    armorSet.Head[7] + armorSet.Body[7] + armorSet.Legs[7] + armorSet.Gloves[7]
-                );
-
-                const combinationDiv = document.createElement("div");
-                combinationDiv.innerHTML = `
+      const resultContainer = document.getElementById("resultContainer");
+      resultContainer.innerHTML = "";
+      if (best_combinations.length > 0) {
+        const maxDamageReduction = best_combinations[0].Head[1] +
+          best_combinations[0].Body[1] +
+          best_combinations[0].Legs[1] +
+          best_combinations[0].Gloves[1];
+        const header = document.createElement("h2");
+        header.textContent = `Total Damage Reduction: ${maxDamageReduction}`;
+        resultContainer.appendChild(header);
+        best_combinations.forEach((combination, index) => {
+          const armorSet = combination;
+          const totalBleed = (
+            armorSet.Head[3] + armorSet.Body[3] + armorSet.Legs[3] + armorSet.Gloves[3]
+          );
+          const totalFire = (
+            armorSet.Head[4] + armorSet.Body[4] + armorSet.Legs[4] + armorSet.Gloves[4]
+          );
+          const totalShock = (
+            armorSet.Head[5] + armorSet.Body[5] + armorSet.Legs[5] + armorSet.Gloves[5]
+          );
+          const totalBlight = (
+            armorSet.Head[6] + armorSet.Body[6] + armorSet.Legs[6] + armorSet.Gloves[6]
+          );
+          const totalToxin = (
+            armorSet.Head[7] + armorSet.Body[7] + armorSet.Legs[7] + armorSet.Gloves[7]
+          );
+          const combinationDiv = document.createElement("div");
+          combinationDiv.innerHTML = `
                     <h3>Armor ${index + 1}</h3>
                     <p class="headColor">Head: ${armorSet.Head[0]}</p>
                     <p class="bodyColor">Body: ${armorSet.Body[0]}</p>
@@ -251,22 +250,24 @@
                     </p>
                     <hr>
                 `;
-
-                resultContainer.appendChild(combinationDiv);
-            });
-        } else {
-            const noCombinationMessage = document.createElement("p");
-            noCombinationMessage.textContent = "No valid combinations found.";
-            resultContainer.appendChild(noCombinationMessage);
-        }
+          resultContainer.appendChild(combinationDiv);
+        });
+      } else {
+        const noCombinationMessage = document.createElement("p");
+        noCombinationMessage.textContent = "No valid combinations found.";
+        resultContainer.appendChild(noCombinationMessage);
+      }
     }
 
-        function calculateBestCombination() {
-            const weightLimit = parseInt(document.getElementById("weightInput").value);
-            const { best_combinations, max_damage_reduction } = find_best_combination(armor_list, weightLimit);
-            display_combinations(best_combinations);
-
-        }
-    </script>
+    function calculateBestCombination() {
+      const weightLimit = parseInt(document.getElementById("weightInput").value);
+      const {
+        best_combinations,
+        max_damage_reduction
+      } = find_best_combination(armor_list, weightLimit);
+      display_combinations(best_combinations);
+    }
+  </script>
 </body>
+
 </html>
