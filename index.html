@@ -575,6 +575,14 @@
 		if(best_combinations.length > 0) {
 			const maxDamageReduction = best_combinations[0].Head[1] + best_combinations[0].Body[1] + best_combinations[0].Legs[1] + best_combinations[0].Gloves[1];
 			const header = document.getElementById("totalDamageReduction");
+			// Store the highest resistances of the previous set
+			let highestResistances = {
+				bleed: 0,
+				fire: 0,
+				shock: 0,
+				toxin: 0,
+				blight: 0
+			};
 			best_combinations.forEach((combination, index) => {
 				const armorSet = combination;
 				const totalBleed = (armorSet.Head[3] + armorSet.Body[3] + armorSet.Legs[3] + armorSet.Gloves[3]);
@@ -582,9 +590,11 @@
 				const totalShock = (armorSet.Head[5] + armorSet.Body[5] + armorSet.Legs[5] + armorSet.Gloves[5]);
 				const totalBlight = (armorSet.Head[6] + armorSet.Body[6] + armorSet.Legs[6] + armorSet.Gloves[6]);
 				const totalToxin = (armorSet.Head[7] + armorSet.Body[7] + armorSet.Legs[7] + armorSet.Gloves[7]);
-				const armorCard = document.createElement("div");
-				armorCard.classList.add("armor-card");
-				armorCard.innerHTML = `
+				// Compare resistances with the previous highest resistances
+				if(totalBleed >= highestResistances.bleed || totalFire >= highestResistances.fire || totalShock >= highestResistances.shock || totalToxin >= highestResistances.toxin || totalBlight >= highestResistances.blight) {
+					const armorCard = document.createElement("div");
+					armorCard.classList.add("armor-card");
+					armorCard.innerHTML = `
 Armor: ${Number.isInteger(((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * twistedidolarmorFactor) + ((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * engineerModifier) - (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])) ?
 (((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * twistedidolarmorFactor) + ((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * engineerModifier) - (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])):
 (((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * twistedidolarmorFactor) + ((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * engineerModifier) - (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])).toFixed(1)}
@@ -619,7 +629,16 @@ Armor: ${Number.isInteger(((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[
         Total: ${armorSet.Head[2] + armorSet.Body[2] + armorSet.Legs[2] + armorSet.Gloves[2]}
 									</div>
 								</p>`;
-				resultContainer.appendChild(armorCard);
+					resultContainer.appendChild(armorCard);
+					// Update the highest resistances
+					highestResistances = {
+						bleed: Math.max(highestResistances.bleed, totalBleed),
+						fire: Math.max(highestResistances.fire, totalFire),
+						shock: Math.max(highestResistances.shock, totalShock),
+						toxin: Math.max(highestResistances.toxin, totalToxin),
+						blight: Math.max(highestResistances.blight, totalBlight)
+					};
+				}
 			});
 		} else {
 			const noCombinationMessage = document.createElement("p");
