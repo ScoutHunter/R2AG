@@ -6,9 +6,16 @@
 	<style>
 	body {
 		font-family: Trebuchet ms, sans-serif;
-		background-color: #022;
+		background-color: #011;
+		background: linear-gradient(to top, #133, #011);
 		color: #FFF;
 		font-size: 16px;
+		background-size: 100% 100%;
+		/* Adjust the background size */
+		margin-bottom: 300px;
+		width: 1315px;
+		margin-left: auto;
+		margin-right: auto;
 	}
 
 	h1,
@@ -31,6 +38,10 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		background-color: #233;
+		padding: 5px 10px;
+		border: 1px solid #000;
+		border-radius: 10px;
 	}
 
 	.archetype-dropdown-title {
@@ -48,6 +59,7 @@
 		width: 110px;
 		font-size: 15px;
 		margin-right: 10px;
+		background-color: #ebefe7
 	}
 
 	#amuletDropdown {
@@ -56,12 +68,16 @@
 		align-items: center;
 		width: 125px;
 		font-size: 15px;
+		background-color: #ebefe7
 	}
 
 	.ring-dropdown-container {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		background-color: #122;
+		padding: 5px 10px;
+		border-radius: 10px;
 	}
 
 	.ring-dropdown-title {
@@ -81,6 +97,7 @@
 		font-size: 15px;
 		margin-right: 10px;
 		margin-top: 3px;
+		background-color: #ebefe7
 	}
 
 	.unequip-button-container {
@@ -121,12 +138,24 @@
 
 	.label-container {
 		display: flex;
+		background-color: #456;
+		background-image: linear-gradient(#999, #999), linear-gradient(to top, #122, #456);
+		background-position: top, bottom;
+		background-size: 100% 0px, 100% calc(100% - 10px);
+		background-repeat: no-repeat;
+		padding: 5px 10px;
+		border: 1px solid #000;
+		border-radius: 10px;
 		align-items: center;
 	}
 	/* Adjust the margin for label elements */
 
 	.label-container label {
 		margin-right: 10px;
+		background-color: #011;
+		padding: 5px 15px;
+		border-radius: 6px;
+		color: #d6e0d0;
 	}
 
 	#toleranceInput {
@@ -142,6 +171,7 @@
 		font-size: 15px;
 		/* Adjust the font size as needed */
 		/* Adjust the width as needed */
+		background-color: #ebefe7
 	}
 
 	.dropdown-container {
@@ -187,6 +217,10 @@
 		align-items: center;
 		letter-spacing: px;
 		font-size: 18px;
+		background-color: #022;
+		padding: 5px 10px;
+		border: 1px solid #000;
+		border-radius: 10px;
 	}
 
 	.status-global-wrapper {
@@ -194,6 +228,9 @@
 		justify-content: space-around;
 		max-width: 240px;
 		margin: 0 auto;
+		background-color: #011;
+		padding: 5px 5px;
+		border-radius: 25px;
 	}
 
 	#resultContainerWrapper {
@@ -213,6 +250,11 @@
 		min-width: 250px;
 		max-width: 300px;
 		margin: 0 auto;
+		border-radius: 5px;
+		background-image: linear-gradient(#133, #011), linear-gradient(to top, #010, #022);
+		background-position: top, bottom;
+		background-size: 100% 36px, 100% calc(100% - 20px);
+		background-repeat: no-repeat;
 	}
 
 	.itemName {
@@ -238,11 +280,26 @@
 	.greyColor {
 		color: #d3d3d3;
 	}
+
+	.version-note {
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		solid #ccc;
+		border-radius: 5px;
+		font-size: 10px;
+		/* Ajustez la taille de la police ici */
+	}
+
+	.text-with-border {
+		text-shadow: -5px -0px 0 #000, 5px -0px 0 #000, 0px 5px 0 #000, 5px -5px 0 #000;
+	}
 	</style>
 </head>
 
 <body>
-	<h1>Remnant 2 Armor Generator</h1>
+	<div class="version-note">ver 1.3</div>
+	<h1><span class="text-with-border">Remnant</span> <span style="color: red;">II</span> <span style="color: #FFFDD0	;">Armor Generator</span></h1>
 	<br>
 	<br>
 	<div class="content-container">
@@ -256,7 +313,7 @@
 				<option value="999">Flop (75%)</option>
 			</select>
 		</div>
-		<div class="archetype-dropdown-container">
+		<div class="label-container archetype-dropdown-container">
 			<label for="archetype-dropdown-group">Archetypes</label>
 			<div class="archetype-dropdown-group">
 				<select id="archetype1" class="archetype-select" onchange="equipArchetype('archetype1')"></select>
@@ -271,7 +328,7 @@
 				<option value="twistedidol">Twisted Idol</option>
 			</select>
 		</div>
-		<div class="ring-dropdown-container">
+		<div class="label-container ring-dropdown-container">
 			<label for="ring-dropdown-group">Rings</label>
 			<div class="ring-dropdown-group">
 				<select id="ring1" class="ring-select" onchange="equipRing('ring1')"></select>
@@ -595,9 +652,9 @@
 					const armorCard = document.createElement("div");
 					armorCard.classList.add("armor-card");
 					armorCard.innerHTML = `
-Armor: ${Number.isInteger(((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * twistedidolarmorFactor) + ((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * engineerModifier) - (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])) ?
+<span style="color: #d6e0d0 ;">Armor: ${Number.isInteger(((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * twistedidolarmorFactor) + ((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * engineerModifier) - (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])) ?
 (((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * twistedidolarmorFactor) + ((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * engineerModifier) - (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])):
-(((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * twistedidolarmorFactor) + ((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * engineerModifier) - (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])).toFixed(1)}
+(((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * twistedidolarmorFactor) + ((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * engineerModifier) - (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])).toFixed(1)}</span>
 									<div class="content-wrapper">
 										<div class="gear-container">
 											<p>Head:
@@ -626,7 +683,7 @@ Armor: ${Number.isInteger(((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[
 											<span class="greenColor">${totalToxin}</span>&nbsp
 											<span class="greyColor">${totalBlight}</span>
 										</div>
-        Total: ${armorSet.Head[2] + armorSet.Body[2] + armorSet.Legs[2] + armorSet.Gloves[2]}
+        <span style="color: #c1d0b8 ;">Total: ${armorSet.Head[2] + armorSet.Body[2] + armorSet.Legs[2] + armorSet.Gloves[2]}</span>
 									</div>
 								</p>`;
 					resultContainer.appendChild(armorCard);
