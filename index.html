@@ -510,7 +510,7 @@
 						const letoAmuletFactor = selectedAmuletValue === "leto" ? 0.6 : 1;
 						const twistedidolFactor = selectedAmuletValue === "twistedidol" ? 15 : 0;
 						if(equippedArchetypes.archetype1 === "Challenger" || equippedArchetypes.archetype2 === "Challenger") {
-							challengerModifier = 15;
+							challengerModifier = 10;
 						} else {
 							challengerModifier = 0;
 						}
@@ -585,7 +585,9 @@
 				const armorCard = document.createElement("div");
 				armorCard.classList.add("armor-card");
 				armorCard.innerHTML = `
-                          Armor: ${Number.isInteger((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * twistedidolarmorFactor) ? ((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * twistedidolarmorFactor * engineerModifier): ((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * twistedidolarmorFactor * engineerModifier).toFixed(1)}
+Armor: ${Number.isInteger(((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * twistedidolarmorFactor) + ((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * engineerModifier) - (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])) ?
+(((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * twistedidolarmorFactor) + ((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * engineerModifier) - (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])):
+(((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * twistedidolarmorFactor) + ((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * engineerModifier) - (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])).toFixed(1)}
 									<div class="content-wrapper">
 										<div class="gear-container">
 											<p>Head:
