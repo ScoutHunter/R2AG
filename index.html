@@ -2,272 +2,654 @@
 <html>
 
 <head>
-  <title>Armor Combination Calculator</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #000;
-      color: #FFF;
-    }
+	<title>R2 Armor Generator</title>
+	<style>
+	body {
+		font-family: Trebuchet ms, sans-serif;
+		background-color: #022;
+		color: #FFF;
+		font-size: 16px;
+	}
 
-    h1,
-    h2,
-    h3 {
-      text-align: center;
-    }
+	h1,
+	h2,
+	h3 {
+		text-align: center;
+	}
 
-    label {
-      display: block;
-      margin-bottom: 5px;
-    }
+	label {
+		display: block;
+		margin-bottom: 3px;
+	}
 
-    input {
-      width: 100px;
-      margin-bottom: 10px;
-    }
+	input {
+		width: 100px;
+		margin-bottom: 0px;
+	}
 
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-    }
+	.archetype-dropdown-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
 
-    #resultContainer {
-      margin-top: 20px;
-    }
+	.archetype-dropdown-title {
+		text-align: center;
+		margin-bottom: -10px;
+	}
 
-    .itemName {
-      color: #FFFF00;
-    }
+	.archetype-dropdown-group {
+		display: flex;
+		align-items: center;
+	}
 
-    .redColor {
-      color: #FF0000;
-    }
+	.archetype-dropdown-group .archetype-select {
+		text-align: center;
+		width: 110px;
+		font-size: 15px;
+		margin-right: 10px;
+	}
 
-    .orangeColor {
-      color: #FF8C00;
-    }
+	#amuletDropdown {
+		display: flex;
+		text-align: center;
+		align-items: center;
+		width: 125px;
+		font-size: 15px;
+	}
 
-    .purpleColor {
-      color: #800080;
-    }
+	.ring-dropdown-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
 
-    .greenColor {
-      color: #008000;
-    }
+	.ring-dropdown-title {
+		text-align: center;
+		margin-bottom: -10px;
+		font-size: 12px;
+	}
 
-    .greyColor {
-      color: #888888;
-    }
-  </style>
+	.ring-dropdown-group {
+		display: flex;
+		align-items: center;
+	}
+
+	.ring-dropdown-group .ring-select {
+		text-align: center;
+		width: 170px;
+		font-size: 15px;
+		margin-right: 10px;
+		margin-top: 3px;
+	}
+
+	.unequip-button-container {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.unequip-button {
+		text-align: center;
+		width: 100px;
+		font-size: 13px;
+		margin-top: 10px;
+		margin-right: 10px;
+		margin-left: 0px;
+	}
+	/* Use Flexbox to position checkboxes next to each other */
+
+	.checkbox-container {
+		display: flex;
+		align-items: center;
+	}
+
+	.checkboxes-global-container {
+		display: flex;
+		justify-content: right;
+		margin-right: -90px;
+	}
+
+	.checkbox-container label {
+		margin-right: -90px;
+		/* Adjust the width as needed */
+		display: inline-block;
+		width: 150px;
+		/* Adjust the width as needed */
+	}
+	/* Add a new CSS class to align the labels */
+
+	.label-container {
+		display: flex;
+		align-items: center;
+	}
+	/* Adjust the margin for label elements */
+
+	.label-container label {
+		margin-right: 10px;
+	}
+
+	#toleranceInput {
+		text-align: left;
+		width: 60px;
+		/* Adjust the font size as needed */
+		/* Adjust the width as needed */
+	}
+
+	#weightInput {
+		text-align: center;
+		width: 130px;
+		font-size: 15px;
+		/* Adjust the font size as needed */
+		/* Adjust the width as needed */
+	}
+
+	.dropdown-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+	/* Container to hold both checkboxes and dropdown */
+
+	.content-container {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: 0px;
+		margin-left: 50px;
+		margin-right: 50px;
+	}
+
+	.content-wrapper {
+		display: flex;
+		justify-content: center;
+	}
+
+	.gear-container {
+		text-align: left;
+		max-width: 300px;
+	}
+
+	.gear-container p {
+		margin: 1;
+		/* Reset margin for the
+			<p> elements */
+	}
+
+	.gear-container p span.itemName {
+		padding-right: 0px;
+		/* Add spacing between label and value */
+		padding-left: 2px;
+		/* Add spacing between label and value */
+	}
+
+	.status-wrapper {
+		align-items: center;
+		letter-spacing: px;
+		font-size: 18px;
+	}
+
+	.status-global-wrapper {
+		display: flex;
+		justify-content: space-around;
+		max-width: 240px;
+		margin: 0 auto;
+	}
+
+	#resultContainerWrapper {
+		text-align: center;
+		margin-top: 0px;
+	}
+
+	#resultContainer {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+		grid-gap: 75px;
+	}
+
+	.armor-card {
+		border: 1px solid #773;
+		padding: 10px;
+		min-width: 250px;
+		max-width: 300px;
+		margin: 0 auto;
+	}
+
+	.itemName {
+		color: #FFFFCC;
+	}
+
+	.redColor {
+		color: #FF0000;
+	}
+
+	.orangeColor {
+		color: #FF8C00;
+	}
+
+	.purpleColor {
+		color: #7df9ff;
+	}
+
+	.greenColor {
+		color: #80ff00;
+	}
+
+	.greyColor {
+		color: #d3d3d3;
+	}
+	</style>
 </head>
 
 <body>
-  <h1>Armor Combination Calculator</h1>
-  <label for="weightInput">Enter Max Weight:</label>
-  <input type="number" id="weightInput">
-  <button onclick="calculateBestCombination()">Calculate</button>
-  <div id="resultContainer"></div>
+	<h1>Remnant 2 Armor Generator</h1>
+	<br>
+	<br>
+	<div class="content-container">
+		<!-- Align the elements using the new label-container class -->
+		<div class="label-container">
+			<label for="weightInput">Stamina Penalty</label>
+			<select id="weightInput">
+				<option value="25">Light (0%)</option>
+				<option value="50">Medium (25%)</option>
+				<option value="75">Heavy (50%)</option>
+				<option value="999">Flop (75%)</option>
+			</select>
+		</div>
+		<div class="archetype-dropdown-container">
+			<label for="archetype-dropdown-group">Archetypes</label>
+			<div class="archetype-dropdown-group">
+				<select id="archetype1" class="archetype-select" onchange="equipArchetype('archetype1')"></select>
+				<select id="archetype2" class="archetype-select" onchange="equipArchetype('archetype2')"></select>
+			</div>
+		</div>
+		<div class="label-container amulet-container">
+			<label for="amuletDropdown">Amulet</label>
+			<select id="amuletDropdown">
+				<option value="undefined">undefined</option>
+				<option value="leto">Leto's Amulet</option>
+				<option value="twistedidol">Twisted Idol</option>
+			</select>
+		</div>
+		<div class="ring-dropdown-container">
+			<label for="ring-dropdown-group">Rings</label>
+			<div class="ring-dropdown-group">
+				<select id="ring1" class="ring-select" onchange="equipRing('ring1')"></select>
+			</div>
+			<div class="ring-dropdown-group">
+				<select id="ring2" class="ring-select" onchange="equipRing('ring2')"></select>
+			</div>
+			<div class="ring-dropdown-group">
+				<select id="ring3" class="ring-select" onchange="equipRing('ring3')"></select>
+			</div>
+			<div class="ring-dropdown-group">
+				<select id="ring4" class="ring-select" onchange="equipRing('ring4')"></select>
+			</div>
+			<div class="unequip-button-container">
+				<div></div>
+				<button class="unequip-button" onclick="unequipAll()">Unequip all</button>
+			</div>
+		</div>
+	</div>
+	<br>
+	<div id="resultContainerWrapper">
+		<label for="toleranceInput">Tolerance</label>
+		<input type="number" id="toleranceInput" value="0" min="0" max="10">
+		<h2 id="totalDamageReduction"></h2>
+		<div id="resultContainer"></div>
+	</div>
+	<script>
+	document.getElementById("toleranceInput").addEventListener("input", function() {
+		const toleranceInput = document.getElementById("toleranceInput");
+		const minValue = 0;
+		const maxValue = 10;
+		let enteredValue = parseInt(toleranceInput.value);
+		if(isNaN(enteredValue)) {
+			enteredValue = minValue;
+		}
+		if(enteredValue < minValue) {
+			toleranceInput.value = minValue;
+		} else if(enteredValue > maxValue) {
+			toleranceInput.value = maxValue;
+		}
+	});
+	const armor_list = {
+		'Head': [
+			["Academic", 11, 6, 1, 0, 0, 2, 3, 7],
+			["Bruiser", 15, 4, 1, 2, 0, 0, 1, 9],
+			["Crown of the Red Prince", 8, 25, -6, 25, -6, 13, -6, 5],
+			["Dendroid", 7, 4, 2, 0, 0, 0, 2, 3],
+			["Elder", 12, 5, 0, 3, 0, 2, 0, 6],
+			["Fae Royal", 15, 6, 2, 2, 0, 2, 0, 8],
+			["Field Medic hat/mask", 9, 3, 0, 0, 0, 2, 1, 5],
+			["High Noon", 8, 3, 0, 1, 1, 0, 1, 4],
+			["Knotted", 13, 3, 0, 0, 0, 1, 2, 8],
+			["Labyrinth", 12, 5, 0, 2, 3, 0, 0, 7],
+			["Leto Mark I", 21, 15, 3, 4, 2, 2, 4, 15],
+			["Leto Mark II", 22, 9, 2, 3, 1, 1, 2, 13],
+			["Lodestone Crown", 5, 2, -2, 0, -1, 5, 0, 3],
+			["Navigator", 12, 2, -1, -1, 2, -1, 3, 8],
+			["Nightstalker", 11, 5, 0, 1, 1, 3, 0, 6],
+			["Radiant", 14, 6, 1, 1, 3, 1, 0, 8],
+			["Realmwalker", 4, 2, 0, 0, 1, 1, 0, 2],
+			["Red Widow", 13, 4, 2, 0, 0, 2, 0, 8],
+			["Space Worker", 6, 5, 1, 0, 2, 0, 2, 3],
+			["Technician", 14, 5, 0, 1, 2, 0, 2, 8],
+			["Trainer", 7, 1, 0, 0, 0, 0, 1, 4],
+			["Void", 15, 4, 0, 1, 2, 0, 1, 8],
+			["", 0, 0, 0, 0, 0, 0, 0, 0]
+		],
+		'Body': [
+			["Academic", 37, 11, 2, 0, 0, 3, 6, 21],
+			["Bruiser", 57, 10, 2, 6, 0, 0, 2, 29],
+			["Dendroid", 23, 11, 4, 0, 0, 2, 5, 12],
+			["Elder", 17, 10, 0, 4, 0, 4, 2, 9],
+			["Fae Royal", 57, 9, 4, 3, 0, 2, 0, 27],
+			["Field Medic", 35, 12, 9, 0, 0, 3, 0, 16],
+			["High Noon", 38, 10, 0, 4, 4, 0, 2, 19],
+			["Knotted", 51, 11, 1, 0, 0, 3, 7, 28],
+			["Labyrinth", 37, 10, 0, 4, 6, 0, 0, 20],
+			["Leto Mark I", 82, 24, 4, 5, 5, 5, 5, 45],
+			["Leto Mark II", 83, 19, 3, 4, 4, 5, 3, 44],
+			["Nightstalker", 34, 9, 2, 3, 2, 2, 0, 18],
+			["Radiant", 59, 9, 2, 2, 4, 1, 0, 30],
+			["Realmwalker", 21, 12, 3, 2, 3, 4, 0, 11],
+			["Red Widow", 45, 10, 5, 0, 0, 4, 1, 23],
+			["Space Worker", 22, 8, 1, 1, 4, 0, 2, 11, ],
+			["Survivor", 36, 11, 3, 2, 2, 2, 2, 19],
+			["Technician", 56, 10, 0, 2, 6, 0, 2, 30],
+			["Trainer", 36, 11, 3, 0, 4, 1, 3, 18],
+			["Void", 55, 11, 0, 3, 4, 0, 4, 28],
+			["", 0, 0, 0, 0, 0, 0, 0, 0]
+		],
+		'Legs': [
+			["Academic", 17, 7, 2, 0, 0, 1, 4, 10],
+			["Bruiser", 27, 7, 1, 4, 0, 0, 2, 15],
+			["Dendroid", 13, 7, 3, 0, 2, 2, 0, 7],
+			["Elder", 12, 6, 0, 3, 0, 2, 1, 6],
+			["Fae Royal", 25, 7, 2, 3, 0, 2, 0, 13],
+			["Field Medic", 16, 6, 4, 0, 0, 2, 0, 9],
+			["High Noon", 18, 7, 0, 3, 2, 0, 2, 10],
+			["Knotted", 26, 7, 1, 0, 0, 2, 4, 14],
+			["Labyrinth", 19, 7, 0, 3, 4, 0, 0, 10],
+			["Leto Mark I", 45, 18, 4, 3, 4, 4, 3, 24],
+			["Leto Mark II", 46, 13, 3, 2, 3, 3, 2, 23],
+			["Nightstalker", 18, 6, 2, 2, 1, 1, 0, 9],
+			["Radiant", 29, 6, 1, 1, 3, 1, 0, 17],
+			["Realmwalker", 12, 8, 2, 1, 2, 3, 0, 6],
+			["Red Widow", 23, 7, 3, 0, 0, 3, 1, 12],
+			["Space Worker", 12, 7, 1, 1, 3, 0, 2, 7],
+			["Survivor", 18, 6, 1, 1, 1, 1, 2, 10],
+			["Technician", 26, 6, 0, 1, 3, 0, 2, 14],
+			["Trainer", 17, 5, 1, 0, 1, 1, 2, 8],
+			["Void", 26, 7, 0, 2, 2, 0, 3, 15],
+			["", 0, 0, 0, 0, 0, 0, 0, 0]
+		],
+		'Gloves': [
+			["Academic", 7, 3, 0, 0, 0, 1, 2, 4],
+			["Bruiser", 11, 4, 1, 2, 0, 0, 1, 7],
+			["Dendroid", 4, 3, 1, 0, 0, 1, 1, 3],
+			["Elder", 3, 4, 0, 2, 0, 1, 1, 3],
+			["Fae Royal", 10, 3, 1, 1, 0, 1, 0, 7],
+			["Field Medic", 8, 4, 2, 0, 0, 1, 1, 5],
+			["High Noon", 8, 5, 0, 2, 2, 0, 1, 6],
+			["Knotted", 10, 4, 1, 0, 0, 1, 2, 6],
+			["Labyrinth", 19, 7, 0, 3, 4, 0, 0, 10],
+			["Leto Mark I", 16, 10, 2, 1, 2, 2, 3, 11],
+			["Leto Mark II", 17, 9, 2, 1, 2, 1, 3, 10],
+			["Nightstalker", 6, 11, 2, 1, 1, 7, 0, 3],
+			["Radiant", 11, 4, 1, 1, 2, 0, 0, 6],
+			["Realmwalker", 3, 3, 0, 1, 1, 1, 0, 2],
+			["Red Widow", 7, 4, 2, 0, 0, 2, 0, 5],
+			["Space Worker", 4, 4, 1, 1, 1, 0, 1, 2],
+			["Survivor", 6, 5, 1, 1, 1, 1, 1, 4],
+			["Technician", 10, 4, 0, 1, 2, 0, 1, 6],
+			["Trainer", 7, 7, 2, 0, 3, 1, 1, 3],
+			["Void", 8, 3, 0, 1, 1, 0, 1, 6],
+			["", 0, 0, 0, 0, 0, 0, 0, 0]
+		],
+	};
+	const archetypeSelects = document.querySelectorAll('.archetype-select');
+	const availableArchetypes = ['undefined', 'Challenger', 'Engineer'];
+	const equippedArchetypes = {};
 
-  <script>
-    const armor_list = {
-      'Head': [
-        ["Academic", 11, 6, 1, 0, 0, 2, 3, 7],
-        ["Bruiser", 15, 4, 1, 2, 0, 0, 1, 9],
-        ["Crown of the Red Prince", 8, 25, -6, 25, -6, 13, -6, 5],
-        ["Dendroid", 7, 4, 2, 0, 0, 0, 2, 3],
-        ["Elder", 12, 5, 0, 3, 0, 2, 0, 6],
-        ["Fae Royal", 15, 6, 2, 2, 0, 2, 0, 8],
-        ["Field Medic hat/mask", 9, 3, 0, 0, 0, 2, 1, 5],
-        ["High Noon", 8, 3, 0, 1, 1, 0, 1, 4],
-        ["Knotted", 13, 3, 0, 0, 0, 1, 2, 8],
-        ["Labyrinth", 12, 5, 0, 2, 3, 0, 0, 7],
-        ["Leto Mark I", 21, 15, 3, 4, 2, 2, 4, 15],
-        ["Leto Mark II", 22, 9, 2, 3, 1, 1, 2, 13],
-        ["Lodestone Crown", 5, 2, -2, 0, -1, 5, 0, 3],
-        ["Navigator", 12, 2, -1, -1, 2, -1, 3, 8],
-        ["Nightstalker", 11, 5, 0, 1, 1, 3, 0, 6],
-        ["Radiant", 14, 6, 1, 1, 3, 1, 0, 8],
-        ["Realmwalker", 4, 2, 0, 0, 1, 1, 0, 2],
-        ["Red Widow", 13, 4, 2, 0, 0, 2, 0, 8],
-        ["Space Worker", 6, 5, 1, 0, 2, 0, 2, 3],
-        ["Technician", 14, 5, 0, 1, 2, 0, 2, 8],
-        ["Trainer", 7, 1, 0, 0, 0, 0, 1, 4],
-        ["Void", 15, 4, 0, 1, 2, 0, 1, 8],
-        ["     x", 0, 0, 0, 0, 0, 0, 0, 0]
-      ],
-      'Body': [
-        ["Academic", 37, 11, 2, 0, 0, 3, 6, 21],
-        ["Bruiser", 57, 10, 2, 6, 0, 0, 2, 29],
-        ["Dendroid", 23, 11, 4, 0, 0, 2, 5, 12],
-        ["Elder", 17, 10, 0, 4, 0, 4, 2, 9],
-        ["Fae Royal", 57, 9, 4, 3, 0, 2, 0, 27],
-        ["Field Medic", 35, 12, 9, 0, 0, 3, 0, 16],
-        ["High Noon", 38, 10, 0, 4, 4, 0, 2, 19],
-        ["Knotted", 51, 11, 1, 0, 0, 3, 7, 28],
-        ["Labyrinth", 37, 10, 0, 4, 6, 0, 0, 20],
-        ["Leto Mark I", 82, 24, 4, 5, 5, 5, 5, 45],
-        ["Leto Mark II", 83, 19, 3, 4, 4, 5, 3, 44],
-        ["Nightstalker", 34, 9, 2, 3, 2, 2, 0, 18],
-        ["Radiant", 59, 9, 2, 2, 4, 1, 0, 30],
-        ["Realmwalker", 21, 12, 3, 2, 3, 4, 0, 11],
-        ["Red Widow", 45, 10, 5, 0, 0, 4, 1, 23],
-        ["Space Worker", 22, 8, 1, 1, 4, 0, 2, 1, ],
-        ["Survivor", 36, 11, 3, 2, 2, 2, 2, 19],
-        ["Technician", 56, 10, 0, 2, 6, 0, 2, 30],
-        ["Trainer", 36, 11, 3, 0, 4, 1, 3, 18],
-        ["Void", 55, 11, 0, 3, 4, 0, 4, 28],
-        ["     x", 0, 0, 0, 0, 0, 0, 0, 0]
-      ],
-      'Legs': [
-        ["Academic", 17, 7, 2, 0, 0, 1, 4, 10],
-        ["Bruiser", 27, 7, 1, 4, 0, 0, 2, 15],
-        ["Dendroid", 13, 7, 3, 0, 2, 2, 0, 7],
-        ["Elder", 12, 6, 0, 3, 0, 2, 1, 6],
-        ["Fae Royal", 25, 7, 2, 3, 0, 2, 0, 13],
-        ["Field Medic", 16, 6, 4, 0, 0, 2, 0, 9],
-        ["High Noon", 18, 7, 0, 3, 2, 0, 2, 10],
-        ["Knotted", 26, 7, 1, 0, 0, 2, 4, 14],
-        ["Labyrinth", 19, 7, 0, 3, 4, 0, 0, 10],
-        ["Leto Mark I", 45, 18, 4, 3, 4, 4, 3, 24],
-        ["Leto Mark II", 46, 13, 3, 2, 3, 3, 2, 23],
-        ["Nightstalker", 18, 6, 2, 2, 1, 1, 0, 9],
-        ["Radiant", 29, 6, 1, 1, 3, 1, 0, 17],
-        ["Realmwalker", 12, 8, 2, 1, 2, 3, 0, 6],
-        ["Red Widow", 23, 7, 3, 0, 0, 3, 1, 12],
-        ["Space Worker", 12, 7, 1, 1, 3, 0, 2, 7],
-        ["Survivor", 18, 6, 1, 1, 1, 1, 2, 10],
-        ["Technician", 26, 6, 0, 1, 3, 0, 2, 14],
-        ["Trainer", 17, 5, 1, 0, 1, 1, 2, 8],
-        ["Void", 26, 7, 0, 2, 2, 0, 3, 15],
-        ["     x", 0, 0, 0, 0, 0, 0, 0, 0]
-      ],
-      'Gloves': [
-        ["Academic", 7, 3, 0, 0, 0, 1, 2, 4],
-        ["Bruiser", 11, 4, 1, 2, 0, 0, 1, 7],
-        ["Dendroid", 4, 3, 1, 0, 0, 1, 1, 3],
-        ["Elder", 3, 4, 0, 2, 0, 1, 1, 3],
-        ["Fae Royal", 10, 3, 1, 1, 0, 1, 0, 7],
-        ["Field Medic", 8, 4, 2, 0, 0, 1, 1, 5],
-        ["High Noon", 8, 5, 0, 2, 2, 0, 1, 6],
-        ["Knotted", 10, 4, 1, 0, 0, 1, 2, 6],
-        ["Labyrinth", 19, 7, 0, 3, 4, 0, 0, 10],
-        ["Leto Mark I", 16, 10, 2, 1, 2, 2, 3, 11],
-        ["Leto Mark II", 17, 9, 2, 1, 2, 1, 3, 10],
-        ["Nightstalker", 6, 11, 2, 1, 1, 7, 0, 3],
-        ["Radiant", 11, 4, 1, 1, 2, 0, 0, 6],
-        ["Realmwalker", 3, 3, 0, 1, 1, 1, 0, 2],
-        ["Red Widow", 7, 4, 2, 0, 0, 2, 0, 5],
-        ["Space Worker", 4, 4, 1, 1, 1, 0, 1, 2],
-        ["Survivor", 6, 5, 1, 1, 1, 1, 1, 4],
-        ["Technician", 10, 4, 0, 1, 2, 0, 1, 6],
-        ["Trainer", 7, 7, 2, 0, 3, 1, 1, 3],
-        ["Void", 8, 3, 0, 1, 1, 0, 1, 6],
-        ["     x", 0, 0, 0, 0, 0, 0, 0, 0]
-      ],
-    };
+	function equipArchetype(selectedArchetype) {
+		const selectedValue = document.getElementById(selectedArchetype).value;
+		const prevEquippedArchetype = equippedArchetypes[selectedArchetype];
+		if(prevEquippedArchetype) enableArchetypeOption(prevEquippedArchetype);
+		if(selectedValue !== "undefined") {
+			if(equippedArchetypes[selectedArchetype]) enableArchetypeOption(equippedArchetypes[selectedArchetype]);
+			disableArchetypeOption(selectedValue);
+			equippedArchetypes[selectedArchetype] = selectedValue;
+		} else equippedArchetypes[selectedArchetype] = undefined;
+	}
 
-    function find_best_combination(armor_list, weight_limit) {
-      let best_combinations = [];
-      let max_damage_reduction = 0;
-      for (const head of armor_list['Head']) {
-        for (const body of armor_list['Body']) {
-          for (const legs of armor_list['Legs']) {
-            for (const gloves of armor_list['Gloves']) {
-              const total_weight = head[8] + body[8] + legs[8] + gloves[8];
-              if (total_weight <= weight_limit) {
-                const total_damage_reduction =
-                  head[1] + body[1] + legs[1] + gloves[1];
-                if (total_damage_reduction > max_damage_reduction) {
-                  max_damage_reduction = total_damage_reduction;
-                  best_combinations = [{
-                    'Head': head,
-                    'Body': body,
-                    'Legs': legs,
-                    'Gloves': gloves
-                  }];
-                } else if (total_damage_reduction === max_damage_reduction) {
-                  best_combinations.push({
-                    'Head': head,
-                    'Body': body,
-                    'Legs': legs,
-                    'Gloves': gloves
-                  });
-                }
-              }
-            }
-          }
-        }
-      }
-      return {
-        best_combinations,
-        max_damage_reduction
-      };
-    }
+	function enableArchetypeOption(archetype) {
+		archetypeSelects.forEach((select) => {
+			const option = select.querySelector(`option[value="${archetype}"]`);
+			option.disabled = false;
+			option.style.display = 'block';
+		});
+	}
 
-    function display_combinations(best_combinations) {
-      const resultContainer = document.getElementById("resultContainer");
-      resultContainer.innerHTML = "";
-      if (best_combinations.length > 0) {
-        const maxDamageReduction = best_combinations[0].Head[1] +
-          best_combinations[0].Body[1] +
-          best_combinations[0].Legs[1] +
-          best_combinations[0].Gloves[1];
-        const header = document.createElement("h2");
-        header.textContent = `Total Damage Reduction: ${maxDamageReduction}`;
-        resultContainer.appendChild(header);
-        best_combinations.forEach((combination, index) => {
-          const armorSet = combination;
-          const totalBleed = (
-            armorSet.Head[3] + armorSet.Body[3] + armorSet.Legs[3] + armorSet.Gloves[3]
-          );
-          const totalFire = (
-            armorSet.Head[4] + armorSet.Body[4] + armorSet.Legs[4] + armorSet.Gloves[4]
-          );
-          const totalShock = (
-            armorSet.Head[5] + armorSet.Body[5] + armorSet.Legs[5] + armorSet.Gloves[5]
-          );
-          const totalBlight = (
-            armorSet.Head[6] + armorSet.Body[6] + armorSet.Legs[6] + armorSet.Gloves[6]
-          );
-          const totalToxin = (
-            armorSet.Head[7] + armorSet.Body[7] + armorSet.Legs[7] + armorSet.Gloves[7]
-          );
-          const combinationDiv = document.createElement("div");
-          combinationDiv.innerHTML = `
-                    <h3>Armor ${index + 1}</h3>
-                    <p class="headColor">Head: ${armorSet.Head[0]}</p>
-                    <p class="bodyColor">Body: ${armorSet.Body[0]}</p>
-                    <p class="legsColor">Legs: ${armorSet.Legs[0]}</p>
-                    <p class="glovesColor">Gloves: ${armorSet.Gloves[0]}</p>
-                    <p>
-                        <span class="redColor">${totalBleed}</span>
-                        <span class="orangeColor">${totalFire}</span>
-                        <span class="purpleColor">${totalShock}</span>
-                        <span class="greenColor">${totalToxin}</span>
-                        <span class="greyColor">${totalBlight}</span>
-                        Total: ${armorSet.Head[2] + armorSet.Body[2] + armorSet.Legs[2] + armorSet.Gloves[2]}
-                    </p>
-                    <hr>
-                `;
-          resultContainer.appendChild(combinationDiv);
-        });
-      } else {
-        const noCombinationMessage = document.createElement("p");
-        noCombinationMessage.textContent = "No valid combinations found.";
-        resultContainer.appendChild(noCombinationMessage);
-      }
-    }
+	function disableArchetypeOption(archetype) {
+		archetypeSelects.forEach((select) => {
+			const option = select.querySelector(`option[value="${archetype}"]`);
+			option.disabled = true;
+			option.style.display = 'undefined';
+		});
+	}
+	const ringSelects = document.querySelectorAll('.ring-select');
+	const availableRings = ['undefined', 'Fae Protector Signet', 'Dran Memento'];
+	const equippedRings = {};
 
-    function calculateBestCombination() {
-      const weightLimit = parseInt(document.getElementById("weightInput").value);
-      const {
-        best_combinations,
-        max_damage_reduction
-      } = find_best_combination(armor_list, weightLimit);
-      display_combinations(best_combinations);
-    }
-  </script>
+	function equipRing(selectedRing) {
+		const selectedValue = document.getElementById(selectedRing).value;
+		const prevEquippedRing = equippedRings[selectedRing];
+		if(prevEquippedRing) enableRingOption(prevEquippedRing);
+		if(selectedValue !== "undefined") {
+			if(equippedRings[selectedRing]) enableRingOption(equippedRings[selectedRing]);
+			disableRingOption(selectedValue);
+			equippedRings[selectedRing] = selectedValue;
+		} else equippedRings[selectedRing] = undefined;
+	}
+
+	function enableRingOption(ring) {
+		ringSelects.forEach((select) => {
+			const option = select.querySelector(`option[value="${ring}"]`);
+			option.disabled = false;
+			option.style.display = 'block';
+		});
+	}
+
+	function disableRingOption(ring) {
+		ringSelects.forEach((select) => {
+			const option = select.querySelector(`option[value="${ring}"]`);
+			option.disabled = true;
+			option.style.display = 'undefined';
+		});
+	}
+
+	function unequipAll() {
+		ringSelects.forEach((select) => {
+			const selectedValue = select.value;
+			if(selectedValue !== "undefined") {
+				enableRingOption(selectedValue);
+				select.value = "undefined";
+				equippedRings[select.id] = undefined;
+			}
+		});
+		calculateAndUpdate();
+	}
+	window.onload = function() {
+		for(const select of ringSelects) {
+			availableRings.forEach((ring) => {
+				const option = new Option(ring, ring);
+				select.add(option);
+			});
+		}
+		for(const select of archetypeSelects) {
+			availableArchetypes.forEach((archetype) => {
+				const option = new Option(archetype, archetype);
+				select.add(option);
+			});
+		}
+	};
+
+	function find_best_combination(armor_list, weight_limit, tolerance) {
+		let best_combinations = [];
+		let max_damage_reduction = 0;
+		// Ensure that tolerance is within the valid range of 0 to 10
+		tolerance = Math.max(0, Math.min(10, tolerance));
+		for(const head of armor_list['Head']) {
+			for(const body of armor_list['Body']) {
+				for(const legs of armor_list['Legs']) {
+					for(const gloves of armor_list['Gloves']) {
+						const amuletDropdown = document.getElementById("amuletDropdown");
+						const selectedAmuletValue = amuletDropdown.value;
+						const letoAmuletFactor = selectedAmuletValue === "leto" ? 0.6 : 1;
+						const twistedidolFactor = selectedAmuletValue === "twistedidol" ? 15 : 0;
+						if(equippedArchetypes.archetype1 === "Challenger" || equippedArchetypes.archetype2 === "Challenger") {
+							challengerModifier = 15;
+						} else {
+							challengerModifier = 0;
+						}
+						if(equippedRings.ring1 === "Fae Protector Signet" || equippedRings.ring2 === "Fae Protector Signet" || equippedRings.ring3 === "Fae Protector Signet" || equippedRings.ring4 === "Fae Protector Signet") {
+							faeprotectorsignetFactor = 5;
+						} else {
+							faeprotectorsignetFactor = 0;
+						}
+						if(equippedRings.ring1 === "Dran Memento" || equippedRings.ring2 === "Dran Memento" || equippedRings.ring3 === "Dran Memento" || equippedRings.ring4 === "Dran Memento") {
+							dranmementoFactor = 5;
+						} else {
+							dranmementoFactor = 0;
+						}
+						const total_weight = ((head[8] + body[8] + legs[8] + gloves[8]) - challengerModifier - twistedidolFactor - faeprotectorsignetFactor - dranmementoFactor) * letoAmuletFactor;
+						if(total_weight <= weight_limit) {
+							const total_damage_reduction = head[1] + body[1] + legs[1] + gloves[1];
+							if(total_damage_reduction >= max_damage_reduction - tolerance) {
+								if(total_damage_reduction > max_damage_reduction) {
+									max_damage_reduction = total_damage_reduction;
+									best_combinations = [];
+								}
+								best_combinations.push({
+									'Head': head,
+									'Body': body,
+									'Legs': legs,
+									'Gloves': gloves
+								});
+							}
+						}
+					}
+				}
+			}
+		}
+		return {
+			best_combinations,
+			max_damage_reduction
+		};
+	}
+
+	function display_combinations(best_combinations) {
+		// Sort the best_combinations array based on total damage reduction and then total resistance
+		best_combinations.sort((a, b) => {
+			const totalDamageA = a.Head[1] + a.Body[1] + a.Legs[1] + a.Gloves[1];
+			const totalDamageB = b.Head[1] + b.Body[1] + b.Legs[1] + b.Gloves[1];
+			if(totalDamageA !== totalDamageB) {
+				return totalDamageB - totalDamageA; // Sort by total damage reduction in descending order
+			}
+			// If total damage reduction is the same, sort by total resistance in descending order
+			const totalResistanceA = a.Head[3] + a.Body[3] + a.Legs[3] + a.Gloves[3] + a.Head[4] + a.Body[4] + a.Legs[4] + a.Gloves[4] + a.Head[5] + a.Body[5] + a.Legs[5] + a.Gloves[5] + a.Head[6] + a.Body[6] + a.Legs[6] + a.Gloves[6] + a.Head[7] + a.Body[7] + a.Legs[7] + a.Gloves[7];
+			const totalResistanceB = b.Head[3] + b.Body[3] + b.Legs[3] + b.Gloves[3] + b.Head[4] + b.Body[4] + b.Legs[4] + b.Gloves[4] + b.Head[5] + b.Body[5] + b.Legs[5] + b.Gloves[5] + b.Head[6] + b.Body[6] + b.Legs[6] + b.Gloves[6] + b.Head[7] + b.Body[7] + b.Legs[7] + b.Gloves[7];
+			return totalResistanceB - totalResistanceA; // Sort by total resistance in descending order
+		});
+		if(equippedArchetypes.archetype1 === "Engineer" || equippedArchetypes.archetype2 === "Engineer") {
+			engineerModifier = 1.5;
+		} else {
+			engineerModifier = 1;
+		}
+		const selectedAmuletValue = amuletDropdown.value;
+		const twistedidolarmorFactor = selectedAmuletValue === "twistedidol" ? 1.3 : 1;
+		const resultContainer = document.getElementById("resultContainer");
+		resultContainer.innerHTML = "";
+		if(best_combinations.length > 0) {
+			const maxDamageReduction = best_combinations[0].Head[1] + best_combinations[0].Body[1] + best_combinations[0].Legs[1] + best_combinations[0].Gloves[1];
+			const header = document.getElementById("totalDamageReduction");
+			best_combinations.forEach((combination, index) => {
+				const armorSet = combination;
+				const totalBleed = (armorSet.Head[3] + armorSet.Body[3] + armorSet.Legs[3] + armorSet.Gloves[3]);
+				const totalFire = (armorSet.Head[4] + armorSet.Body[4] + armorSet.Legs[4] + armorSet.Gloves[4]);
+				const totalShock = (armorSet.Head[5] + armorSet.Body[5] + armorSet.Legs[5] + armorSet.Gloves[5]);
+				const totalBlight = (armorSet.Head[6] + armorSet.Body[6] + armorSet.Legs[6] + armorSet.Gloves[6]);
+				const totalToxin = (armorSet.Head[7] + armorSet.Body[7] + armorSet.Legs[7] + armorSet.Gloves[7]);
+				const armorCard = document.createElement("div");
+				armorCard.classList.add("armor-card");
+				armorCard.innerHTML = `
+                          Armor: ${Number.isInteger((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * twistedidolarmorFactor) ? ((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * twistedidolarmorFactor * engineerModifier): ((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * twistedidolarmorFactor * engineerModifier).toFixed(1)}
+									<div class="content-wrapper">
+										<div class="gear-container">
+											<p>Head:
+											</span>
+											<span class="itemName headColor">${armorSet.Head[0]}
+											</p>
+											<p>Body:
+											</span>
+											<span class="itemName bodyColor">${armorSet.Body[0]}
+											</p>
+											<p>Legs:&nbsp;
+											</span>
+											<span class="itemName legsColor">${armorSet.Legs[0]}
+											</p>
+											<p>Arms:
+											</span>
+											<span class="itemName glovesColor">${armorSet.Gloves[0]}
+											</p>
+										</div>
+									</div>
+									<div class="status-global-wrapper">
+										<div class="status-wrapper">
+											<span class="redColor">${totalBleed}</span>&nbsp
+											<span class="orangeColor">${totalFire}</span>&nbsp
+											<span class="purpleColor">${totalShock}</span>&nbsp
+											<span class="greenColor">${totalToxin}</span>&nbsp
+											<span class="greyColor">${totalBlight}</span>
+										</div>
+        Total: ${armorSet.Head[2] + armorSet.Body[2] + armorSet.Legs[2] + armorSet.Gloves[2]}
+									</div>
+								</p>`;
+				resultContainer.appendChild(armorCard);
+			});
+		} else {
+			const noCombinationMessage = document.createElement("p");
+			noCombinationMessage.textContent = "No valid combinations found.";
+			resultContainer.appendChild(noCombinationMessage);
+		}
+	}
+
+	function calculateAndUpdate() {
+		const weightLimit = parseInt(document.getElementById("weightInput").value);
+		let tolerance = parseInt(document.getElementById("toleranceInput").value);
+		tolerance = Math.max(0, tolerance); // Ensure tolerance is not negative
+		const {
+			best_combinations
+		} = find_best_combination(armor_list, weightLimit, tolerance);
+		display_combinations(best_combinations);
+	}
+	// Initialize the result display when the page loads
+	calculateAndUpdate();
+	// Ensure to adjust the event listeners to trigger "calculateAndUpdate" function
+	document.getElementById("weightInput").addEventListener("change", calculateAndUpdate);
+	document.getElementById("amuletDropdown").addEventListener("change", calculateAndUpdate);
+	document.getElementById("toleranceInput").addEventListener("change", calculateAndUpdate);
+	document.getElementById("ring1").addEventListener("change", calculateAndUpdate);
+	document.getElementById("ring2").addEventListener("change", calculateAndUpdate);
+	document.getElementById("ring3").addEventListener("change", calculateAndUpdate);
+	document.getElementById("ring4").addEventListener("change", calculateAndUpdate);
+	document.getElementById("archetype1").addEventListener("change", calculateAndUpdate);
+	document.getElementById("archetype2").addEventListener("change", calculateAndUpdate);
+	// Your existing JavaScript code for initialization and calculations
+	calculateAndUpdate(); // Initialize the result display when the page loads
+	</script>
 </body>
 
 </html>
