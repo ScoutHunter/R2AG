@@ -1,2 +1,2 @@
-# R2AC
+# R2AG
 Remnant 2 Armor Generator
