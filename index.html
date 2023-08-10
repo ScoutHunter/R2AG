@@ -656,24 +656,24 @@
 					const armorCard = document.createElement("div");
 					armorCard.classList.add("armor-card");
 					armorCard.innerHTML = `
-						<span style="color: #e0e8dc ;">Armor: ${Number.isInteger(((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * twistedidolarmorFactor) + ((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * engineerModifier) - (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])) ?
+						<span style="color: #ffff7f ;">Armor: ${Number.isInteger(((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * twistedidolarmorFactor) + ((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * engineerModifier) - (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])) ?
 						(((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * twistedidolarmorFactor) + ((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * engineerModifier) - (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])):
 						(((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * twistedidolarmorFactor) + ((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * engineerModifier) - (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])).toFixed(1)}</span>
 									<div class="content-wrapper">
 										<div class="gear-container">
-											<p>Head:
+											<p><span style="color: #d6e0d0 ;">Head:
 											</span>
 											<span class="itemName headColor">${armorSet.Head[0]}
 											</p>
-											<p>Body:
+											<p><span style="color: #d6e0d0 ;">Body:
 											</span>
 											<span class="itemName bodyColor">${armorSet.Body[0]}
 											</p>
-											<p>Legs:&nbsp;
+											<p><span style="color: #d6e0d0 ;">Legs:&nbsp;
 											</span>
 											<span class="itemName legsColor">${armorSet.Legs[0]}
 											</p>
-											<p>Arms:
+											<p><span style="color: #d6e0d0 ;">Arms:
 											</span>
 											<span class="itemName glovesColor">${armorSet.Gloves[0]}
 											</p>
