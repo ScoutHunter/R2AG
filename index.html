@@ -12,7 +12,7 @@
 		font-size: 16px;
 		background-size: 100% 100%;
 		/* Adjust the background size */
-		margin-bottom: 300px;
+		margin-bottom: 370px;
 		width: 1315px;
 		margin-left: auto;
 		margin-right: auto;
@@ -138,8 +138,8 @@
 
 	.label-container {
 		display: flex;
-		background-color: #456;
-		background-image: linear-gradient(#999, #999), linear-gradient(to top, #122, #456);
+		background-color: #233;
+		background-image: linear-gradient(#999, #999), linear-gradient(to top, #122, #233);
 		background-position: top, bottom;
 		background-size: 100% 0px, 100% calc(100% - 10px);
 		background-repeat: no-repeat;
@@ -163,6 +163,7 @@
 		width: 60px;
 		/* Adjust the font size as needed */
 		/* Adjust the width as needed */
+		background-color: #ebefe7
 	}
 
 	#weightInput {
@@ -255,6 +256,7 @@
 		background-position: top, bottom;
 		background-size: 100% 36px, 100% calc(100% - 20px);
 		background-repeat: no-repeat;
+		margin-bottom: -70px;
 	}
 
 	.itemName {
@@ -305,7 +307,7 @@
 	<div class="content-container">
 		<!-- Align the elements using the new label-container class -->
 		<div class="label-container">
-			<label for="weightInput">Stamina Penalty</label>
+			<label for="weightInput">Max Stamina Penalty</label>
 			<select id="weightInput">
 				<option value="25">Light (0%)</option>
 				<option value="50">Medium (25%)</option>
@@ -314,7 +316,7 @@
 			</select>
 		</div>
 		<div class="label-container archetype-dropdown-container">
-			<label for="archetype-dropdown-group">Archetypes</label>
+			<label for="archetype-dropdown-group">Archetypes (lvl 10)</label>
 			<div class="archetype-dropdown-group">
 				<select id="archetype1" class="archetype-select" onchange="equipArchetype('archetype1')"></select>
 				<select id="archetype2" class="archetype-select" onchange="equipArchetype('archetype2')"></select>
@@ -350,7 +352,7 @@
 	</div>
 	<br>
 	<div id="resultContainerWrapper">
-		<label for="toleranceInput">Tolerance</label>
+		<label for="toleranceInput"><span style="color: #ebefe7 ;">Tolerance</span></label>
 		<input type="number" id="toleranceInput" value="0" min="0" max="10">
 		<h2 id="totalDamageReduction"></h2>
 		<div id="resultContainer"></div>
@@ -640,6 +642,7 @@
 				toxin: 0,
 				blight: 0
 			};
+			let selectedArmors = [];
 			best_combinations.forEach((combination, index) => {
 				const armorSet = combination;
 				const totalBleed = (armorSet.Head[3] + armorSet.Body[3] + armorSet.Legs[3] + armorSet.Gloves[3]);
@@ -647,14 +650,21 @@
 				const totalShock = (armorSet.Head[5] + armorSet.Body[5] + armorSet.Legs[5] + armorSet.Gloves[5]);
 				const totalBlight = (armorSet.Head[6] + armorSet.Body[6] + armorSet.Legs[6] + armorSet.Gloves[6]);
 				const totalToxin = (armorSet.Head[7] + armorSet.Body[7] + armorSet.Legs[7] + armorSet.Gloves[7]);
-				// Compare resistances with the previous highest resistances
-				if(totalBleed >= highestResistances.bleed || totalFire >= highestResistances.fire || totalShock >= highestResistances.shock || totalToxin >= highestResistances.toxin || totalBlight >= highestResistances.blight) {
+				let isBetter = true; // Flag to determine if the armor set is better than any previous sets
+				// Compare resistances with all previously selected armor sets
+				for(const selectedArmor of selectedArmors) {
+					if(totalBleed <= selectedArmor.bleed && totalFire <= selectedArmor.fire && totalShock <= selectedArmor.shock && totalToxin <= selectedArmor.toxin && totalBlight <= selectedArmor.blight) {
+						isBetter = false;
+						break; // No need to continue checking if not better
+					}
+				}
+				if(isBetter) {
 					const armorCard = document.createElement("div");
 					armorCard.classList.add("armor-card");
 					armorCard.innerHTML = `
-<span style="color: #d6e0d0 ;">Armor: ${Number.isInteger(((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * twistedidolarmorFactor) + ((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * engineerModifier) - (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])) ?
-(((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * twistedidolarmorFactor) + ((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * engineerModifier) - (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])):
-(((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * twistedidolarmorFactor) + ((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * engineerModifier) - (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])).toFixed(1)}</span>
+						<span style="color: #e0e8dc ;">Armor: ${Number.isInteger(((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * twistedidolarmorFactor) + ((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * engineerModifier) - (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])) ?
+						(((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * twistedidolarmorFactor) + ((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * engineerModifier) - (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])):
+						(((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * twistedidolarmorFactor) + ((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * engineerModifier) - (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])).toFixed(1)}</span>
 									<div class="content-wrapper">
 										<div class="gear-container">
 											<p>Head:
@@ -683,18 +693,18 @@
 											<span class="greenColor">${totalToxin}</span>&nbsp
 											<span class="greyColor">${totalBlight}</span>
 										</div>
-        <span style="color: #c1d0b8 ;">Total: ${armorSet.Head[2] + armorSet.Body[2] + armorSet.Legs[2] + armorSet.Gloves[2]}</span>
+										<span style="color: #d6e0d0 ;">Total: ${armorSet.Head[2] + armorSet.Body[2] + armorSet.Legs[2] + armorSet.Gloves[2]}</span>
 									</div>
 								</p>`;
 					resultContainer.appendChild(armorCard);
-					// Update the highest resistances
-					highestResistances = {
-						bleed: Math.max(highestResistances.bleed, totalBleed),
-						fire: Math.max(highestResistances.fire, totalFire),
-						shock: Math.max(highestResistances.shock, totalShock),
-						toxin: Math.max(highestResistances.toxin, totalToxin),
-						blight: Math.max(highestResistances.blight, totalBlight)
-					};
+					// Update the selectedArmors array with the new armor set's resistances
+					selectedArmors.push({
+						bleed: totalBleed,
+						fire: totalFire,
+						shock: totalShock,
+						toxin: totalToxin,
+						blight: totalBlight
+					});
 				}
 			});
 		} else {
