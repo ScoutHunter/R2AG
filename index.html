@@ -622,11 +622,7 @@
 			const totalResistanceB = b.Head[3] + b.Body[3] + b.Legs[3] + b.Gloves[3] + b.Head[4] + b.Body[4] + b.Legs[4] + b.Gloves[4] + b.Head[5] + b.Body[5] + b.Legs[5] + b.Gloves[5] + b.Head[6] + b.Body[6] + b.Legs[6] + b.Gloves[6] + b.Head[7] + b.Body[7] + b.Legs[7] + b.Gloves[7];
 			return totalResistanceB - totalResistanceA; // Sort by total resistance in descending order
 		});
-		if(equippedArchetypes.archetype1 === "Engineer" || equippedArchetypes.archetype2 === "Engineer") {
-			engineerModifier = 1.5;
-		} else {
-			engineerModifier = 1;
-		}
+		engineerModifier = (equippedArchetypes.archetype1 === "Engineer" || equippedArchetypes.archetype2 === "Engineer") ? 1.5 : 1;
 		const selectedAmuletValue = amuletDropdown.value;
 		const twistedidolarmorFactor = selectedAmuletValue === "twistedidol" ? 1.3 : 1;
 		const resultContainer = document.getElementById("resultContainer");
@@ -640,7 +636,8 @@
 				fire: 0,
 				shock: 0,
 				toxin: 0,
-				blight: 0
+				blight: 0,
+				damage_reductionCheck: 0
 			};
 			let selectedArmors = [];
 			best_combinations.forEach((combination, index) => {
@@ -650,12 +647,15 @@
 				const totalShock = (armorSet.Head[5] + armorSet.Body[5] + armorSet.Legs[5] + armorSet.Gloves[5]);
 				const totalBlight = (armorSet.Head[6] + armorSet.Body[6] + armorSet.Legs[6] + armorSet.Gloves[6]);
 				const totalToxin = (armorSet.Head[7] + armorSet.Body[7] + armorSet.Legs[7] + armorSet.Gloves[7]);
+				const totaldamage_reductionCheck = (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]);
 				let isBetter = true; // Flag to determine if the armor set is better than any previous sets
 				// Compare resistances with all previously selected armor sets
 				for(const selectedArmor of selectedArmors) {
-					if(totalBleed <= selectedArmor.bleed && totalFire <= selectedArmor.fire && totalShock <= selectedArmor.shock && totalToxin <= selectedArmor.toxin && totalBlight <= selectedArmor.blight) {
+					if(totalBleed === selectedArmor.bleed && totalFire === selectedArmor.fire && totalShock === selectedArmor.shock && totalToxin === selectedArmor.toxin && totalBlight === selectedArmor.blight && totaldamage_reductionCheck >= selectedArmor.damage_reductionCheck) {
+						isBetter = true;
+					} else if(totalBleed <= selectedArmor.bleed && totalFire <= selectedArmor.fire && totalShock <= selectedArmor.shock && totalToxin <= selectedArmor.toxin && totalBlight <= selectedArmor.blight) {
 						isBetter = false;
-						break; // No need to continue checking if not better
+						break
 					}
 				}
 				if(isBetter) {
@@ -703,7 +703,8 @@
 						fire: totalFire,
 						shock: totalShock,
 						toxin: totalToxin,
-						blight: totalBlight
+						blight: totalBlight,
+						damage_reductionCheck: totaldamage_reductionCheck
 					});
 				}
 			});
