@@ -1,7 +1,4 @@
 {
-  "Template": [
-	["Name", Armor, Total Status, Bleed, Fire, Shock, Blight, Toxin, Weight]
-  ],
   "Head": [
     ["Academic", 11, 6, 1, 0, 0, 2, 3, 7],
     ["Bruiser", 15, 4, 1, 2, 0, 0, 1, 9],
