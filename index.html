@@ -296,6 +296,118 @@
 	.text-with-border {
 		text-shadow: -5px -0px 0 #000, 5px -0px 0 #000, 0px 5px 0 #000, 5px -5px 0 #000;
 	}
+
+	.resistance-tooltip {
+		position: relative;
+		display: inline-block;
+	}
+
+	.resistance-tooltip::before {
+		content: attr(data-tooltip);
+		display: inline-block;
+		max-width: 1000px;
+		white-space: nowrap;
+		/* Prevent line breaks */
+		overflow: hidden;
+		/* Hide any overflow */
+		text-overflow: ellipsis;
+		/* Truncate with ellipsis if content overflows */
+		position: absolute;
+		bottom: 100%;
+		left: 50%;
+		transform: translateX(-50%);
+		background-color: rgba(0, 0, 0, 0.8);
+		color: white;
+		padding: 5px 10px;
+		border-radius: 5px;
+		font-size: 12px;
+		opacity: 0;
+		visibility: hidden;
+		transition: opacity 0.2s, visibility 0.2s;
+		pointer-events: none;
+		/* Make the tooltip image ignore pointer events */
+	}
+
+	.resistance-tooltip:hover::before {
+		opacity: 1;
+		visibility: visible;
+	}
+
+	.resistance-tooltip-right {
+		position: relative;
+		/* Ensure that tooltips are positioned relative to this element */
+		display: inline-block;
+	}
+
+	.resistance-tooltip-right::before {
+		content: attr(data-tooltip);
+		display: inline-block;
+		max-width: 1000px;
+		white-space: nowrap;
+		/* Prevent line breaks */
+		overflow: hidden;
+		/* Hide any overflow */
+		text-overflow: ellipsis;
+		/* Truncate with ellipsis if content overflows */
+		position: absolute;
+		bottom: -50%;
+		left: 50%;
+		transform: translateX(-50%);
+		background-color: rgba(0, 0, 0, 0.8);
+		color: white;
+		padding: 5px 10px;
+		border-radius: 5px;
+		font-size: 12px;
+		opacity: 0;
+		visibility: hidden;
+		transition: opacity 0.2s, visibility 0.2s;
+		pointer-events: none;
+		/* Make the tooltip image ignore pointer events */
+	}
+
+	.resistance-tooltip-right:hover::before {
+		opacity: 1;
+		visibility: visible;
+		text-align: right;
+	}
+
+	.armor-img-tooltip {
+		position: relative;
+		/* Ensure that tooltips are positioned relative to this element */
+		display: inline-block;
+	}
+
+	.armor-img-tooltip::before {
+		content: '';
+		display: inline-block;
+		width: 150px;
+		/* Adjust the width of the tooltip as needed */
+		height: 150px;
+		/* Adjust the height of the tooltip as needed */
+		background: var(--tooltip-bg-image), radial-gradient(circle at center, rgba(192, 255, 240, 0.2) 10%, transparent 65%);
+		/* Combine gradient and background image */
+		background-size: cover;
+		/* Scale the background image to cover the tooltip */
+		position: absolute;
+		bottom: -300%;
+		left: 100%;
+		transform: translateX(0%);
+		opacity: 0;
+		visibility: hidden;
+		transition: opacity 0.2s, visibility 0s;
+		pointer-events: none;
+		/* Make the tooltip image ignore pointer events */
+		border-radius: 50%;
+		/* Make the tooltip image circular */
+		z-index: 1;
+		/* Place the tooltip background behind the image */
+	}
+
+	.armor-img-tooltip:hover::before {
+		opacity: 1;
+		visibility: visible;
+		text-align: right;
+	}
 	</style>
 </head>
 
@@ -346,13 +458,16 @@
 			</div>
 			<div class="unequip-button-container">
 				<div></div>
-				<button class="unequip-button" onclick="unequipAll()">Unequip all</button>
+				<button class="unequip-button" onclick="unequipAll(); calculateAndUpdate();">Unequip all</button>
 			</div>
 		</div>
 	</div>
 	<br>
 	<div id="resultContainerWrapper">
-		<label for="toleranceInput"><span style="color: #ebefe7;">Tolerance</span></label>
+		<label for="toleranceInput"> <span style="color: #ebefe7;">
+            <span class="resistance-tooltip" data-tooltip="Displays more armor sets, potentially with better Status Resistances but lower Total DR">
+            </span> </span>
+		</label>
 		<input type="range" id="toleranceInput" value="0" min="0" max="10" step="1">
 		<h2 id="totalDamageReduction"></h2>
 		<div id="resultContainer"></div>
@@ -368,7 +483,7 @@
 		}
 	}
 	const toleranceInput = document.getElementById("toleranceInput");
-	const toleranceLabel = document.querySelector("#resultContainerWrapper label span");
+	const toleranceLabel = document.querySelector("#resultContainerWrapper label span span");
 	toleranceInput.addEventListener("input", function() {
 		const enteredValue = parseInt(toleranceInput.value);
 		toleranceLabel.textContent = `Tolerance: ${enteredValue}`;
@@ -445,7 +560,6 @@
 				equippedRings[select.id] = undefined;
 			}
 		});
-		calculateAndUpdate();
 	}
 	window.onload = function() {
 		for(const select of ringSelects) {
@@ -569,38 +683,38 @@
 					const armorCard = document.createElement("div");
 					armorCard.classList.add("armor-card");
 					armorCard.innerHTML = `
-						<span style="color: #ffff7f ;">Armor: ${Number.isInteger(((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * twistedidolarmorFactor) + ((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * engineerModifier) - (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])) ?
+						<span class="resistance-tooltip" data-tooltip="Total Damage Reduction"><span style="color: #ffff7f ;">Armor: ${Number.isInteger(((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * twistedidolarmorFactor) + ((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * engineerModifier) - (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])) ?
 						(((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * twistedidolarmorFactor) + ((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * engineerModifier) - (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])):
-						(((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * twistedidolarmorFactor) + ((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * engineerModifier) - (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])).toFixed(1)}</span>
+						(((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * twistedidolarmorFactor) + ((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * engineerModifier) - (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])).toFixed(1)}</span></span>
 									<div class="content-wrapper">
 										<div class="gear-container">
 											<p><span style="color: #d6e0d0 ;">Head:
 											</span>
-											<span class="itemName headColor">${armorSet.Head[0]}
+											<span class="itemName headColor"><span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Head/${armorSet.Head[0].replace(/\s+/g, '_')}.png')">${armorSet.Head[0]}</span></span>
 											</p>
 											<p><span style="color: #d6e0d0 ;">Body:
 											</span>
-											<span class="itemName bodyColor">${armorSet.Body[0]}
+											<span class="itemName bodyColor"><span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Body/${armorSet.Body[0].replace(/\s+/g, '_')}.png')">${armorSet.Body[0]}</span></span>
 											</p>
 											<p><span style="color: #d6e0d0 ;">Legs:&nbsp;
 											</span>
-											<span class="itemName legsColor">${armorSet.Legs[0]}
+											<span class="itemName legsColor"><span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Legs/${armorSet.Legs[0].replace(/\s+/g, '_')}.png')">${armorSet.Legs[0]}</span></span>
 											</p>
 											<p><span style="color: #d6e0d0 ;">Arms:
 											</span>
-											<span class="itemName glovesColor">${armorSet.Gloves[0]}
+											<span class="itemName glovesColor"><span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Gloves/${armorSet.Gloves[0].replace(/\s+/g, '_')}.png')">${armorSet.Gloves[0]}</span></span>
 											</p>
 										</div>
 									</div>
 									<div class="status-global-wrapper">
 										<div class="status-wrapper">
-											<span class="redColor">${totalBleed}</span>&nbsp
-											<span class="orangeColor">${totalFire}</span>&nbsp
-											<span class="purpleColor">${totalShock}</span>&nbsp
-											<span class="greenColor">${totalToxin}</span>&nbsp
-											<span class="greyColor">${totalBlight}</span>
+											<span class="resistance-tooltip" data-tooltip="Bleed"><span class="redColor">${totalBleed}</span>&nbsp </span>
+											<span class="resistance-tooltip" data-tooltip="Fire"><span class="orangeColor">${totalFire}</span>&nbsp </span>
+											<span class="resistance-tooltip" data-tooltip="Shock"><span class="purpleColor">${totalShock}</span>&nbsp </span>
+											<span class="resistance-tooltip" data-tooltip="Acid"><span class="greenColor">${totalToxin}</span>&nbsp </span>
+											<span class="resistance-tooltip" data-tooltip="Blight"><span class="greyColor">${totalBlight}</span> </span>
 										</div>
-										<span style="color: #d6e0d0 ;">Total: ${armorSet.Head[2] + armorSet.Body[2] + armorSet.Legs[2] + armorSet.Gloves[2]}</span>
+										<span class="resistance-tooltip-right" data-tooltip="Sum of Status Resistances"><span style="color: #d6e0d0 ;">Total: ${armorSet.Head[2] + armorSet.Body[2] + armorSet.Legs[2] + armorSet.Gloves[2]}</span></span>
 									</div>
 								</p>`;
 					resultContainer.appendChild(armorCard);
@@ -631,8 +745,6 @@
 		} = find_best_combination(armorData, weightLimit, tolerance);
 		display_combinations(best_combinations);
 	}
-	// Initialize the result display when the page loads
-	calculateAndUpdate();
 	// Ensure to adjust the event listeners to trigger "calculateAndUpdate" function
 	document.getElementById("weightInput").addEventListener("change", calculateAndUpdate);
 	document.getElementById("amuletDropdown").addEventListener("change", calculateAndUpdate);
