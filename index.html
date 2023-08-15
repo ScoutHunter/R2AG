@@ -11,33 +11,47 @@
 		background: linear-gradient(to top, #133, #011);
 		color: #FFF;
 		font-size: 16px;
-		background-size: 100% 100%;
-		/* Adjust the background size */
-		margin-bottom: 318px;
-		width: 1315px;
-		margin-left: auto;
-		margin-right: auto;
-		background-repeat: no-repeat;
+		background-size: 100vh 100%;
+		margin-bottom: 85px;
+		/* Remove default body margin */
+		padding: 0;
+		/* Remove default body padding */
+		display: flex;
+		justify-content: center;
+		/* Horizontally center content */
+		overflow-x: hidden;
+		/* Hide horizontal scrollbar */
 	}
 
-.ImageTitle {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center; /* Add this line to horizontally center the content */
-    text-align: center; /* You can keep this if you want to center the text within the container */
-	margin-right: 7px; /* Add margin to the top of the headings to adjust their vertical position */
-	margin-bottom: -50px;
-}
+	.pagecontainer {
+		max-width: 1315px;
+		/* Set the fixed width of the content */
+		width: 90%;
+		/* Responsive width */
+		background-repeat: no-repeat;
+		box-sizing: border-box;
+		/* Include padding in the width */
+	}
 
+	.ImageTitle {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		/* Add this line to horizontally center the content */
+		text-align: center;
+		/* You can keep this if you want to center the text within the container */
+		margin-bottom: -70px;
+	}
 
 	h1,
 	h2,
 	h3 {
 		font-size: 26px;
 		text-align: center;
-		margin-top: 7px; /* Add margin to the top of the headings to adjust their vertical position */
-		margin-left: 7px;
+		margin-top: 7px;
+		/* Add margin to the top of the headings to adjust their vertical position */
+		margin-left: 15px;
 	}
 
 	label {
@@ -68,6 +82,7 @@
 	.archetype-dropdown-group {
 		display: flex;
 		align-items: center;
+		margin-right: -10px;
 	}
 
 	.archetype-dropdown-group .archetype-select {
@@ -105,6 +120,7 @@
 	.ring-dropdown-group {
 		display: flex;
 		align-items: center;
+		margin-right: -10px;
 	}
 
 	.ring-dropdown-group .ring-select {
@@ -188,7 +204,7 @@
 		font-size: 15px;
 		/* Adjust the font size as needed */
 		/* Adjust the width as needed */
-		background-color: #ebefe7
+		background-color: #adffff
 	}
 
 	.dropdown-container {
@@ -303,7 +319,6 @@
 		position: absolute;
 		top: 10px;
 		right: 10px;
-		solid #ccc;
 		border-radius: 5px;
 		font-size: 10px;
 		/* Ajustez la taille de la police ici */
@@ -428,280 +443,302 @@
 </head>
 
 <body>
-	<div class="version-note">ver 1.3</div>
-	<div class="ImageTitle">
-		<img src="https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Misc/Remnant2.png" width="175" height="auto">
-		<h1><span style="color: #FFFDD0	;">Armor Generator</span></h1>
-	</div>
-	<br>
-	<br>
-	<div class="content-container">
-		<!-- Align the elements using the new label-container class -->
-		<div class="label-container">
-			<label for="weightInput">Max Stamina Penalty</label>
-			<select id="weightInput">
-				<option value="25">Light (0%)</option>
-				<option value="50">Medium (25%)</option>
-				<option value="75">Heavy (50%)</option>
-				<option value="999">Flop (75%)</option>
-			</select>
-		</div>
-		<div class="label-container archetype-dropdown-container">
-			<label for="archetype-dropdown-group">Archetypes (lvl 10)</label>
-			<div class="archetype-dropdown-group">
-				<select id="archetype1" class="archetype-select" onchange="equipArchetype('archetype1')"></select>
-				<select id="archetype2" class="archetype-select" onchange="equipArchetype('archetype2')"></select>
+	<div class="pagecontainer">
+		<div class="version-note">ver 1.3</div>
+		<div class="ImageTitle"> <img src="https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Misc/Remnant2.png" width="175" height="auto">
+			<h1><span style="color: #FFFDD0	;">Armor Generator</span></h1> </div>
+		<br>
+		<br>
+		<div class="content-container">
+			<!-- Align the elements using the new label-container class -->
+			<div class="label-container">
+				<label for="weightInput">Max Stamina Penalty</label>
+				<select id="weightInput" onchange="updateBackgroundColor()">
+					<option value="25" data-color="#adffff">Light (0%)</option>
+					<option value="50" data-color="#adffad">Medium (25%)</option>
+					<option value="75" data-color="#ffffad">Heavy (50%)</option>
+					<option value="999" data-color="#ffbfad">Flop (75%)</option>
+				</select>
+			</div>
+			<div class="label-container archetype-dropdown-container">
+				<label for="archetype-dropdown-group">Archetypes (lvl 10)</label>
+				<div class="archetype-dropdown-group">
+					<select id="archetype1" class="archetype-select" onchange="equipArchetype('archetype1')"></select>
+					<select id="archetype2" class="archetype-select" onchange="equipArchetype('archetype2')"></select>
+				</div>
+			</div>
+			<div class="label-container amulet-container">
+				<label for="amuletDropdown">Amulet</label>
+				<select id="amuletDropdown">
+					<option value="undefined">undefined</option>
+					<option value="leto">Leto's Amulet</option>
+					<option value="twistedidol">Twisted Idol</option>
+				</select>
+			</div>
+			<div class="label-container ring-dropdown-container">
+				<label for="ring-dropdown-group">Rings</label>
+				<div class="ring-dropdown-group">
+					<select id="ring1" class="ring-select" onchange="equipRing('ring1')"></select>
+				</div>
+				<div class="ring-dropdown-group">
+					<select id="ring2" class="ring-select" onchange="equipRing('ring2')"></select>
+				</div>
+				<div class="ring-dropdown-group">
+					<select id="ring3" class="ring-select" onchange="equipRing('ring3')"></select>
+				</div>
+				<div class="ring-dropdown-group">
+					<select id="ring4" class="ring-select" onchange="equipRing('ring4')"></select>
+				</div>
+				<div class="unequip-button-container">
+					<div></div>
+					<button class="unequip-button" onclick="unequipAll(); calculateAndUpdate();">Unequip all</button>
+				</div>
 			</div>
 		</div>
-		<div class="label-container amulet-container">
-			<label for="amuletDropdown">Amulet</label>
-			<select id="amuletDropdown">
-				<option value="undefined">undefined</option>
-				<option value="leto">Leto's Amulet</option>
-				<option value="twistedidol">Twisted Idol</option>
-			</select>
-		</div>
-		<div class="label-container ring-dropdown-container">
-			<label for="ring-dropdown-group">Rings</label>
-			<div class="ring-dropdown-group">
-				<select id="ring1" class="ring-select" onchange="equipRing('ring1')"></select>
-			</div>
-			<div class="ring-dropdown-group">
-				<select id="ring2" class="ring-select" onchange="equipRing('ring2')"></select>
-			</div>
-			<div class="ring-dropdown-group">
-				<select id="ring3" class="ring-select" onchange="equipRing('ring3')"></select>
-			</div>
-			<div class="ring-dropdown-group">
-				<select id="ring4" class="ring-select" onchange="equipRing('ring4')"></select>
-			</div>
-			<div class="unequip-button-container">
-				<div></div>
-				<button class="unequip-button" onclick="unequipAll(); calculateAndUpdate();">Unequip all</button>
-			</div>
-		</div>
-	</div>
-	<br>
-	<div id="resultContainerWrapper">
-		<label for="toleranceInput"> <span style="color: #ebefe7;">
+		<br>
+		<div id="resultContainerWrapper">
+			<label for="toleranceInput"> <span style="color: #ebefe7;">
             <span class="resistance-tooltip" data-tooltip="Displays more armor sets, potentially with better Status Resistances but lower Total DR">
             </span> </span>
-		</label>
-		<input type="range" id="toleranceInput" value="0" min="0" max="10" step="1">
-		<h2 id="totalDamageReduction"></h2>
-		<div id="resultContainer"></div>
-	</div>
-	<script>
-	async function fetchArmorData() {
-		try {
-			const response = await fetch('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/armor_list.json');
-			const data = await response.json();
-			return data;
-		} catch(error) {
-			console.error('Error fetching armor data:', error);
-		}
-	}
-	const toleranceInput = document.getElementById("toleranceInput");
-	const toleranceLabel = document.querySelector("#resultContainerWrapper label span span");
-	toleranceInput.addEventListener("input", function() {
-		const enteredValue = parseInt(toleranceInput.value);
-		toleranceLabel.textContent = `Tolerance: ${enteredValue}`;
-	});
-	// Set the initial label text
-	toleranceLabel.textContent = `Tolerance: ${toleranceInput.value}`;
-	const archetypeSelects = document.querySelectorAll('.archetype-select');
-	const availableArchetypes = ['undefined', 'Challenger', 'Engineer'];
-	const equippedArchetypes = {};
-
-	function equipArchetype(selectedArchetype) {
-		const selectedValue = document.getElementById(selectedArchetype).value;
-		const prevEquippedArchetype = equippedArchetypes[selectedArchetype];
-		if(prevEquippedArchetype) enableArchetypeOption(prevEquippedArchetype);
-		if(selectedValue !== "undefined") {
-			if(equippedArchetypes[selectedArchetype]) enableArchetypeOption(equippedArchetypes[selectedArchetype]);
-			disableArchetypeOption(selectedValue);
-			equippedArchetypes[selectedArchetype] = selectedValue;
-		} else equippedArchetypes[selectedArchetype] = undefined;
-	}
-
-	function enableArchetypeOption(archetype) {
-		archetypeSelects.forEach((select) => {
-			const option = select.querySelector(`option[value="${archetype}"]`);
-			option.disabled = false;
-			option.style.display = 'block';
-		});
-	}
-
-	function disableArchetypeOption(archetype) {
-		archetypeSelects.forEach((select) => {
-			const option = select.querySelector(`option[value="${archetype}"]`);
-			option.disabled = true;
-			option.style.display = 'undefined';
-		});
-	}
-	const ringSelects = document.querySelectorAll('.ring-select');
-	const availableRings = ['undefined', 'Fae Protector Signet', 'Dran Memento'];
-	const equippedRings = {};
-
-	function equipRing(selectedRing) {
-		const selectedValue = document.getElementById(selectedRing).value;
-		const prevEquippedRing = equippedRings[selectedRing];
-		if(prevEquippedRing) enableRingOption(prevEquippedRing);
-		if(selectedValue !== "undefined") {
-			if(equippedRings[selectedRing]) enableRingOption(equippedRings[selectedRing]);
-			disableRingOption(selectedValue);
-			equippedRings[selectedRing] = selectedValue;
-		} else equippedRings[selectedRing] = undefined;
-	}
-
-	function enableRingOption(ring) {
-		ringSelects.forEach((select) => {
-			const option = select.querySelector(`option[value="${ring}"]`);
-			option.disabled = false;
-			option.style.display = 'block';
-		});
-	}
-
-	function disableRingOption(ring) {
-		ringSelects.forEach((select) => {
-			const option = select.querySelector(`option[value="${ring}"]`);
-			option.disabled = true;
-			option.style.display = 'undefined';
-		});
-	}
-
-	function unequipAll() {
-		ringSelects.forEach((select) => {
-			const selectedValue = select.value;
-			if(selectedValue !== "undefined") {
-				enableRingOption(selectedValue);
-				select.value = "undefined";
-				equippedRings[select.id] = undefined;
+			</label>
+			<input type="range" id="toleranceInput" value="0" min="0" max="10" step="1">
+			<h2 id="totalDamageReduction"></h2>
+			<div id="resultContainer"></div>
+		</div>
+		<script>
+		function updateBackgroundColor() {
+			var selectElement = document.getElementById("weightInput");
+			var selectedOption = selectElement.options[selectElement.selectedIndex];
+			var backgroundColor;
+			switch(selectedOption.value) {
+				case "25":
+					backgroundColor = "#adffff";
+					break;
+				case "50":
+					backgroundColor = "#adffad";
+					break;
+				case "75":
+					backgroundColor = "#ffffad";
+					break;
+				case "999":
+					backgroundColor = "#ffbfad";
+					break;
+				default:
+					backgroundColor = "#adffff";
+					break;
 			}
+			selectElement.style.backgroundColor = backgroundColor;
+		}
+		async function fetchArmorData() {
+			try {
+				const response = await fetch('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/armor_list.json');
+				const data = await response.json();
+				return data;
+			} catch(error) {
+				console.error('Error fetching armor data:', error);
+			}
+		}
+		const toleranceInput = document.getElementById("toleranceInput");
+		const toleranceLabel = document.querySelector("#resultContainerWrapper label span span");
+		toleranceInput.addEventListener("input", function() {
+			const enteredValue = parseInt(toleranceInput.value);
+			toleranceLabel.textContent = `Tolerance: ${enteredValue}`;
 		});
-	}
-	window.onload = function() {
-		for(const select of ringSelects) {
-			availableRings.forEach((ring) => {
-				const option = new Option(ring, ring);
-				select.add(option);
-			});
-		}
-		for(const select of archetypeSelects) {
-			availableArchetypes.forEach((archetype) => {
-				const option = new Option(archetype, archetype);
-				select.add(option);
-			});
-		}
-	};
+		// Set the initial label text
+		toleranceLabel.textContent = `Tolerance: ${toleranceInput.value}`;
+		const archetypeSelects = document.querySelectorAll('.archetype-select');
+		const availableArchetypes = ['undefined', 'Challenger', 'Engineer'];
+		const equippedArchetypes = {};
 
-	function find_best_combination(armor_list, weight_limit, tolerance) {
-		let best_combinations = [];
-		let max_damage_reduction = 0;
-		// Ensure that tolerance is within the valid range of 0 to 10
-		tolerance = Math.max(0, Math.min(10, tolerance));
-		for(const head of armor_list['Head']) {
-			for(const body of armor_list['Body']) {
-				for(const legs of armor_list['Legs']) {
-					for(const gloves of armor_list['Gloves']) {
-						const amuletDropdown = document.getElementById("amuletDropdown");
-						const selectedAmuletValue = amuletDropdown.value;
-						const letoAmuletFactor = selectedAmuletValue === "leto" ? 0.6 : 1;
-						const twistedidolFactor = selectedAmuletValue === "twistedidol" ? 15 : 0;
-						if(equippedArchetypes.archetype1 === "Challenger" || equippedArchetypes.archetype2 === "Challenger") {
-							challengerModifier = 10;
-						} else {
-							challengerModifier = 0;
-						}
-						if(equippedRings.ring1 === "Fae Protector Signet" || equippedRings.ring2 === "Fae Protector Signet" || equippedRings.ring3 === "Fae Protector Signet" || equippedRings.ring4 === "Fae Protector Signet") {
-							faeprotectorsignetFactor = 5;
-						} else {
-							faeprotectorsignetFactor = 0;
-						}
-						if(equippedRings.ring1 === "Dran Memento" || equippedRings.ring2 === "Dran Memento" || equippedRings.ring3 === "Dran Memento" || equippedRings.ring4 === "Dran Memento") {
-							dranmementoFactor = 5;
-						} else {
-							dranmementoFactor = 0;
-						}
-						const total_weight = ((head[8] + body[8] + legs[8] + gloves[8]) - challengerModifier - twistedidolFactor - faeprotectorsignetFactor - dranmementoFactor) * letoAmuletFactor;
-						if(total_weight <= weight_limit) {
-							const total_damage_reduction = head[1] + body[1] + legs[1] + gloves[1];
-							if(total_damage_reduction >= max_damage_reduction - tolerance) {
-								if(total_damage_reduction > max_damage_reduction) {
-									max_damage_reduction = total_damage_reduction;
-									best_combinations = [];
+		function equipArchetype(selectedArchetype) {
+			const selectedValue = document.getElementById(selectedArchetype).value;
+			const prevEquippedArchetype = equippedArchetypes[selectedArchetype];
+			if(prevEquippedArchetype) enableArchetypeOption(prevEquippedArchetype);
+			if(selectedValue !== "undefined") {
+				if(equippedArchetypes[selectedArchetype]) enableArchetypeOption(equippedArchetypes[selectedArchetype]);
+				disableArchetypeOption(selectedValue);
+				equippedArchetypes[selectedArchetype] = selectedValue;
+			} else equippedArchetypes[selectedArchetype] = undefined;
+		}
+
+		function enableArchetypeOption(archetype) {
+			archetypeSelects.forEach((select) => {
+				const option = select.querySelector(`option[value="${archetype}"]`);
+				option.disabled = false;
+				option.style.display = 'block';
+			});
+		}
+
+		function disableArchetypeOption(archetype) {
+			archetypeSelects.forEach((select) => {
+				const option = select.querySelector(`option[value="${archetype}"]`);
+				option.disabled = true;
+				option.style.display = 'undefined';
+			});
+		}
+		const ringSelects = document.querySelectorAll('.ring-select');
+		const availableRings = ['undefined', 'Fae Protector Signet', 'Dran Memento'];
+		const equippedRings = {};
+
+		function equipRing(selectedRing) {
+			const selectedValue = document.getElementById(selectedRing).value;
+			const prevEquippedRing = equippedRings[selectedRing];
+			if(prevEquippedRing) enableRingOption(prevEquippedRing);
+			if(selectedValue !== "undefined") {
+				if(equippedRings[selectedRing]) enableRingOption(equippedRings[selectedRing]);
+				disableRingOption(selectedValue);
+				equippedRings[selectedRing] = selectedValue;
+			} else equippedRings[selectedRing] = undefined;
+		}
+
+		function enableRingOption(ring) {
+			ringSelects.forEach((select) => {
+				const option = select.querySelector(`option[value="${ring}"]`);
+				option.disabled = false;
+				option.style.display = 'block';
+			});
+		}
+
+		function disableRingOption(ring) {
+			ringSelects.forEach((select) => {
+				const option = select.querySelector(`option[value="${ring}"]`);
+				option.disabled = true;
+				option.style.display = 'undefined';
+			});
+		}
+
+		function unequipAll() {
+			ringSelects.forEach((select) => {
+				const selectedValue = select.value;
+				if(selectedValue !== "undefined") {
+					enableRingOption(selectedValue);
+					select.value = "undefined";
+					equippedRings[select.id] = undefined;
+				}
+			});
+		}
+		window.onload = function() {
+			for(const select of ringSelects) {
+				availableRings.forEach((ring) => {
+					const option = new Option(ring, ring);
+					select.add(option);
+				});
+			}
+			for(const select of archetypeSelects) {
+				availableArchetypes.forEach((archetype) => {
+					const option = new Option(archetype, archetype);
+					select.add(option);
+				});
+			}
+		};
+
+		function find_best_combination(armor_list, weight_limit, tolerance) {
+			let best_combinations = [];
+			let max_damage_reduction = 0;
+			// Ensure that tolerance is within the valid range of 0 to 10
+			tolerance = Math.max(0, Math.min(10, tolerance));
+			for(const head of armor_list['Head']) {
+				for(const body of armor_list['Body']) {
+					for(const legs of armor_list['Legs']) {
+						for(const gloves of armor_list['Gloves']) {
+							const amuletDropdown = document.getElementById("amuletDropdown");
+							const selectedAmuletValue = amuletDropdown.value;
+							const letoAmuletFactor = selectedAmuletValue === "leto" ? 0.6 : 1;
+							const twistedidolFactor = selectedAmuletValue === "twistedidol" ? 15 : 0;
+							if(equippedArchetypes.archetype1 === "Challenger" || equippedArchetypes.archetype2 === "Challenger") {
+								challengerModifier = 10;
+							} else {
+								challengerModifier = 0;
+							}
+							if(equippedRings.ring1 === "Fae Protector Signet" || equippedRings.ring2 === "Fae Protector Signet" || equippedRings.ring3 === "Fae Protector Signet" || equippedRings.ring4 === "Fae Protector Signet") {
+								faeprotectorsignetFactor = 5;
+							} else {
+								faeprotectorsignetFactor = 0;
+							}
+							if(equippedRings.ring1 === "Dran Memento" || equippedRings.ring2 === "Dran Memento" || equippedRings.ring3 === "Dran Memento" || equippedRings.ring4 === "Dran Memento") {
+								dranmementoFactor = 5;
+							} else {
+								dranmementoFactor = 0;
+							}
+							const total_weight = ((head[8] + body[8] + legs[8] + gloves[8]) - challengerModifier - twistedidolFactor - faeprotectorsignetFactor - dranmementoFactor) * letoAmuletFactor;
+							if(total_weight <= weight_limit) {
+								const total_damage_reduction = head[1] + body[1] + legs[1] + gloves[1];
+								if(total_damage_reduction >= max_damage_reduction - tolerance) {
+									if(total_damage_reduction > max_damage_reduction) {
+										max_damage_reduction = total_damage_reduction;
+										best_combinations = [];
+									}
+									best_combinations.push({
+										'Head': head,
+										'Body': body,
+										'Legs': legs,
+										'Gloves': gloves
+									});
 								}
-								best_combinations.push({
-									'Head': head,
-									'Body': body,
-									'Legs': legs,
-									'Gloves': gloves
-								});
 							}
 						}
 					}
 				}
 			}
-		}
-		return {
-			best_combinations,
-			max_damage_reduction
-		};
-	}
-
-	function display_combinations(best_combinations) {
-		// Sort the best_combinations array based on total damage reduction and then total resistance
-		best_combinations.sort((a, b) => {
-			const totalDamageA = a.Head[1] + a.Body[1] + a.Legs[1] + a.Gloves[1];
-			const totalDamageB = b.Head[1] + b.Body[1] + b.Legs[1] + b.Gloves[1];
-			if(totalDamageA !== totalDamageB) {
-				return totalDamageB - totalDamageA; // Sort by total damage reduction in descending order
-			}
-			// If total damage reduction is the same, sort by total resistance in descending order
-			const totalResistanceA = a.Head[3] + a.Body[3] + a.Legs[3] + a.Gloves[3] + a.Head[4] + a.Body[4] + a.Legs[4] + a.Gloves[4] + a.Head[5] + a.Body[5] + a.Legs[5] + a.Gloves[5] + a.Head[6] + a.Body[6] + a.Legs[6] + a.Gloves[6] + a.Head[7] + a.Body[7] + a.Legs[7] + a.Gloves[7];
-			const totalResistanceB = b.Head[3] + b.Body[3] + b.Legs[3] + b.Gloves[3] + b.Head[4] + b.Body[4] + b.Legs[4] + b.Gloves[4] + b.Head[5] + b.Body[5] + b.Legs[5] + b.Gloves[5] + b.Head[6] + b.Body[6] + b.Legs[6] + b.Gloves[6] + b.Head[7] + b.Body[7] + b.Legs[7] + b.Gloves[7];
-			return totalResistanceB - totalResistanceA; // Sort by total resistance in descending order
-		});
-		engineerModifier = (equippedArchetypes.archetype1 === "Engineer" || equippedArchetypes.archetype2 === "Engineer") ? 1.5 : 1;
-		const selectedAmuletValue = amuletDropdown.value;
-		const twistedidolarmorFactor = selectedAmuletValue === "twistedidol" ? 1.3 : 1;
-		const resultContainer = document.getElementById("resultContainer");
-		resultContainer.innerHTML = "";
-		if(best_combinations.length > 0) {
-			const maxDamageReduction = best_combinations[0].Head[1] + best_combinations[0].Body[1] + best_combinations[0].Legs[1] + best_combinations[0].Gloves[1];
-			const header = document.getElementById("totalDamageReduction");
-			// Store the highest resistances of the previous set
-			let highestResistances = {
-				bleed: 0,
-				fire: 0,
-				shock: 0,
-				toxin: 0,
-				blight: 0,
-				damage_reductionCheck: 0
+			return {
+				best_combinations,
+				max_damage_reduction
 			};
-			let selectedArmors = [];
-			best_combinations.forEach((combination, index) => {
-				const armorSet = combination;
-				const totalBleed = (armorSet.Head[3] + armorSet.Body[3] + armorSet.Legs[3] + armorSet.Gloves[3]);
-				const totalFire = (armorSet.Head[4] + armorSet.Body[4] + armorSet.Legs[4] + armorSet.Gloves[4]);
-				const totalShock = (armorSet.Head[5] + armorSet.Body[5] + armorSet.Legs[5] + armorSet.Gloves[5]);
-				const totalBlight = (armorSet.Head[6] + armorSet.Body[6] + armorSet.Legs[6] + armorSet.Gloves[6]);
-				const totalToxin = (armorSet.Head[7] + armorSet.Body[7] + armorSet.Legs[7] + armorSet.Gloves[7]);
-				const totaldamage_reductionCheck = (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]);
-				let isBetter = true; // Flag to determine if the armor set is better than any previous sets
-				// Compare resistances with all previously selected armor sets
-				for(const selectedArmor of selectedArmors) {
-					if(totalBleed === selectedArmor.bleed && totalFire === selectedArmor.fire && totalShock === selectedArmor.shock && totalToxin === selectedArmor.toxin && totalBlight === selectedArmor.blight && totaldamage_reductionCheck >= selectedArmor.damage_reductionCheck) {
-						isBetter = true;
-					} else if(totalBleed <= selectedArmor.bleed && totalFire <= selectedArmor.fire && totalShock <= selectedArmor.shock && totalToxin <= selectedArmor.toxin && totalBlight <= selectedArmor.blight) {
-						isBetter = false;
-						break
-					}
+		}
+
+		function display_combinations(best_combinations) {
+			// Sort the best_combinations array based on total damage reduction and then total resistance
+			best_combinations.sort((a, b) => {
+				const totalDamageA = a.Head[1] + a.Body[1] + a.Legs[1] + a.Gloves[1];
+				const totalDamageB = b.Head[1] + b.Body[1] + b.Legs[1] + b.Gloves[1];
+				if(totalDamageA !== totalDamageB) {
+					return totalDamageB - totalDamageA; // Sort by total damage reduction in descending order
 				}
-				if(isBetter) {
-					const armorCard = document.createElement("div");
-					armorCard.classList.add("armor-card");
-					armorCard.innerHTML = `
+				// If total damage reduction is the same, sort by total resistance in descending order
+				const totalResistanceA = a.Head[3] + a.Body[3] + a.Legs[3] + a.Gloves[3] + a.Head[4] + a.Body[4] + a.Legs[4] + a.Gloves[4] + a.Head[5] + a.Body[5] + a.Legs[5] + a.Gloves[5] + a.Head[6] + a.Body[6] + a.Legs[6] + a.Gloves[6] + a.Head[7] + a.Body[7] + a.Legs[7] + a.Gloves[7];
+				const totalResistanceB = b.Head[3] + b.Body[3] + b.Legs[3] + b.Gloves[3] + b.Head[4] + b.Body[4] + b.Legs[4] + b.Gloves[4] + b.Head[5] + b.Body[5] + b.Legs[5] + b.Gloves[5] + b.Head[6] + b.Body[6] + b.Legs[6] + b.Gloves[6] + b.Head[7] + b.Body[7] + b.Legs[7] + b.Gloves[7];
+				return totalResistanceB - totalResistanceA; // Sort by total resistance in descending order
+			});
+			engineerModifier = (equippedArchetypes.archetype1 === "Engineer" || equippedArchetypes.archetype2 === "Engineer") ? 1.5 : 1;
+			const selectedAmuletValue = amuletDropdown.value;
+			const twistedidolarmorFactor = selectedAmuletValue === "twistedidol" ? 1.3 : 1;
+			const resultContainer = document.getElementById("resultContainer");
+			resultContainer.innerHTML = "";
+			if(best_combinations.length > 0) {
+				const maxDamageReduction = best_combinations[0].Head[1] + best_combinations[0].Body[1] + best_combinations[0].Legs[1] + best_combinations[0].Gloves[1];
+				const header = document.getElementById("totalDamageReduction");
+				// Store the highest resistances of the previous set
+				let highestResistances = {
+					bleed: 0,
+					fire: 0,
+					shock: 0,
+					toxin: 0,
+					blight: 0,
+					damage_reductionCheck: 0
+				};
+				let selectedArmors = [];
+				best_combinations.forEach((combination, index) => {
+					const armorSet = combination;
+					const totalBleed = (armorSet.Head[3] + armorSet.Body[3] + armorSet.Legs[3] + armorSet.Gloves[3]);
+					const totalFire = (armorSet.Head[4] + armorSet.Body[4] + armorSet.Legs[4] + armorSet.Gloves[4]);
+					const totalShock = (armorSet.Head[5] + armorSet.Body[5] + armorSet.Legs[5] + armorSet.Gloves[5]);
+					const totalBlight = (armorSet.Head[6] + armorSet.Body[6] + armorSet.Legs[6] + armorSet.Gloves[6]);
+					const totalToxin = (armorSet.Head[7] + armorSet.Body[7] + armorSet.Legs[7] + armorSet.Gloves[7]);
+					const totaldamage_reductionCheck = (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]);
+					let isBetter = true; // Flag to determine if the armor set is better than any previous sets
+					// Compare resistances with all previously selected armor sets
+					for(const selectedArmor of selectedArmors) {
+						if(totalBleed === selectedArmor.bleed && totalFire === selectedArmor.fire && totalShock === selectedArmor.shock && totalToxin === selectedArmor.toxin && totalBlight === selectedArmor.blight && totaldamage_reductionCheck >= selectedArmor.damage_reductionCheck) {
+							isBetter = true;
+						} else if(totalBleed <= selectedArmor.bleed && totalFire <= selectedArmor.fire && totalShock <= selectedArmor.shock && totalToxin <= selectedArmor.toxin && totalBlight <= selectedArmor.blight) {
+							isBetter = false;
+							break
+						}
+					}
+					if(isBetter) {
+						const armorCard = document.createElement("div");
+						armorCard.classList.add("armor-card");
+						armorCard.innerHTML = `
 						<span class="resistance-tooltip" data-tooltip="Total Damage Reduction"><span style="color: #ffff7f ;">Armor: ${Number.isInteger(((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * twistedidolarmorFactor) + ((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * engineerModifier) - (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])) ?
 						(((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * twistedidolarmorFactor) + ((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * engineerModifier) - (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])):
 						(((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * twistedidolarmorFactor) + ((armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * engineerModifier) - (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])).toFixed(1)}</span></span>
@@ -736,47 +773,48 @@
 										<span class="resistance-tooltip-right" data-tooltip="Sum of Status Resistances"><span style="color: #d6e0d0 ;">Total: ${armorSet.Head[2] + armorSet.Body[2] + armorSet.Legs[2] + armorSet.Gloves[2]}</span></span>
 									</div>
 								</p>`;
-					resultContainer.appendChild(armorCard);
-					// Update the selectedArmors array with the new armor set's resistances
-					selectedArmors.push({
-						bleed: totalBleed,
-						fire: totalFire,
-						shock: totalShock,
-						toxin: totalToxin,
-						blight: totalBlight,
-						damage_reductionCheck: totaldamage_reductionCheck
-					});
-				}
-			});
-		} else {
-			const noCombinationMessage = document.createElement("p");
-			noCombinationMessage.textContent = "No valid combinations found.";
-			resultContainer.appendChild(noCombinationMessage);
+						resultContainer.appendChild(armorCard);
+						// Update the selectedArmors array with the new armor set's resistances
+						selectedArmors.push({
+							bleed: totalBleed,
+							fire: totalFire,
+							shock: totalShock,
+							toxin: totalToxin,
+							blight: totalBlight,
+							damage_reductionCheck: totaldamage_reductionCheck
+						});
+					}
+				});
+			} else {
+				const noCombinationMessage = document.createElement("p");
+				noCombinationMessage.textContent = "No valid combinations found.";
+				resultContainer.appendChild(noCombinationMessage);
+			}
 		}
-	}
-	async function calculateAndUpdate() {
-		const armorData = await fetchArmorData();
-		const weightLimit = parseInt(document.getElementById("weightInput").value);
-		let tolerance = parseInt(document.getElementById("toleranceInput").value);
-		tolerance = Math.max(0, tolerance); // Ensure tolerance is not negative
-		const {
-			best_combinations
-		} = find_best_combination(armorData, weightLimit, tolerance);
-		display_combinations(best_combinations);
-	}
-	// Ensure to adjust the event listeners to trigger "calculateAndUpdate" function
-	document.getElementById("weightInput").addEventListener("change", calculateAndUpdate);
-	document.getElementById("amuletDropdown").addEventListener("change", calculateAndUpdate);
-	document.getElementById("toleranceInput").addEventListener("input", calculateAndUpdate);
-	document.getElementById("ring1").addEventListener("change", calculateAndUpdate);
-	document.getElementById("ring2").addEventListener("change", calculateAndUpdate);
-	document.getElementById("ring3").addEventListener("change", calculateAndUpdate);
-	document.getElementById("ring4").addEventListener("change", calculateAndUpdate);
-	document.getElementById("archetype1").addEventListener("change", calculateAndUpdate);
-	document.getElementById("archetype2").addEventListener("change", calculateAndUpdate);
-	// Your existing JavaScript code for initialization and calculations
-	calculateAndUpdate(); // Initialize the result display when the page loads
-	</script>
+		async function calculateAndUpdate() {
+			const armorData = await fetchArmorData();
+			const weightLimit = parseInt(document.getElementById("weightInput").value);
+			let tolerance = parseInt(document.getElementById("toleranceInput").value);
+			tolerance = Math.max(0, tolerance); // Ensure tolerance is not negative
+			const {
+				best_combinations
+			} = find_best_combination(armorData, weightLimit, tolerance);
+			display_combinations(best_combinations);
+		}
+		// Ensure to adjust the event listeners to trigger "calculateAndUpdate" function
+		document.getElementById("weightInput").addEventListener("change", calculateAndUpdate);
+		document.getElementById("amuletDropdown").addEventListener("change", calculateAndUpdate);
+		document.getElementById("toleranceInput").addEventListener("input", calculateAndUpdate);
+		document.getElementById("ring1").addEventListener("change", calculateAndUpdate);
+		document.getElementById("ring2").addEventListener("change", calculateAndUpdate);
+		document.getElementById("ring3").addEventListener("change", calculateAndUpdate);
+		document.getElementById("ring4").addEventListener("change", calculateAndUpdate);
+		document.getElementById("archetype1").addEventListener("change", calculateAndUpdate);
+		document.getElementById("archetype2").addEventListener("change", calculateAndUpdate);
+		// Your existing JavaScript code for initialization and calculations
+		calculateAndUpdate(); // Initialize the result display when the page loads
+		</script>
+	</div>
 </body>
 
 </html>
