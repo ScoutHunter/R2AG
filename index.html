@@ -504,7 +504,7 @@
 					<option value="25" data-color="#adffff">Light (0%)</option>
 					<option value="50" data-color="#adffad">Medium (25%)</option>
 					<option value="75" data-color="#ffffad">Heavy (50%)</option>
-					<option value="999" data-color="#ffbfad">Flop (75%)</option>
+					<option value="1000000" data-color="#ffbfad">Flop (75%)</option>
 				</select>
 			</div>
 			<div class="label-container archetype-dropdown-container">
@@ -568,7 +568,7 @@
 				case "75":
 					backgroundColor = "#ffffad";
 					break;
-				case "999":
+				case "1000000":
 					backgroundColor = "#ffbfad";
 					break;
 				default:
@@ -857,7 +857,7 @@
 				});
 			} else {
 				const noCombinationMessage = document.createElement("p");
-				noCombinationMessage.textContent = "No armor matches the current stamina penalty.";
+				noCombinationMessage.textContent = "No armor matching current stamina penalty";
 				noCombinationMessage.style.color = "red"; // Set the color using the style property
 				resultContainer.appendChild(noCombinationMessage);
 			}
