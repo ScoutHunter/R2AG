@@ -5,6 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>R2 Armor Generator</title>
 	<style>
+	html {zoom: 95%;}
 	body {
 		font-family: Trebuchet ms, sans-serif;
 		background-color: #011;
@@ -41,14 +42,15 @@
 		/* Add this line to horizontally center the content */
 		text-align: center;
 		/* You can keep this if you want to center the text within the container */
-		margin-bottom: -70px;
+		margin-bottom: -55px;
+		margin-top: -10px;
 		user-drag: none;
 		user-select: none;
 	}
 
 	h1 {
 		font-family: Fantasy;
-		font-size: 26px;
+		font-size: 24px;
 		text-align: center;
 		margin-top: 7px;
 		margin-left: 15px;
@@ -92,7 +94,6 @@
 
 	.archetype-dropdown-title {
 		text-align: center;
-		margin-bottom: -10px;
 	}
 
 	.archetype-dropdown-group {
@@ -166,27 +167,6 @@
 		margin-left: 0px;
 		border-radius: 5px;
 	}
-	/* Use Flexbox to position checkboxes next to each other */
-
-	.checkbox-container {
-		display: flex;
-		align-items: center;
-	}
-
-	.checkboxes-global-container {
-		display: flex;
-		justify-content: right;
-		margin-right: -90px;
-	}
-
-	.checkbox-container label {
-		margin-right: -90px;
-		/* Adjust the width as needed */
-		display: inline-block;
-		width: 150px;
-		/* Adjust the width as needed */
-	}
-	/* Add a new CSS class to align the labels */
 
 	.label-container.amulet-container {
 		display: flex;
@@ -209,7 +189,6 @@
 		border-radius: 10px;
 		align-items: center;
 	}
-	/* Adjust the margin for label elements */
 
 	.label-container label {
 		margin-right: 10px;
@@ -246,7 +225,6 @@
 		flex-direction: column;
 		align-items: center;
 	}
-	/* Container to hold both checkboxes and dropdown */
 
 	.content-container {
 		display: flex;
@@ -256,7 +234,6 @@
 		max-width: 1000px;
 		padding: 0 20px;
 		box-sizing: border-box;
-		/* Include padding and border in the total width */
 	}
 	/* Center the elements within the container */
 
@@ -264,11 +241,11 @@
 		text-align: center;
 		margin: 10px;
 		flex-grow: 1;
-		/* Allow elements to grow to fill available space */
+		margin-bottom: -5px;
 	}
 	/* Media query for handling wrapping */
 
-	@media screen and (max-width: 975px) {
+	@media screen and (max-width: 1000px) {
 		.content-container {
 			flex-wrap: wrap;
 		}
@@ -556,7 +533,7 @@
 		<br>
 		<div id="resultContainerWrapper">
 			<label for="toleranceInput"> <span style="color: #ebefe7;">
-            <span class="resistance-tooltip" data-tooltip="Displays more armor sets, potentially with better Status Resistances but lower Damage Reduction">
+            <span class="resistance-tooltip" data-tooltip="Displays more armor sets, potentially with better Resistances but lower Damage Reduction">
             </span> </span>
 			</label>
 			<input type="range" id="toleranceInput" value="0" min="0" max="10" step="1">
