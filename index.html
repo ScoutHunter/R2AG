@@ -42,18 +42,24 @@
 		text-align: center;
 		/* You can keep this if you want to center the text within the container */
 		margin-bottom: -70px;
+		user-drag: none;
+		user-select: none;
 	}
 
 	h1 {
+		font-family: Fantasy;
 		font-size: 26px;
 		text-align: center;
 		margin-top: 7px;
 		margin-left: 15px;
-		background: linear-gradient(135deg, #999999, #FFFDD0, #edecec, #999999);
+		background: linear-gradient(75deg, #888888, #FFFDD0, #edecec, #999999);
 		-webkit-background-clip: text;
 		background-clip: text;
 		color: transparent;
+		opacity: 0.9;
 		font-weight: 100;
+		user-drag: none;
+		user-select: none;
 	}
 
 	h2,
@@ -219,6 +225,8 @@
 		/* Adjust the font size as needed */
 		/* Adjust the width as needed */
 		background-color: #ebefe7
+		user-drag: none;
+		user-select: none;
 	}
 
 	#weightInput {
@@ -312,11 +320,15 @@
 	}
 
 	#resultContainerWrapper {
+	    user-drag: none;
+	    user-select: none;
 		text-align: center;
 		margin-top: 0px;
 	}
 
 	#resultContainer {
+	    user-drag: none;
+	    user-select: none;
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 		grid-gap: 75px;
@@ -490,7 +502,7 @@
 <body>
 	<div class="pagecontainer">
 		<div class="version-note">ver 1.3</div>
-		<div class="ImageTitle"> <img src="https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Misc/Remnant2.png" width="175" height="auto">
+		<div class="ImageTitle"> <img src="https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Misc/Remnant2.png" width="150" height="auto">
 			<h1>Armor Generator</h1> </div>
 		<br>
 		<br>
@@ -544,7 +556,7 @@
 		<br>
 		<div id="resultContainerWrapper">
 			<label for="toleranceInput"> <span style="color: #ebefe7;">
-            <span class="resistance-tooltip" data-tooltip="Displays more armor sets, potentially with better Status Resistances but lower Total DR">
+            <span class="resistance-tooltip" data-tooltip="Displays more armor sets, potentially with better Status Resistances but lower Damage Reduction">
             </span> </span>
 			</label>
 			<input type="range" id="toleranceInput" value="0" min="0" max="10" step="1">
