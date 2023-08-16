@@ -282,8 +282,6 @@
 
 	.gear-container p {
 		margin: 1;
-		/* Reset margin for the
-			<p> elements */
 	}
 
 	.gear-container p span.itemName {
@@ -811,40 +809,53 @@
 							  (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * engineerModifier -
 							  (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])
 							).toFixed(1)
-							}</span></span>
-								<div class="content-wrapper">
-									<div class="gear-container">
-										<p><span style="color: #d6e0d0;">Head:</span>
-											<span class="itemName headColor">
-												<span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Head/${armorSet.Head[0].replace(/\s+/g, '_')}.png')">
-													${armorSet.Head[0].trim() === "" ? ` < span style = "color: #99997a;" > unequip < /span>` : armorSet.Head[0]} < /span> < /span> < /p> < p > < span style = "color: #d6e0d0;" > Body: < /span> < span class = "itemName bodyColor" > < span class = "armor-img-tooltip"
-						style = "--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Body/${armorSet.Body[0].replace(/\s+/g, '_')}.png')" > $ {
-							armorSet.Body[0].trim() === "" ? `<span style="color: #99997a;">unequip</span>` : armorSet.Body[0]
-						} < /span> < /span> < /p> < p > < span style = "color: #d6e0d0;" > Legs: & nbsp; < /span> < span class = "itemName legsColor" > < span class = "armor-img-tooltip"
-						style = "--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Legs/${armorSet.Legs[0].replace(/\s+/g, '_')}.png')" > $ {
-							armorSet.Legs[0].trim() === "" ? `<span style="color: #99997a;">unequip</span>` : armorSet.Legs[0]
-						} < /span> < /span> < /p> < p > < span style = "color: #d6e0d0;" > Arms: < /span> < span class = "itemName glovesColor" > < span class = "armor-img-tooltip"
-						style = "--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Gloves/${armorSet.Gloves[0].replace(/\s+/g, '_')}.png')" > $ {
-							armorSet.Gloves[0].trim() === "" ? `<span style="color: #99997a;">unequip</span>` : armorSet.Gloves[0]
-						} < /span> < /span> < /p> < /div> < /div> < div class = "status-global-wrapper" > < div class = "status-wrapper" > < span class = "resistance-tooltip"
-						data - tooltip = "Bleed" > < span class = "redColor" > $ {
-							totalBleed
-						} < /span>&nbsp </span > < span class = "resistance-tooltip"
-						data - tooltip = "Fire" > < span class = "orangeColor" > $ {
-							totalFire
-						} < /span>&nbsp </span > < span class = "resistance-tooltip"
-						data - tooltip = "Shock" > < span class = "purpleColor" > $ {
-							totalShock
-						} < /span>&nbsp </span > < span class = "resistance-tooltip"
-						data - tooltip = "Acid" > < span class = "greenColor" > $ {
-							totalToxin
-						} < /span>&nbsp </span > < span class = "resistance-tooltip"
-						data - tooltip = "Blight" > < span class = "greyColor" > $ {
-							totalBlight
-						} < /span> </span > < /div> < span class = "resistance-tooltip-right"
-						data - tooltip = "Sum of Status Resistances" > < span style = "color: #d6e0d0 ;" > Total: $ {
-							armorSet.Head[2] + armorSet.Body[2] + armorSet.Legs[2] + armorSet.Gloves[2]
-						} < /span></span > < /div> < /p>`;
+							}
+						</span></span>
+
+						<div class="content-wrapper">
+							<div class="gear-container">
+								<p><span style="color: #d6e0d0;">Head:</span>
+									<span class="itemName headColor">
+										<span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Head/${armorSet.Head[0].replace(/\s+/g, '_')}.png')">
+											${armorSet.Head[0].trim() === "" ? `<span style="color: #99997a;">unequip</span>` : armorSet.Head[0]}
+										</span>
+									</span>
+								</p>
+								<p><span style="color: #d6e0d0;">Body:</span>
+									<span class="itemName bodyColor">
+										<span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Body/${armorSet.Body[0].replace(/\s+/g, '_')}.png')">
+											${armorSet.Body[0].trim() === "" ? `<span style="color: #99997a;">unequip</span>` : armorSet.Body[0]}
+										</span>
+									</span>
+								</p>
+								<p><span style="color: #d6e0d0;">Legs:&nbsp;</span>
+									<span class="itemName legsColor">
+										<span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Legs/${armorSet.Legs[0].replace(/\s+/g, '_')}.png')">
+											${armorSet.Legs[0].trim() === "" ? `<span style="color: #99997a;">unequip</span>` : armorSet.Legs[0]}
+										</span>
+									</span>
+								</p>
+								<p><span style="color: #d6e0d0;">Arms:</span>
+									<span class="itemName glovesColor">
+										<span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Gloves/${armorSet.Gloves[0].replace(/\s+/g, '_')}.png')">
+											${armorSet.Gloves[0].trim() === "" ? `<span style="color: #99997a;">unequip</span>` : armorSet.Gloves[0]}
+										</span>
+									</span>
+								</p>
+							</div>
+						</div>
+
+						<div class="status-global-wrapper">
+							<div class="status-wrapper">
+								<span class="resistance-tooltip" data-tooltip="Bleed"><span class="redColor">${totalBleed}</span>&nbsp </span>
+								<span class="resistance-tooltip" data-tooltip="Fire"><span class="orangeColor">${totalFire}</span>&nbsp </span>
+								<span class="resistance-tooltip" data-tooltip="Shock"><span class="purpleColor">${totalShock}</span>&nbsp </span>
+								<span class="resistance-tooltip" data-tooltip="Acid"><span class="greenColor">${totalToxin}</span>&nbsp </span>
+								<span class="resistance-tooltip" data-tooltip="Blight"><span class="greyColor">${totalBlight}</span> </span>
+							</div>
+							<span class="resistance-tooltip-right" data-tooltip="Sum of Status Resistances"><span style="color: #d6e0d0 ;">Total: ${armorSet.Head[2] + armorSet.Body[2] + armorSet.Legs[2] + armorSet.Gloves[2]}</span></span>
+						</div>
+						`;
 						resultContainer.appendChild(armorCard);
 						// Update the selectedArmors array with the new armor set's resistances
 						selectedArmors.push({
