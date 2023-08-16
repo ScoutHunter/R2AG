@@ -508,6 +508,7 @@
 					<option value="leto">Leto's Amulet</option>
 					<option value="twistedidol">Twisted Idol</option>
 					<option value="navigatorspendant">Navigator's Pendant</option>
+					<option value="rustednavigatorspendant">Rusted Navigator's Pendant</option>
 				</select>
 			</div>
 			<div class="label-container ring-dropdown-container">
@@ -536,7 +537,7 @@
             <span class="resistance-tooltip" data-tooltip="Displays more armor sets, potentially with better Resistances but lower Damage Reduction">
             </span> </span>
 			</label>
-			<input type="range" id="toleranceInput" value="0" min="0" max="10" step="1">
+			<input type="range" id="toleranceInput" value="0" min="0" max="20" step="1">
 			<h2 id="totalDamageReduction"></h2>
 			<div id="resultContainer"></div>
 		</div>
@@ -669,9 +670,11 @@
 
 		function find_best_combination(armor_list, weight_limit, tolerance) {
 			let best_combinations = [];
+			let candidate_combinations = []; // Store candidate combinations before applying tolerance
+
 			let max_damage_reduction = 0;
 			// Ensure that tolerance is within the valid range of 0 to 10
-			tolerance = Math.max(0, Math.min(10, tolerance));
+			tolerance = Math.max(0, Math.min(20, tolerance));
 			for(const head of armor_list['Head']) {
 				for(const body of armor_list['Body']) {
 					for(const legs of armor_list['Legs']) {
@@ -681,6 +684,8 @@
 							const letoAmuletFactor = selectedAmuletValue === "leto" ? 0.6 : 1;
 							const twistedidolFactor = selectedAmuletValue === "twistedidol" ? 15 : 0;
 							const navigatorspendantFactor = selectedAmuletValue === "navigatorspendant" ? 10 : 0;
+							const rustednavigatorspendantFactor = selectedAmuletValue === "rustednavigatorspendant" ? 15 : 0;
+
 							if(equippedArchetypes.archetype1 === "Challenger" || equippedArchetypes.archetype2 === "Challenger") {
 								challengerModifier = 10;
 							} else {
@@ -701,34 +706,43 @@
 							} else {
 								shardringFactor = 0;
 							}
-							const total_weight = ((head[8] + body[8] + legs[8] + gloves[8]) - challengerModifier - twistedidolFactor - navigatorspendantFactor - faeprotectorsignetFactor - dranmementoFactor + shardringFactor) * letoAmuletFactor;
-							if(total_weight <= weight_limit) {
-								const selectedAmuletValue = amuletDropdown.value;
-								twistedidolarmorFactor = selectedAmuletValue === "twistedidol" ? 1.3 : 1;
-								engineerModifier = (equippedArchetypes.archetype1 === "Engineer" || equippedArchetypes.archetype2 === "Engineer") ? 1.5 : 1;
-								const total_damage_reduction = ((head[1] + body[1] + legs[1] + gloves[1]) * (twistedidolarmorFactor + engineerModifier - 1));
-								if(total_damage_reduction >= max_damage_reduction - tolerance) {
-									if(total_damage_reduction > max_damage_reduction) {
-										max_damage_reduction = total_damage_reduction;
-										best_combinations = [];
-									}
-									best_combinations.push({
-										'Head': head,
-										'Body': body,
-										'Legs': legs,
-										'Gloves': gloves
-									});
-								}
-							}
-						}
-					}
-				}
-			}
-			return {
-				best_combinations,
-				max_damage_reduction
-			};
-		}
+
+							const total_weight = ((head[8] + body[8] + legs[8] + gloves[8]) - challengerModifier - twistedidolFactor - navigatorspendantFactor - rustednavigatorspendantFactor - faeprotectorsignetFactor - dranmementoFactor + shardringFactor) * letoAmuletFactor;
+
+                    if (total_weight <= weight_limit) {
+                        twistedidolarmorFactor = selectedAmuletValue === "twistedidol" ? 1.3 : 1;
+                        engineerModifier = (equippedArchetypes.archetype1 === "Engineer" || equippedArchetypes.archetype2 === "Engineer") ? 1.5 : 1;
+                        const total_damage_reduction = ((head[1] + body[1] + legs[1] + gloves[1]) * (twistedidolarmorFactor + engineerModifier - 1));
+
+                        // Store candidate combinations without considering tolerance
+                        candidate_combinations.push({
+                            'Head': head,
+                            'Body': body,
+                            'Legs': legs,
+                            'Gloves': gloves,
+                            'DamageReduction': total_damage_reduction
+                        });
+                    }
+                }
+            }
+        }
+    }
+
+    // Find the highest damage reduction value from candidate combinations
+	max_damage_reduction = candidate_combinations.reduce((max, combination) => {
+		return Math.max(max, combination.DamageReduction);
+	}, 0);
+
+    // Apply tolerance by filtering candidate combinations
+    best_combinations = candidate_combinations.filter(combination =>
+        combination.DamageReduction >= max_damage_reduction - tolerance
+    );
+
+    return {
+        best_combinations,
+        max_damage_reduction
+    };
+}
 
 		function display_combinations(best_combinations) {
 			// Sort the best_combinations array based on total damage reduction and then total resistance
