@@ -554,7 +554,7 @@
             <span class="resistance-tooltip" data-tooltip="Displays more armor sets, potentially with better Resistances but lower Damage Reduction">
             </span> </span>
 			</label>
-			<input type="range" id="toleranceInput" value="0" min="0" max="20" step="1">
+			<input type="range" id="toleranceInput" value="0" min="0" max="10" step="1">
 			<h2 id="totalDamageReduction"></h2>
 			<div id="resultContainer"></div>
 		</div>
@@ -691,7 +691,7 @@
 
 			let max_damage_reduction = 0;
 			// Ensure that tolerance is within the valid range of 0 to 10
-			tolerance = Math.max(0, Math.min(20, tolerance));
+			tolerance = Math.max(0, Math.min(10, tolerance));
 			for(const head of armor_list['Head']) {
 				for(const body of armor_list['Body']) {
 					for(const legs of armor_list['Legs']) {
@@ -755,7 +755,7 @@
 
     // Apply tolerance by filtering candidate combinations
     best_combinations = candidate_combinations.filter(combination =>
-        combination.DamageReduction >= max_damage_reduction - tolerance
+        combination.DamageReduction >= max_damage_reduction - (max_damage_reduction * tolerance / 100)
     );
 
     return {
