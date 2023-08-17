@@ -115,7 +115,7 @@
 		display: flex;
 		text-align: center;
 		align-items: center;
-		width: 160px;
+		width: 215px;
 		font-size: 15px;
 		background-color: #ebefe7;
 		border-radius: 5px;
@@ -124,6 +124,15 @@
 	.ring-dropdown-container {
 		display: flex;
 		flex-direction: column;
+		align-items: center;
+		background-color: #122;
+		padding: 5px 10px;
+		border-radius: 10px;
+	}
+
+	.concoction-checkbox-container {
+		display: flex;
+		width: 186px;
 		align-items: center;
 		background-color: #122;
 		padding: 5px 10px;
@@ -170,6 +179,7 @@
 
 	.label-container.amulet-container {
 		display: flex;
+		flex-direction: column;
 		justify-content: center;
 		/* Center elements horizontally */
 		align-items: center;
@@ -245,7 +255,7 @@
 	}
 	/* Media query for handling wrapping */
 
-	@media screen and (max-width: 1000px) {
+	@media screen and (max-width: 1115px) {
 		.content-container {
 			flex-wrap: wrap;
 		}
@@ -530,6 +540,13 @@
 					<button class="unequip-button" onclick="unequipAll(); calculateAndUpdate();">Unequip all</button>
 				</div>
 			</div>
+			<div class="label-container  concoction-checkbox-container">
+				<label for="strongDrinkCheckbox">Strong Drink Concoction</label>
+				<input type="checkbox" id="strongDrinkCheckbox">
+			</div>
+
+
+
 		</div>
 		<br>
 		<div id="resultContainerWrapper">
@@ -686,6 +703,9 @@
 							const navigatorspendantFactor = selectedAmuletValue === "navigatorspendant" ? 10 : 0;
 							const rustednavigatorspendantFactor = selectedAmuletValue === "rustednavigatorspendant" ? 15 : 0;
 
+							const strongDrinkCheckbox = document.getElementById("strongDrinkCheckbox");
+							const strongdrinkFactor = strongDrinkCheckbox.checked ? 10 : 0;
+
 							if(equippedArchetypes.archetype1 === "Challenger" || equippedArchetypes.archetype2 === "Challenger") {
 								challengerModifier = 10;
 							} else {
@@ -707,7 +727,7 @@
 								shardringFactor = 0;
 							}
 
-							const total_weight = ((head[8] + body[8] + legs[8] + gloves[8]) - challengerModifier - twistedidolFactor - navigatorspendantFactor - rustednavigatorspendantFactor - faeprotectorsignetFactor - dranmementoFactor + shardringFactor) * letoAmuletFactor;
+							const total_weight = ((head[8] + body[8] + legs[8] + gloves[8]) - challengerModifier - strongdrinkFactor - twistedidolFactor - navigatorspendantFactor - rustednavigatorspendantFactor - faeprotectorsignetFactor - dranmementoFactor + shardringFactor) * letoAmuletFactor;
 
                     if (total_weight <= weight_limit) {
                         twistedidolarmorFactor = selectedAmuletValue === "twistedidol" ? 1.3 : 1;
@@ -898,6 +918,7 @@
 		document.getElementById("ring4").addEventListener("change", calculateAndUpdate);
 		document.getElementById("archetype1").addEventListener("change", calculateAndUpdate);
 		document.getElementById("archetype2").addEventListener("change", calculateAndUpdate);
+		document.getElementById("strongDrinkCheckbox").addEventListener("change", calculateAndUpdate);
 		// Your existing JavaScript code for initialization and calculations
 		calculateAndUpdate(); // Initialize the result display when the page loads
 		</script>
