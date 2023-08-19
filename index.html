@@ -161,11 +161,75 @@
 		border-radius: 5px;
 	}
 
-	.unequip-button-container {
+	.unequipRings-button-container {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 	}
+
+	.armor-filter-container {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		background-color: #332;
+		background-image: linear-gradient(#999, #999), linear-gradient(to top, #110, #332);
+		background-position: top, bottom;
+		background-size: 100% 0px, 100% calc(100% - 10px);
+		background-repeat: no-repeat;
+		padding: 0px 10px;
+		border: 1px solid #000;
+		border-radius: 10px;
+		align-items: center;
+		width: 250px;
+	}
+
+	.armor-filter-title {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 16px;
+		background-color: #011;
+		padding: 5px 10px;
+		border-radius: 6px;
+		color: #d6e0d0;
+		margin-bottom: 5px;
+		margin-right: 15px;
+		font-weight: 100;
+	}
+
+
+	.armor-select-row {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-bottom: 0px;
+	}
+
+	.armor-select-row label {
+		width: 35px; /* Adjust this width as needed */
+		margin-right: 10px;
+		color: #fff2cc;
+	}
+
+
+	.armor-select {
+		text-align: center;
+		width: 195px;
+		font-size: 15px;
+		background-color: #ebefe7;
+		border-radius: 5px;
+	}
+
+
+	.reset-armor-button-container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 75px;
+		margin-bottom: 5px; /* Adjust as needed */
+		margin-left: 15px;
+	}
+
 
 	.unequip-button {
 		text-align: center;
@@ -206,6 +270,7 @@
 		padding: 5px 15px;
 		border-radius: 6px;
 		color: #d6e0d0;
+		margin-bottom: 0px;
 	}
 
 	#toleranceInput {
@@ -244,6 +309,7 @@
 		max-width: 1000px;
 		padding: 0 20px;
 		box-sizing: border-box;
+		width: 0px;
 	}
 	/* Center the elements within the container */
 
@@ -488,7 +554,7 @@
 
 <body>
 	<div class="pagecontainer">
-		<div class="version-note">ver 1.3</div>
+		<div class="version-note">ver 1.35</div>
 		<div class="ImageTitle"> <img src="https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Misc/Remnant2.png" width="150" height="auto">
 			<h1>Armor Generator</h1> </div>
 		<br>
@@ -535,9 +601,9 @@
 				<div class="ring-dropdown-group">
 					<select id="ring4" class="ring-select" onchange="equipRing('ring4')"></select>
 				</div>
-				<div class="unequip-button-container">
+				<div class="unequipRings-button-container">
 					<div></div>
-					<button class="unequip-button" onclick="unequipAll(); calculateAndUpdate();">Unequip all</button>
+					<button class="unequip-button" onclick="unequipAllRings(); calculateAndUpdate();">Unequip Rings</button>
 				</div>
 			</div>
 			<div class="label-container  concoction-checkbox-container">
@@ -547,7 +613,41 @@
 
 
 
+<div class="armor-filter-container">
+  <h2 class="armor-filter-title">Armor Filter</h2>
+  <div class="armor-select-row">
+    <label for="headDropdown">Head</label>
+    <select id="headDropdown" class="armor-select">
+      <option value="Undefined">Any</option>
+    </select>
+  </div>
+  <div class="armor-select-row">
+    <label for="bodyDropdown">Body</label>
+    <select id="bodyDropdown" class="armor-select">
+      <option value="Undefined">Any</option>
+    </select>
+  </div>
+  <div class="armor-select-row">
+    <label for="legsDropdown">Legs</label>
+    <select id="legsDropdown" class="armor-select">
+      <option value="Undefined">Any</option>
+    </select>
+  </div>
+  <div class="armor-select-row">
+    <label for="glovesDropdown">Arms</label>
+    <select id="glovesDropdown" class="armor-select">
+      <option value="Undefined">Any</option>
+    </select>
+  </div>
+  <div class="reset-armor-button-container">
+    <button class="unequip-button" onclick="resetArmorDropdowns(); calculateAndUpdate();">Reset</button>
+  </div>
+</div>
+
 		</div>
+
+
+
 		<br>
 		<div id="resultContainerWrapper">
 			<label for="toleranceInput"> <span style="color: #ebefe7;">
@@ -591,6 +691,50 @@
 				console.error('Error fetching armor data:', error);
 			}
 		}
+
+
+// Assuming this part of the code is within an async function
+async function populateArmorDropdowns() {
+    // After you fetch the armor data using fetchArmorData() function
+    const armorData = await fetchArmorData();
+
+    // Populate the dropdown menus with armor piece options
+    populateDropdown("headDropdown", armorData['Head']);
+    populateDropdown("bodyDropdown", armorData['Body']);
+    populateDropdown("legsDropdown", armorData['Legs']);
+    populateDropdown("glovesDropdown", armorData['Gloves']);
+}
+
+function populateDropdown(dropdownId, armorPieces) {
+    const dropdown = document.getElementById(dropdownId);
+
+    for (const armorPiece of armorPieces) {
+        const option = document.createElement("option");
+        option.value = armorPiece[0]; // Assuming armorPiece[0] is the identifier
+        option.textContent = armorPiece[0]; // Display text for the option
+        dropdown.appendChild(option);
+    }
+}
+
+// Call the async function to initiate the process
+populateArmorDropdowns();
+
+
+function resetArmorDropdowns() {
+    const dropdowns = [
+        document.getElementById("headDropdown"),
+        document.getElementById("bodyDropdown"),
+        document.getElementById("legsDropdown"),
+        document.getElementById("glovesDropdown")
+    ];
+
+    for (const dropdown of dropdowns) {
+        dropdown.value = "Undefined";
+    }
+}
+
+
+
 		const toleranceInput = document.getElementById("toleranceInput");
 		const toleranceLabel = document.querySelector("#resultContainerWrapper label span span");
 		toleranceInput.addEventListener("input", function() {
@@ -660,7 +804,7 @@
 			});
 		}
 
-		function unequipAll() {
+		function unequipAllRings() {
 			ringSelects.forEach((select) => {
 				const selectedValue = select.value;
 				if(selectedValue !== "undefined") {
@@ -670,6 +814,8 @@
 				}
 			});
 		}
+
+
 		window.onload = function() {
 			for(const select of ringSelects) {
 				availableRings.forEach((ring) => {
@@ -696,53 +842,80 @@
 				for(const body of armor_list['Body']) {
 					for(const legs of armor_list['Legs']) {
 						for(const gloves of armor_list['Gloves']) {
-							const amuletDropdown = document.getElementById("amuletDropdown");
-							const selectedAmuletValue = amuletDropdown.value;
-							const letoAmuletFactor = selectedAmuletValue === "leto" ? 0.6 : 1;
-							const twistedidolFactor = selectedAmuletValue === "twistedidol" ? 15 : 0;
-							const navigatorspendantFactor = selectedAmuletValue === "navigatorspendant" ? 10 : 0;
-							const rustednavigatorspendantFactor = selectedAmuletValue === "rustednavigatorspendant" ? 15 : 0;
 
-							const strongDrinkCheckbox = document.getElementById("strongDrinkCheckbox");
-							const strongdrinkFactor = strongDrinkCheckbox.checked ? 10 : 0;
 
-							if(equippedArchetypes.archetype1 === "Challenger" || equippedArchetypes.archetype2 === "Challenger") {
-								challengerModifier = 10;
-							} else {
-								challengerModifier = 0;
-							}
-							if(equippedRings.ring1 === "Fae Protector Signet" || equippedRings.ring2 === "Fae Protector Signet" || equippedRings.ring3 === "Fae Protector Signet" || equippedRings.ring4 === "Fae Protector Signet") {
-								faeprotectorsignetFactor = 5;
-							} else {
-								faeprotectorsignetFactor = 0;
-							}
-							if(equippedRings.ring1 === "Dran Memento" || equippedRings.ring2 === "Dran Memento" || equippedRings.ring3 === "Dran Memento" || equippedRings.ring4 === "Dran Memento") {
-								dranmementoFactor = 5;
-							} else {
-								dranmementoFactor = 0;
-							}
-							if(equippedRings.ring1 === "Meteorite Shard Ring" || equippedRings.ring2 === "Meteorite Shard Ring" || equippedRings.ring3 === "Meteorite Shard Ring" || equippedRings.ring4 === "Meteorite Shard Ring") {
-								shardringFactor = 50;
-							} else {
-								shardringFactor = 0;
-							}
 
-							const total_weight = ((head[8] + body[8] + legs[8] + gloves[8]) - challengerModifier - strongdrinkFactor - twistedidolFactor - navigatorspendantFactor - rustednavigatorspendantFactor - faeprotectorsignetFactor - dranmementoFactor + shardringFactor) * letoAmuletFactor;
+						                    // Check if the armor pieces match the selected dropdown values
+											const headDropdown = document.getElementById("headDropdown");
+											const bodyDropdown = document.getElementById("bodyDropdown");
+											const legsDropdown = document.getElementById("legsDropdown");
+											const glovesDropdown = document.getElementById("glovesDropdown");
 
-                    if (total_weight <= weight_limit) {
-                        twistedidolarmorFactor = selectedAmuletValue === "twistedidol" ? 1.3 : 1;
-                        engineerModifier = (equippedArchetypes.archetype1 === "Engineer" || equippedArchetypes.archetype2 === "Engineer") ? 1.5 : 1;
-                        const total_damage_reduction = ((head[1] + body[1] + legs[1] + gloves[1]) * (twistedidolarmorFactor + engineerModifier - 1));
+											const selectedHead = headDropdown.value;
+											const selectedBody = bodyDropdown.value;
+											const selectedLegs = legsDropdown.value;
+											const selectedGloves = glovesDropdown.value;
 
-                        // Store candidate combinations without considering tolerance
-                        candidate_combinations.push({
-                            'Head': head,
-                            'Body': body,
-                            'Legs': legs,
-                            'Gloves': gloves,
-                            'DamageReduction': total_damage_reduction
-                        });
-                    }
+											if (
+												(selectedHead === "Undefined" || selectedHead === head[0]) &&
+												(selectedBody === "Undefined" || selectedBody === body[0]) &&
+												(selectedLegs === "Undefined" || selectedLegs === legs[0]) &&
+												(selectedGloves === "Undefined" || selectedGloves === gloves[0])
+											) {
+
+
+
+
+
+
+								const amuletDropdown = document.getElementById("amuletDropdown");
+								const selectedAmuletValue = amuletDropdown.value;
+								const letoAmuletFactor = selectedAmuletValue === "leto" ? 0.6 : 1;
+								const twistedidolFactor = selectedAmuletValue === "twistedidol" ? 15 : 0;
+								const navigatorspendantFactor = selectedAmuletValue === "navigatorspendant" ? 10 : 0;
+								const rustednavigatorspendantFactor = selectedAmuletValue === "rustednavigatorspendant" ? 15 : 0;
+
+								const strongDrinkCheckbox = document.getElementById("strongDrinkCheckbox");
+								const strongdrinkFactor = strongDrinkCheckbox.checked ? 10 : 0;
+
+								if(equippedArchetypes.archetype1 === "Challenger" || equippedArchetypes.archetype2 === "Challenger") {
+									challengerModifier = 10;
+								} else {
+									challengerModifier = 0;
+								}
+								if(equippedRings.ring1 === "Fae Protector Signet" || equippedRings.ring2 === "Fae Protector Signet" || equippedRings.ring3 === "Fae Protector Signet" || equippedRings.ring4 === "Fae Protector Signet") {
+									faeprotectorsignetFactor = 5;
+								} else {
+									faeprotectorsignetFactor = 0;
+								}
+								if(equippedRings.ring1 === "Dran Memento" || equippedRings.ring2 === "Dran Memento" || equippedRings.ring3 === "Dran Memento" || equippedRings.ring4 === "Dran Memento") {
+									dranmementoFactor = 5;
+								} else {
+									dranmementoFactor = 0;
+								}
+								if(equippedRings.ring1 === "Meteorite Shard Ring" || equippedRings.ring2 === "Meteorite Shard Ring" || equippedRings.ring3 === "Meteorite Shard Ring" || equippedRings.ring4 === "Meteorite Shard Ring") {
+									shardringFactor = 50;
+								} else {
+									shardringFactor = 0;
+								}
+
+								const total_weight = ((head[8] + body[8] + legs[8] + gloves[8]) - challengerModifier - strongdrinkFactor - twistedidolFactor - navigatorspendantFactor - rustednavigatorspendantFactor - faeprotectorsignetFactor - dranmementoFactor + shardringFactor) * letoAmuletFactor;
+
+						if (total_weight <= weight_limit) {
+							twistedidolarmorFactor = selectedAmuletValue === "twistedidol" ? 1.3 : 1;
+							engineerModifier = (equippedArchetypes.archetype1 === "Engineer" || equippedArchetypes.archetype2 === "Engineer") ? 1.5 : 1;
+							const total_damage_reduction = ((head[1] + body[1] + legs[1] + gloves[1]) * (twistedidolarmorFactor + engineerModifier - 1));
+
+							// Store candidate combinations without considering tolerance
+							candidate_combinations.push({
+								'Head': head,
+								'Body': body,
+								'Legs': legs,
+								'Gloves': gloves,
+								'DamageReduction': total_damage_reduction
+							});
+						}
+					}
                 }
             }
         }
@@ -876,7 +1049,7 @@
 								<span class="resistance-tooltip" data-tooltip="Acid"><span class="greenColor">${totalToxin}</span>&nbsp </span>
 								<span class="resistance-tooltip" data-tooltip="Blight"><span class="greyColor">${totalBlight}</span> </span>
 							</div>
-							<span class="resistance-tooltip-right" data-tooltip="Sum of Status Resistances"><span style="color: #d6e0d0 ;">Total: ${armorSet.Head[2] + armorSet.Body[2] + armorSet.Legs[2] + armorSet.Gloves[2]}</span></span>
+							<span class="resistance-tooltip-right" data-tooltip="Sum of Status Resistances"><span style="color: #d6e0d0 ;">Total: ${totalBleed + totalFire + totalShock + totalToxin + totalBlight}</span></span>
 						</div>
 						`;
 						resultContainer.appendChild(armorCard);
@@ -919,6 +1092,10 @@
 		document.getElementById("archetype1").addEventListener("change", calculateAndUpdate);
 		document.getElementById("archetype2").addEventListener("change", calculateAndUpdate);
 		document.getElementById("strongDrinkCheckbox").addEventListener("change", calculateAndUpdate);
+		document.getElementById("headDropdown").addEventListener("change", calculateAndUpdate);
+		document.getElementById("bodyDropdown").addEventListener("change", calculateAndUpdate);
+		document.getElementById("legsDropdown").addEventListener("change", calculateAndUpdate);
+		document.getElementById("glovesDropdown").addEventListener("change", calculateAndUpdate);
 		// Your existing JavaScript code for initialization and calculations
 		calculateAndUpdate(); // Initialize the result display when the page loads
 		</script>
