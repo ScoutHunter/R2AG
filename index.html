@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>R2 Armor Generator</title>
@@ -167,6 +166,22 @@
 		align-items: center;
 	}
 
+	.trait-container {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		background-color: #334;
+		background-image: linear-gradient(#999, #999), linear-gradient(to top, #110, #334);
+		background-position: top, bottom;
+		background-size: 100% 0px, 100% calc(100% - 10px);
+		background-repeat: no-repeat;
+		padding: 0px 10px;
+		border: 1px solid #000;
+		border-radius: 10px;
+		align-items: center;
+		width: 500px;
+	}
+
 	.armor-filter-container {
 		display: flex;
 		flex-direction: column;
@@ -196,7 +211,21 @@
 		margin-right: 15px;
 		font-weight: 100;
 	}
+	
+	.trait-select-row {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-bottom: 0px;
+		margin-right: 0px;
+	}
 
+    label[for="StrongBackdropdown"] {
+        margin-right: 0px;
+        margin-left: -10px;
+		color: #f2e5f2 ;
+		font-size: 15px;
+    }
 
 	.armor-select-row {
 		display: flex;
@@ -211,6 +240,13 @@
 		color: #fff2cc;
 	}
 
+	.trait-select {
+		text-align: center;
+		width: 75px;
+		font-size: 15px;
+		background-color: #ebefe7;
+		border-radius: 5px;
+	}
 
 	.armor-select {
 		text-align: center;
@@ -229,7 +265,6 @@
 		margin-bottom: 5px; /* Adjust as needed */
 		margin-left: 15px;
 	}
-
 
 	.unequip-button {
 		text-align: center;
@@ -311,16 +346,16 @@
 		box-sizing: border-box;
 		width: 0px;
 	}
-	/* Center the elements within the container */
 
+	/* Center the elements within the container */
 	.content-container > * {
 		text-align: center;
 		margin: 10px;
 		flex-grow: 1;
 		margin-bottom: -5px;
 	}
-	/* Media query for handling wrapping */
 
+	/* Media query for handling wrapping */
 	@media screen and (max-width: 1115px) {
 		.content-container {
 			flex-wrap: wrap;
@@ -554,7 +589,7 @@
 
 <body>
 	<div class="pagecontainer">
-		<div class="version-note">ver 1.35</div>
+		<div class="version-note">ver 1.4</div>
 		<div class="ImageTitle"> <img src="https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Misc/Remnant2.png" width="150" height="auto">
 			<h1>Armor Generator</h1> </div>
 		<br>
@@ -570,13 +605,27 @@
 					<option value="1000000" data-color="#ffbfad">Flop (75%)</option>
 				</select>
 			</div>
-			<div class="label-container archetype-dropdown-container">
-				<label for="archetype-dropdown-group">Archetypes (lvl 10)</label>
-				<div class="archetype-dropdown-group">
-					<select id="archetype1" class="archetype-select" onchange="equipArchetype('archetype1')"></select>
-					<select id="archetype2" class="archetype-select" onchange="equipArchetype('archetype2')"></select>
-				</div>
+
+			<div class="trait-container">
+			  <h2 class="armor-filter-title">Trait Level</h2>
+			  <div class="trait-select-row">
+				<label for="StrongBackdropdown">Strong Back (Challenger)</label>
+				<select id="StrongBackTrait" class="trait-select">
+				  <option value="0">0</option>
+				  <option value="1">1</option>
+				  <option value="2">2</option>
+				  <option value="3">3</option>
+				  <option value="4">4</option>
+				  <option value="5">5</option>
+				  <option value="6">6</option>
+				  <option value="7">7</option>
+				  <option value="8">8</option>
+				  <option value="9">9</option>
+				  <option value="10">10</option>
+				</select>
+			  </div>
 			</div>
+
 			<div class="label-container amulet-container">
 				<label for="amuletDropdown">Amulet</label>
 				<select id="amuletDropdown">
@@ -658,6 +707,7 @@
 			<h2 id="totalDamageReduction"></h2>
 			<div id="resultContainer"></div>
 		</div>
+
 		<script>
 		function updateBackgroundColor() {
 			var selectElement = document.getElementById("weightInput");
@@ -682,6 +732,7 @@
 			}
 			selectElement.style.backgroundColor = backgroundColor;
 		}
+
 		async function fetchArmorData() {
 			try {
 				const response = await fetch('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/armor_list.json');
@@ -692,13 +743,8 @@
 			}
 		}
 
-
-// Assuming this part of the code is within an async function
 async function populateArmorDropdowns() {
-    // After you fetch the armor data using fetchArmorData() function
     const armorData = await fetchArmorData();
-
-    // Populate the dropdown menus with armor piece options
     populateDropdown("headDropdown", armorData['Head']);
     populateDropdown("bodyDropdown", armorData['Body']);
     populateDropdown("legsDropdown", armorData['Legs']);
@@ -716,9 +762,7 @@ function populateDropdown(dropdownId, armorPieces) {
     }
 }
 
-// Call the async function to initiate the process
 populateArmorDropdowns();
-
 
 function resetArmorDropdowns() {
     const dropdowns = [
@@ -727,13 +771,10 @@ function resetArmorDropdowns() {
         document.getElementById("legsDropdown"),
         document.getElementById("glovesDropdown")
     ];
-
     for (const dropdown of dropdowns) {
         dropdown.value = "Undefined";
     }
 }
-
-
 
 		const toleranceInput = document.getElementById("toleranceInput");
 		const toleranceLabel = document.querySelector("#resultContainerWrapper label span span");
@@ -741,38 +782,8 @@ function resetArmorDropdowns() {
 			const enteredValue = parseInt(toleranceInput.value);
 			toleranceLabel.textContent = `Tolerance: ${enteredValue}`;
 		});
-		// Set the initial label text
 		toleranceLabel.textContent = `Tolerance: ${toleranceInput.value}`;
-		const archetypeSelects = document.querySelectorAll('.archetype-select');
-		const availableArchetypes = ['undefined', 'Challenger', 'Engineer'];
-		const equippedArchetypes = {};
 
-		function equipArchetype(selectedArchetype) {
-			const selectedValue = document.getElementById(selectedArchetype).value;
-			const prevEquippedArchetype = equippedArchetypes[selectedArchetype];
-			if(prevEquippedArchetype) enableArchetypeOption(prevEquippedArchetype);
-			if(selectedValue !== "undefined") {
-				if(equippedArchetypes[selectedArchetype]) enableArchetypeOption(equippedArchetypes[selectedArchetype]);
-				disableArchetypeOption(selectedValue);
-				equippedArchetypes[selectedArchetype] = selectedValue;
-			} else equippedArchetypes[selectedArchetype] = undefined;
-		}
-
-		function enableArchetypeOption(archetype) {
-			archetypeSelects.forEach((select) => {
-				const option = select.querySelector(`option[value="${archetype}"]`);
-				option.disabled = false;
-				option.style.display = 'block';
-			});
-		}
-
-		function disableArchetypeOption(archetype) {
-			archetypeSelects.forEach((select) => {
-				const option = select.querySelector(`option[value="${archetype}"]`);
-				option.disabled = true;
-				option.style.display = 'undefined';
-			});
-		}
 		const ringSelects = document.querySelectorAll('.ring-select');
 		const availableRings = ['undefined', 'Fae Protector Signet', 'Dran Memento', 'Meteorite Shard Ring'];
 		const equippedRings = {};
@@ -815,17 +826,10 @@ function resetArmorDropdowns() {
 			});
 		}
 
-
 		window.onload = function() {
 			for(const select of ringSelects) {
 				availableRings.forEach((ring) => {
 					const option = new Option(ring, ring);
-					select.add(option);
-				});
-			}
-			for(const select of archetypeSelects) {
-				availableArchetypes.forEach((archetype) => {
-					const option = new Option(archetype, archetype);
 					select.add(option);
 				});
 			}
@@ -834,7 +838,6 @@ function resetArmorDropdowns() {
 		function find_best_combination(armor_list, weight_limit, tolerance) {
 			let best_combinations = [];
 			let candidate_combinations = []; // Store candidate combinations before applying tolerance
-
 			let max_damage_reduction = 0;
 			// Ensure that tolerance is within the valid range of 0 to 10
 			tolerance = Math.max(0, Math.min(10, tolerance));
@@ -842,8 +845,6 @@ function resetArmorDropdowns() {
 				for(const body of armor_list['Body']) {
 					for(const legs of armor_list['Legs']) {
 						for(const gloves of armor_list['Gloves']) {
-
-
 
 						                    // Check if the armor pieces match the selected dropdown values
 											const headDropdown = document.getElementById("headDropdown");
@@ -863,11 +864,6 @@ function resetArmorDropdowns() {
 												(selectedGloves === "Undefined" || selectedGloves === gloves[0])
 											) {
 
-
-
-
-
-
 								const amuletDropdown = document.getElementById("amuletDropdown");
 								const selectedAmuletValue = amuletDropdown.value;
 								const letoAmuletFactor = selectedAmuletValue === "leto" ? 0.6 : 1;
@@ -878,11 +874,6 @@ function resetArmorDropdowns() {
 								const strongDrinkCheckbox = document.getElementById("strongDrinkCheckbox");
 								const strongdrinkFactor = strongDrinkCheckbox.checked ? 10 : 0;
 
-								if(equippedArchetypes.archetype1 === "Challenger" || equippedArchetypes.archetype2 === "Challenger") {
-									challengerModifier = 10;
-								} else {
-									challengerModifier = 0;
-								}
 								if(equippedRings.ring1 === "Fae Protector Signet" || equippedRings.ring2 === "Fae Protector Signet" || equippedRings.ring3 === "Fae Protector Signet" || equippedRings.ring4 === "Fae Protector Signet") {
 									faeprotectorsignetFactor = 5;
 								} else {
@@ -899,12 +890,11 @@ function resetArmorDropdowns() {
 									shardringFactor = 0;
 								}
 
-								const total_weight = ((head[8] + body[8] + legs[8] + gloves[8]) - challengerModifier - strongdrinkFactor - twistedidolFactor - navigatorspendantFactor - rustednavigatorspendantFactor - faeprotectorsignetFactor - dranmementoFactor + shardringFactor) * letoAmuletFactor;
+								const total_weight = ((head[8] + body[8] + legs[8] + gloves[8]) - StrongBackTraitModifier - strongdrinkFactor - twistedidolFactor - navigatorspendantFactor - rustednavigatorspendantFactor - faeprotectorsignetFactor - dranmementoFactor + shardringFactor) * letoAmuletFactor;
 
 						if (total_weight <= weight_limit) {
 							twistedidolarmorFactor = selectedAmuletValue === "twistedidol" ? 1.3 : 1;
-							engineerModifier = (equippedArchetypes.archetype1 === "Engineer" || equippedArchetypes.archetype2 === "Engineer") ? 1.5 : 1;
-							const total_damage_reduction = ((head[1] + body[1] + legs[1] + gloves[1]) * (twistedidolarmorFactor + engineerModifier - 1));
+							const total_damage_reduction = ((head[1] + body[1] + legs[1] + gloves[1]) * (twistedidolarmorFactor));
 
 							// Store candidate combinations without considering tolerance
 							candidate_combinations.push({
@@ -990,19 +980,19 @@ function resetArmorDropdowns() {
 						<span class="resistance-tooltip" data-tooltip="Total Damage Reduction"><span style="color: #ffff7f ;">Armor: ${Number.isInteger(
 							  (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) *
 							  twistedidolarmorFactor +
-							  (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * engineerModifier -
+							  (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * 1 -
 							  (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])
 							) ?
 							(
 							  (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) *
 							  twistedidolarmorFactor +
-							  (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * engineerModifier -
+							  (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * 1 -
 							  (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])
 							) :
 							(
 							  (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) *
 							  twistedidolarmorFactor +
-							  (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * engineerModifier -
+							  (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * 1 -
 							  (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])
 							).toFixed(1)
 							}
@@ -1013,28 +1003,28 @@ function resetArmorDropdowns() {
 								<p><span style="color: #d6e0d0;">Head:</span>
 									<span class="itemName headColor">
 										<span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Head/${armorSet.Head[0].replace(/\s+/g, '_')}.png')">
-											${armorSet.Head[0].trim() === "" ? `<span style="color: #99997a;">unequip</span>` : armorSet.Head[0]}
+											${armorSet.Head[0].trim() === "none" ? `<span style="color: #99997a;">none</span>` : armorSet.Head[0]}
 										</span>
 									</span>
 								</p>
 								<p><span style="color: #d6e0d0;">Body:</span>
 									<span class="itemName bodyColor">
 										<span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Body/${armorSet.Body[0].replace(/\s+/g, '_')}.png')">
-											${armorSet.Body[0].trim() === "" ? `<span style="color: #99997a;">unequip</span>` : armorSet.Body[0]}
+											${armorSet.Body[0].trim() === "none" ? `<span style="color: #99997a;">none</span>` : armorSet.Body[0]}
 										</span>
 									</span>
 								</p>
 								<p><span style="color: #d6e0d0;">Legs:&nbsp;</span>
 									<span class="itemName legsColor">
 										<span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Legs/${armorSet.Legs[0].replace(/\s+/g, '_')}.png')">
-											${armorSet.Legs[0].trim() === "" ? `<span style="color: #99997a;">unequip</span>` : armorSet.Legs[0]}
+											${armorSet.Legs[0].trim() === "none" ? `<span style="color: #99997a;">none</span>` : armorSet.Legs[0]}
 										</span>
 									</span>
 								</p>
 								<p><span style="color: #d6e0d0;">Arms:</span>
 									<span class="itemName glovesColor">
 										<span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Gloves/${armorSet.Gloves[0].replace(/\s+/g, '_')}.png')">
-											${armorSet.Gloves[0].trim() === "" ? `<span style="color: #99997a;">unequip</span>` : armorSet.Gloves[0]}
+											${armorSet.Gloves[0].trim() === "none" ? `<span style="color: #99997a;">none</span>` : armorSet.Gloves[0]}
 										</span>
 									</span>
 								</p>
@@ -1044,9 +1034,9 @@ function resetArmorDropdowns() {
 						<div class="status-global-wrapper">
 							<div class="status-wrapper">
 								<span class="resistance-tooltip" data-tooltip="Bleed"><span class="redColor">${totalBleed}</span>&nbsp </span>
-								<span class="resistance-tooltip" data-tooltip="Fire"><span class="orangeColor">${totalFire}</span>&nbsp </span>
+								<span class="resistance-tooltip" data-tooltip="Burn"><span class="orangeColor">${totalFire}</span>&nbsp </span>
 								<span class="resistance-tooltip" data-tooltip="Shock"><span class="purpleColor">${totalShock}</span>&nbsp </span>
-								<span class="resistance-tooltip" data-tooltip="Acid"><span class="greenColor">${totalToxin}</span>&nbsp </span>
+								<span class="resistance-tooltip" data-tooltip="Corrosion"><span class="greenColor">${totalToxin}</span>&nbsp </span>
 								<span class="resistance-tooltip" data-tooltip="Blight"><span class="greyColor">${totalBlight}</span> </span>
 							</div>
 							<span class="resistance-tooltip-right" data-tooltip="Sum of Status Resistances"><span style="color: #d6e0d0 ;">Total: ${totalBleed + totalFire + totalShock + totalToxin + totalBlight}</span></span>
@@ -1072,6 +1062,7 @@ function resetArmorDropdowns() {
 			}
 		}
 		async function calculateAndUpdate() {
+			StrongBackTraitModifier = parseFloat(StrongBackTrait.value);
 			const armorData = await fetchArmorData();
 			const weightLimit = parseInt(document.getElementById("weightInput").value);
 			let tolerance = parseInt(document.getElementById("toleranceInput").value);
@@ -1081,7 +1072,7 @@ function resetArmorDropdowns() {
 			} = find_best_combination(armorData, weightLimit, tolerance);
 			display_combinations(best_combinations);
 		}
-		// Ensure to adjust the event listeners to trigger "calculateAndUpdate" function
+
 		document.getElementById("weightInput").addEventListener("change", calculateAndUpdate);
 		document.getElementById("amuletDropdown").addEventListener("change", calculateAndUpdate);
 		document.getElementById("toleranceInput").addEventListener("input", calculateAndUpdate);
@@ -1089,17 +1080,15 @@ function resetArmorDropdowns() {
 		document.getElementById("ring2").addEventListener("change", calculateAndUpdate);
 		document.getElementById("ring3").addEventListener("change", calculateAndUpdate);
 		document.getElementById("ring4").addEventListener("change", calculateAndUpdate);
-		document.getElementById("archetype1").addEventListener("change", calculateAndUpdate);
-		document.getElementById("archetype2").addEventListener("change", calculateAndUpdate);
 		document.getElementById("strongDrinkCheckbox").addEventListener("change", calculateAndUpdate);
 		document.getElementById("headDropdown").addEventListener("change", calculateAndUpdate);
 		document.getElementById("bodyDropdown").addEventListener("change", calculateAndUpdate);
 		document.getElementById("legsDropdown").addEventListener("change", calculateAndUpdate);
 		document.getElementById("glovesDropdown").addEventListener("change", calculateAndUpdate);
-		// Your existing JavaScript code for initialization and calculations
+		document.getElementById("StrongBackTrait").addEventListener("change", calculateAndUpdate);
+
 		calculateAndUpdate(); // Initialize the result display when the page loads
 		</script>
 	</div>
 </body>
-
 </html>
