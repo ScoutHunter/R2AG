@@ -21,19 +21,21 @@
 		overflow-x: hidden;
 	}
 
-.background-image {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-repeat: no-repeat;
-    z-index: -1;
-    border: 15px solid #011;
-    box-sizing: border-box;
-    opacity: 0.3; /* Initial opacity */
-}
+	.background-image {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-size: cover;
+		background-repeat: no-repeat;
+		z-index: -1;
+		border: 15px solid #011;
+		box-sizing: border-box;
+		opacity: 0.3; /* Initial opacity */
+		user-drag: none;
+		user-select: none;
+	}
 
 	.pagecontainer {
 		max-width: 1315px;
@@ -43,6 +45,8 @@
 		background-repeat: no-repeat;
 		box-sizing: border-box;
 		/* Include padding in the width */
+		user-drag: none;
+		user-select: none;
 	}
 
 	.ImageTitle {
@@ -223,20 +227,21 @@
 		margin-right: 15px;
 		font-weight: 100;
 	}
-	
+
 	.trait-select-row {
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		margin-bottom: 0px;
+		margin-bottom: 3px;
 		margin-right: 0px;
 	}
 
     label[for="StrongBackdropdown"] {
         margin-right: 0px;
-        margin-left: -10px;
+        margin-left: 0px;
 		color: #f2e5f2 ;
 		font-size: 15px;
+		width: 100px
     }
 
 	.armor-select-row {
@@ -254,7 +259,7 @@
 
 	.trait-select {
 		text-align: center;
-		width: 75px;
+		width: 50px;
 		font-size: 15px;
 		background-color: #ebefe7;
 		border-radius: 5px;
@@ -357,6 +362,11 @@
 		padding: 0 20px;
 		box-sizing: border-box;
 		width: 0px;
+	}
+
+	#cardsandtolerance {
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+    border-radius: 10px; /* Rounded corners */
 	}
 
 	/* Center the elements within the container */
@@ -636,6 +646,22 @@
 				  <option value="10">10</option>
 				</select>
 			  </div>
+			  <div class="trait-select-row">
+				<label for="StrongBackdropdown">Fortify (Engineer)</label>
+				<select id="FortifyTrait" class="trait-select">
+			      <option value="1">0</option>
+				  <option value="1.05">1</option>
+				  <option value="1.1">2</option>
+				  <option value="1.15">3</option>
+				  <option value="1.2">4</option>
+				  <option value="1.25">5</option>
+				  <option value="1.3">6</option>
+				  <option value="1.35">7</option>
+				  <option value="1.4">8</option>
+				  <option value="1.45">9</option>
+				  <option value="1.5">10</option>
+				</select>
+			</div>
 			</div>
 
 			<div class="label-container amulet-container">
@@ -986,19 +1012,19 @@ function resetArmorDropdowns() {
 						<span class="resistance-tooltip" data-tooltip="Total Damage Reduction"><span style="color: #ffff7f ;">Armor: ${Number.isInteger(
 							  (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) *
 							  twistedidolarmorFactor +
-							  (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * 1 -
+							  (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * FortifyTraitModifier -
 							  (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])
 							) ?
 							(
 							  (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) *
 							  twistedidolarmorFactor +
-							  (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * 1 -
+							  (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * FortifyTraitModifier -
 							  (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])
 							) :
 							(
 							  (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) *
 							  twistedidolarmorFactor +
-							  (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * 1 -
+							  (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * FortifyTraitModifier -
 							  (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])
 							).toFixed(1)
 							}
@@ -1069,6 +1095,7 @@ function resetArmorDropdowns() {
 		}
 		async function calculateAndUpdate() {
 			StrongBackTraitModifier = parseFloat(StrongBackTrait.value);
+			FortifyTraitModifier = parseFloat(FortifyTrait.value);
 			const armorData = await fetchArmorData();
 			const weightLimit = parseInt(document.getElementById("weightInput").value);
 			let tolerance = parseInt(document.getElementById("toleranceInput").value);
@@ -1092,17 +1119,20 @@ function resetArmorDropdowns() {
 		document.getElementById("legsDropdown").addEventListener("change", calculateAndUpdate);
 		document.getElementById("glovesDropdown").addEventListener("change", calculateAndUpdate);
 		document.getElementById("StrongBackTrait").addEventListener("change", calculateAndUpdate);
+		document.getElementById("FortifyTrait").addEventListener("change", calculateAndUpdate);
 
 		calculateAndUpdate(); // Initialize the result display when the page loads
-		
+
        // List of image URLs
         const imageUrls = [
-            'https://images.hdqwalls.com/download/2023-remnant-ii-yg-5120x2880.jpg',
             'https://images.hdqwalls.com/download/remnant-2-r7-3840x2400.jpg',
-            'https://images2.alphacoders.com/129/1293143.png',
+            'https://images.hdqwalls.com/download/2023-remnant-ii-yg-5120x2880.jpg',
             'https://images5.alphacoders.com/129/1293142.png',
+			'https://images2.alphacoders.com/129/1293146.png',
+            'https://images2.alphacoders.com/129/1293143.png',
 			'https://images3.alphacoders.com/129/1293140.png',
 			'https://images.hdqwalls.com/download/2023-remnant-2-5k-bi-5120x2880.jpg',
+			'https://images4.alphacoders.com/129/1293141.png',
         ];
 
 let currentImageIndex = 0;
