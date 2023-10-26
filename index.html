@@ -634,16 +634,16 @@
 				<label for="StrongBackdropdown">Strong Back (Challenger)</label>
 				<select id="StrongBackTrait" class="trait-select">
 				  <option value="0">0</option>
-				  <option value="1">1</option>
-				  <option value="2">2</option>
-				  <option value="3">3</option>
-				  <option value="4">4</option>
-				  <option value="5">5</option>
-				  <option value="6">6</option>
-				  <option value="7">7</option>
-				  <option value="8">8</option>
-				  <option value="9">9</option>
-				  <option value="10">10</option>
+				  <option value="1.5">1</option>
+				  <option value="3">2</option>
+				  <option value="4.5">3</option>
+				  <option value="6">4</option>
+				  <option value="7.5">5</option>
+				  <option value="9">6</option>
+				  <option value="10.5">7</option>
+				  <option value="12">8</option>
+				  <option value="13.5">9</option>
+				  <option value="15">10</option>
 				</select>
 			  </div>
 			  <div class="trait-select-row">
@@ -922,10 +922,10 @@ function resetArmorDropdowns() {
 									shardringFactor = 0;
 								}
 
-								const total_weight = ((head[8] + body[8] + legs[8] + gloves[8]) - StrongBackTraitModifier - strongdrinkFactor - twistedidolFactor - navigatorspendantFactor - rustednavigatorspendantFactor - faeprotectorsignetFactor - dranmementoFactor + shardringFactor) * letoAmuletFactor;
+								const total_weight = (((head[8] + body[8] + legs[8] + gloves[8]) - strongdrinkFactor - twistedidolFactor - navigatorspendantFactor - rustednavigatorspendantFactor - faeprotectorsignetFactor - dranmementoFactor + shardringFactor) * letoAmuletFactor);
 
 						if (total_weight <= weight_limit) {
-							twistedidolarmorFactor = selectedAmuletValue === "twistedidol" ? 1.3 : 1;
+							twistedidolarmorFactor = selectedAmuletValue === "twistedidol" ? 1.35 : 1;
 							const total_damage_reduction = ((head[1] + body[1] + legs[1] + gloves[1]) * (twistedidolarmorFactor));
 
 							// Store candidate combinations without considering tolerance
@@ -1097,7 +1097,7 @@ function resetArmorDropdowns() {
 			StrongBackTraitModifier = parseFloat(StrongBackTrait.value);
 			FortifyTraitModifier = parseFloat(FortifyTrait.value);
 			const armorData = await fetchArmorData();
-			const weightLimit = parseInt(document.getElementById("weightInput").value);
+			const weightLimit = parseInt(document.getElementById("weightInput").value) + StrongBackTraitModifier;
 			let tolerance = parseInt(document.getElementById("toleranceInput").value);
 			tolerance = Math.max(0, tolerance); // Ensure tolerance is not negative
 			const {
