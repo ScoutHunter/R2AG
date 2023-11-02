@@ -922,7 +922,7 @@ function resetArmorDropdowns() {
 									shardringFactor = 0;
 								}
 
-								const total_weight = (((head[8] + body[8] + legs[8] + gloves[8]) - strongdrinkFactor - twistedidolFactor - navigatorspendantFactor - rustednavigatorspendantFactor - faeprotectorsignetFactor - dranmementoFactor + shardringFactor) * letoAmuletFactor);
+								const total_weight = (((head[2] + body[2] + legs[2] + gloves[2]) - strongdrinkFactor - twistedidolFactor - navigatorspendantFactor - rustednavigatorspendantFactor - faeprotectorsignetFactor - dranmementoFactor + shardringFactor) * letoAmuletFactor);
 
 						if (total_weight <= weight_limit) {
 							twistedidolarmorFactor = selectedAmuletValue === "twistedidol" ? 1.35 : 1;
@@ -968,8 +968,8 @@ function resetArmorDropdowns() {
 					return totalDamageB - totalDamageA; // Sort by total damage reduction in descending order
 				}
 				// If total damage reduction is the same, sort by total resistance in descending order
-				const totalResistanceA = a.Head[3] + a.Body[3] + a.Legs[3] + a.Gloves[3] + a.Head[4] + a.Body[4] + a.Legs[4] + a.Gloves[4] + a.Head[5] + a.Body[5] + a.Legs[5] + a.Gloves[5] + a.Head[6] + a.Body[6] + a.Legs[6] + a.Gloves[6] + a.Head[7] + a.Body[7] + a.Legs[7] + a.Gloves[7];
-				const totalResistanceB = b.Head[3] + b.Body[3] + b.Legs[3] + b.Gloves[3] + b.Head[4] + b.Body[4] + b.Legs[4] + b.Gloves[4] + b.Head[5] + b.Body[5] + b.Legs[5] + b.Gloves[5] + b.Head[6] + b.Body[6] + b.Legs[6] + b.Gloves[6] + b.Head[7] + b.Body[7] + b.Legs[7] + b.Gloves[7];
+				const totalResistanceA = a.Head[3] + a.Body[3] + a.Legs[3] + a.Gloves[3] + a.Head[4] + a.Body[4] + a.Legs[4] + a.Gloves[4] + a.Head[5] + a.Body[5] + a.Legs[5] + a.Gloves[5] + a.Head[7] + a.Body[7] + a.Legs[7] + a.Gloves[7] + a.Head[6] + a.Body[6] + a.Legs[6] + a.Gloves[6];
+				const totalResistanceB = b.Head[3] + b.Body[3] + b.Legs[3] + b.Gloves[3] + b.Head[4] + b.Body[4] + b.Legs[4] + b.Gloves[4] + b.Head[5] + b.Body[5] + b.Legs[5] + b.Gloves[5] + b.Head[7] + b.Body[7] + b.Legs[7] + b.Gloves[7] + b.Head[6] + b.Body[6] + b.Legs[6] + b.Gloves[6];
 				return totalResistanceB - totalResistanceA; // Sort by total resistance in descending order
 			});
 			const resultContainer = document.getElementById("resultContainer");
@@ -992,8 +992,8 @@ function resetArmorDropdowns() {
 					const totalBleed = (armorSet.Head[3] + armorSet.Body[3] + armorSet.Legs[3] + armorSet.Gloves[3]);
 					const totalFire = (armorSet.Head[4] + armorSet.Body[4] + armorSet.Legs[4] + armorSet.Gloves[4]);
 					const totalShock = (armorSet.Head[5] + armorSet.Body[5] + armorSet.Legs[5] + armorSet.Gloves[5]);
-					const totalBlight = (armorSet.Head[6] + armorSet.Body[6] + armorSet.Legs[6] + armorSet.Gloves[6]);
-					const totalToxin = (armorSet.Head[7] + armorSet.Body[7] + armorSet.Legs[7] + armorSet.Gloves[7]);
+					const totalBlight = (armorSet.Head[7] + armorSet.Body[7] + armorSet.Legs[7] + armorSet.Gloves[7]);
+					const totalToxin = (armorSet.Head[6] + armorSet.Body[6] + armorSet.Legs[6] + armorSet.Gloves[6]);
 					const totaldamage_reductionCheck = (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]);
 					let isBetter = true; // Flag to determine if the armor set is better than any previous sets
 					// Compare resistances with all previously selected armor sets
