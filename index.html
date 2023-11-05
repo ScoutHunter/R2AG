@@ -4,9 +4,29 @@
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>R2 Armor Generator</title>
+		<span id="loading"><div id="loading-circle"></div></span>
 	<style>
 	html {
 		zoom: 90%;
+	}
+
+	#loading-circle {
+	  width: 30px;
+	  height: 30px;
+	  border: 5px solid #000000;
+	  border-top: 4px solid #e94d35;
+	  border-radius: 50%;
+	  animation: spin 0.4s linear infinite;
+	  position: absolute;
+	  top: 10%;
+	  left: 49%;
+	  transform: translate(-50%, -50%); /* Center the element both horizontally and vertically */
+	  display: none; /* Initially hidden */
+	}
+
+	@keyframes spin {
+	  0% { transform: rotate(0deg); }
+	  100% { transform: rotate(360deg); }
 	}
 
 	body {
@@ -604,6 +624,7 @@
 		visibility: visible;
 		text-align: right;
 	}
+	
 	</style>
 </head>
 
@@ -756,8 +777,6 @@
 		</div>
 
 		<script>
-
-
 
 		async function fetchArmorData() {
 			try {
@@ -1121,6 +1140,7 @@ function resetArmorDropdowns() {
 		}
 
 		async function calculateAndUpdate() {
+		document.getElementById('loading-circle').style.display = 'block';
 			StrongBackTraitModifier = parseFloat(StrongBackTrait.value);
 			FortifyTraitModifier = parseFloat(FortifyTrait.value);
 			ShadeskinTraitModifier = parseFloat(ShadeskinTrait.value);
@@ -1132,6 +1152,7 @@ function resetArmorDropdowns() {
 				best_combinations
 			} = find_best_combination(armorData, weightLimit, tolerance);
 			display_combinations(best_combinations);
+		document.getElementById('loading-circle').style.display = 'none';
 		}
 
 		document.getElementById("weightInput").addEventListener("change", calculateAndUpdate);
