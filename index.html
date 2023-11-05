@@ -952,9 +952,11 @@ function resetArmorDropdowns() {
         max_damage_reduction
     };
 }
+
 		var backgroundColor = "#adffff"; // Declare backgroundColor as a global variable
-		var color2 = "#adffff";
-		var color3 = "#adffff";
+		var color1 = "#adffff"; // Declare backgroundColor as a global variable
+		var color2 = "#adffad";
+		var color3 = "#ffffad";
 		function updateBackgroundColor() {
 			var selectElement = document.getElementById("weightInput");
 			var selectedOption = selectElement.options[selectElement.selectedIndex];
@@ -962,26 +964,15 @@ function resetArmorDropdowns() {
 			switch (selectedOption.value) {
 				case "25":
 					backgroundColor = "#adffff";
-					color2 = "#adffff";
-					color3 = "#adffff";
 					break;
 				case "50":
 					backgroundColor = "#adffad";
-					color2 = "#adffff";
-					color3 = "#adffff";
 					break;
 				case "75":
 					backgroundColor = "#ffffad";
-					color2 = "#adffad";
-					color3 = "#adffff";
 					break;
 				case "1000000":
 					backgroundColor = "#ffbfad";
-					color2 = "#ffffad";
-					color3 = "#adffad";
-					break;
-				default:
-					backgroundColor = "#adffff";
 					break;
 			}
 			selectElement.style.backgroundColor = backgroundColor;
@@ -1034,16 +1025,16 @@ function resetArmorDropdowns() {
 							break
 						}
 					}
-					
-					var weightColor = (weightLimit > totalWeight + 75) ? backgroundColor :
-									  (weightLimit >= totalWeight + 50) ? color3 :
-									  (weightLimit >= totalWeight + 25) ? color2 : backgroundColor;
+
+					var weightColor = (totalWeight - StrongBackTraitModifier <= 25) ? color1 :
+									  (totalWeight - StrongBackTraitModifier <= 50) ? color2 :
+									  (totalWeight - StrongBackTraitModifier <= 75) ? color3 : backgroundColor
 
 					if(isBetter) {
 						const armorCard = document.createElement("div");
 						armorCard.classList.add("armor-card");
 						armorCard.innerHTML = `<
-						<span class="text-tooltip" data-tooltip="Total Damage Reduction" style="display: block; color: #ffff7f ; margin-top: -22px;">Armor: ${Number.isInteger(
+						<span class="text-tooltip" data-tooltip="Total Damage Reduction" style="display: block; color: #ffee69 ; margin-top: -22px;">Armor: ${Number.isInteger(
 							  (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) *
 							  twistedidolarmorFactor +
 							  (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * FortifyTraitModifier -
