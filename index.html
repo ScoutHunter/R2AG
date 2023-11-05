@@ -448,10 +448,10 @@
 		min-width: 250px;
 		max-width: 300px;
 		margin: 0 auto;
-		border-radius: 5px;
+		border-radius: 10px;
 		background-image: linear-gradient(#133, #011), linear-gradient(to top, #010, #022);
 		background-position: top, bottom;
-		background-size: 100% 36px, 100% calc(100% - 20px);
+		background-size: 100% 60px, 100% calc(100% - 60px);
 		background-repeat: no-repeat;
 		margin-bottom: -70px;
 	}
@@ -477,7 +477,7 @@
 	}
 
 	.greyColor {
-		color: #d3d3d3;
+		color: #f3f6f4;
 	}
 
 	.version-note {
@@ -493,12 +493,12 @@
 		text-shadow: -5px -0px 0 #000, 5px -0px 0 #000, 0px 5px 0 #000, 5px -5px 0 #000;
 	}
 
-	.resistance-tooltip {
+	.text-tooltip {
 		position: relative;
 		display: inline-block;
 	}
 
-	.resistance-tooltip::before {
+	.text-tooltip::before {
 		content: attr(data-tooltip);
 		display: inline-block;
 		max-width: 1000px;
@@ -524,18 +524,18 @@
 		/* Make the tooltip image ignore pointer events */
 	}
 
-	.resistance-tooltip:hover::before {
+	.text-tooltip:hover::before {
 		opacity: 1;
 		visibility: visible;
 	}
 
-	.resistance-tooltip-right {
+	.text-tooltip-right {
 		position: relative;
 		/* Ensure that tooltips are positioned relative to this element */
 		display: inline-block;
 	}
 
-	.resistance-tooltip-right::before {
+	.text-tooltip-right::before {
 		content: attr(data-tooltip);
 		display: inline-block;
 		max-width: 1000px;
@@ -561,7 +561,7 @@
 		/* Make the tooltip image ignore pointer events */
 	}
 
-	.resistance-tooltip-right:hover::before {
+	.text-tooltip-right:hover::before {
 		opacity: 1;
 		visibility: visible;
 		text-align: right;
@@ -661,7 +661,23 @@
 				  <option value="1.45">9</option>
 				  <option value="1.5">10</option>
 				</select>
-			</div>
+			  </div>
+			  <div class="trait-select-row">
+				<label for="StrongBackdropdown" style="line-height: 2.5;">Shadeskin</label>
+				<select id="ShadeskinTrait" class="trait-select">
+			      <option value="0">0</option>
+				  <option value="2">1</option>
+				  <option value="4">2</option>
+				  <option value="6">3</option>
+				  <option value="8">4</option>
+				  <option value="10">5</option>
+				  <option value="12">6</option>
+				  <option value="14">7</option>
+				  <option value="16">8</option>
+				  <option value="18">9</option>
+				  <option value="20">10</option>
+				</select>
+			  </div>
 			</div>
 
 			<div class="label-container amulet-container">
@@ -731,7 +747,7 @@
 		<br>
 		<div id="resultContainerWrapper">
 			<label for="toleranceInput"> <span style="color: #ebefe7;">
-            <span class="resistance-tooltip" data-tooltip="Displays more armor sets, potentially with better Resistances but lower Damage Reduction">
+            <span class="text-tooltip" data-tooltip="Displays more armor sets, potentially with better Resistances but lower Damage Reduction">
             </span> </span>
 			</label>
 			<input type="range" id="toleranceInput" value="0" min="0" max="10" step="1">
@@ -741,29 +757,7 @@
 
 		<script>
 
-		function updateBackgroundColor() {
-			var selectElement = document.getElementById("weightInput");
-			var selectedOption = selectElement.options[selectElement.selectedIndex];
-			var backgroundColor;
-			switch(selectedOption.value) {
-				case "25":
-					backgroundColor = "#adffff";
-					break;
-				case "50":
-					backgroundColor = "#adffad";
-					break;
-				case "75":
-					backgroundColor = "#ffffad";
-					break;
-				case "1000000":
-					backgroundColor = "#ffbfad";
-					break;
-				default:
-					backgroundColor = "#adffff";
-					break;
-			}
-			selectElement.style.backgroundColor = backgroundColor;
-		}
+
 
 		async function fetchArmorData() {
 			try {
@@ -898,13 +892,13 @@ function resetArmorDropdowns() {
 
 								const amuletDropdown = document.getElementById("amuletDropdown");
 								const selectedAmuletValue = amuletDropdown.value;
-								const letoAmuletFactor = selectedAmuletValue === "leto" ? 0.6 : 1;
-								const twistedidolFactor = selectedAmuletValue === "twistedidol" ? 15 : 0;
-								const navigatorspendantFactor = selectedAmuletValue === "navigatorspendant" ? 10 : 0;
-								const rustednavigatorspendantFactor = selectedAmuletValue === "rustednavigatorspendant" ? 15 : 0;
+								letoAmuletFactor = selectedAmuletValue === "leto" ? 0.6 : 1;
+								twistedidolFactor = selectedAmuletValue === "twistedidol" ? 15 : 0;
+								navigatorspendantFactor = selectedAmuletValue === "navigatorspendant" ? 10 : 0;
+								rustednavigatorspendantFactor = selectedAmuletValue === "rustednavigatorspendant" ? 15 : 0;
 
 								const strongDrinkCheckbox = document.getElementById("strongDrinkCheckbox");
-								const strongdrinkFactor = strongDrinkCheckbox.checked ? 10 : 0;
+								strongdrinkFactor = strongDrinkCheckbox.checked ? 10 : 0;
 
 								if(equippedRings.ring1 === "Fae Protector Signet" || equippedRings.ring2 === "Fae Protector Signet" || equippedRings.ring3 === "Fae Protector Signet" || equippedRings.ring4 === "Fae Protector Signet") {
 									faeprotectorsignetFactor = 5;
@@ -922,11 +916,11 @@ function resetArmorDropdowns() {
 									shardringFactor = 0;
 								}
 
-								const total_weight = (((head[2] + body[2] + legs[2] + gloves[2]) - strongdrinkFactor - twistedidolFactor - navigatorspendantFactor - rustednavigatorspendantFactor - faeprotectorsignetFactor - dranmementoFactor + shardringFactor) * letoAmuletFactor);
+								total_weight = (((head[2] + body[2] + legs[2] + gloves[2]) - strongdrinkFactor - twistedidolFactor - navigatorspendantFactor - rustednavigatorspendantFactor - faeprotectorsignetFactor - dranmementoFactor + shardringFactor) * letoAmuletFactor);
 
 						if (total_weight <= weight_limit) {
 							twistedidolarmorFactor = selectedAmuletValue === "twistedidol" ? 1.35 : 1;
-							const total_damage_reduction = ((head[1] + body[1] + legs[1] + gloves[1]) * (twistedidolarmorFactor));
+							const total_damage_reduction_new = ((head[1] + body[1] + legs[1] + gloves[1]) * (twistedidolarmorFactor));
 
 							// Store candidate combinations without considering tolerance
 							candidate_combinations.push({
@@ -934,7 +928,7 @@ function resetArmorDropdowns() {
 								'Body': body,
 								'Legs': legs,
 								'Gloves': gloves,
-								'DamageReduction': total_damage_reduction
+								'DamageReduction': total_damage_reduction_new
 							});
 						}
 					}
@@ -958,6 +952,40 @@ function resetArmorDropdowns() {
         max_damage_reduction
     };
 }
+		var backgroundColor = "#adffff"; // Declare backgroundColor as a global variable
+		var color2 = "#adffff";
+		var color3 = "#adffff";
+		function updateBackgroundColor() {
+			var selectElement = document.getElementById("weightInput");
+			var selectedOption = selectElement.options[selectElement.selectedIndex];
+
+			switch (selectedOption.value) {
+				case "25":
+					backgroundColor = "#adffff";
+					color2 = "#adffff";
+					color3 = "#adffff";
+					break;
+				case "50":
+					backgroundColor = "#adffad";
+					color2 = "#adffff";
+					color3 = "#adffff";
+					break;
+				case "75":
+					backgroundColor = "#ffffad";
+					color2 = "#adffad";
+					color3 = "#adffff";
+					break;
+				case "1000000":
+					backgroundColor = "#ffbfad";
+					color2 = "#ffffad";
+					color3 = "#adffad";
+					break;
+				default:
+					backgroundColor = "#adffff";
+					break;
+			}
+			selectElement.style.backgroundColor = backgroundColor;
+		}
 
 		function display_combinations(best_combinations) {
 			// Sort the best_combinations array based on total damage reduction and then total resistance
@@ -989,12 +1017,13 @@ function resetArmorDropdowns() {
 				let selectedArmors = [];
 				best_combinations.forEach((combination, index) => {
 					const armorSet = combination;
-					const totalBleed = (armorSet.Head[3] + armorSet.Body[3] + armorSet.Legs[3] + armorSet.Gloves[3]);
-					const totalFire = (armorSet.Head[4] + armorSet.Body[4] + armorSet.Legs[4] + armorSet.Gloves[4]);
-					const totalShock = (armorSet.Head[5] + armorSet.Body[5] + armorSet.Legs[5] + armorSet.Gloves[5]);
-					const totalBlight = (armorSet.Head[7] + armorSet.Body[7] + armorSet.Legs[7] + armorSet.Gloves[7]);
-					const totalToxin = (armorSet.Head[6] + armorSet.Body[6] + armorSet.Legs[6] + armorSet.Gloves[6]);
 					const totaldamage_reductionCheck = (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]);
+					const totalWeight = Math.max(0, (n => Number.isInteger(n) ? n : Math.round(n * 10) / 10)(((armorSet.Head[2] + armorSet.Body[2] + armorSet.Legs[2] + armorSet.Gloves[2]) - strongdrinkFactor - twistedidolFactor - navigatorspendantFactor - rustednavigatorspendantFactor - faeprotectorsignetFactor - dranmementoFactor + shardringFactor) * letoAmuletFactor));
+					const totalBleed = (armorSet.Head[3] + armorSet.Body[3] + armorSet.Legs[3] + armorSet.Gloves[3]);
+					const totalFire = (armorSet.Head[4] + armorSet.Body[4] + armorSet.Legs[4] + armorSet.Gloves[4]) + ShadeskinTraitModifier;
+					const totalShock = (armorSet.Head[5] + armorSet.Body[5] + armorSet.Legs[5] + armorSet.Gloves[5]) + ShadeskinTraitModifier;
+					const totalToxin = (armorSet.Head[6] + armorSet.Body[6] + armorSet.Legs[6] + armorSet.Gloves[6]) + ShadeskinTraitModifier;
+					const totalBlight = (armorSet.Head[7] + armorSet.Body[7] + armorSet.Legs[7] + armorSet.Gloves[7]);
 					let isBetter = true; // Flag to determine if the armor set is better than any previous sets
 					// Compare resistances with all previously selected armor sets
 					for(const selectedArmor of selectedArmors) {
@@ -1005,11 +1034,16 @@ function resetArmorDropdowns() {
 							break
 						}
 					}
+					
+					var weightColor = (weightLimit > totalWeight + 75) ? backgroundColor :
+									  (weightLimit >= totalWeight + 50) ? color3 :
+									  (weightLimit >= totalWeight + 25) ? color2 : backgroundColor;
+
 					if(isBetter) {
 						const armorCard = document.createElement("div");
 						armorCard.classList.add("armor-card");
-						armorCard.innerHTML = `
-						<span class="resistance-tooltip" data-tooltip="Total Damage Reduction"><span style="color: #ffff7f ;">Armor: ${Number.isInteger(
+						armorCard.innerHTML = `<
+						<span class="text-tooltip" data-tooltip="Total Damage Reduction" style="display: block; color: #ffff7f ; margin-top: -22px;">Armor: ${Number.isInteger(
 							  (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) *
 							  twistedidolarmorFactor +
 							  (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * FortifyTraitModifier -
@@ -1021,14 +1055,15 @@ function resetArmorDropdowns() {
 							  (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * FortifyTraitModifier -
 							  (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])
 							) :
-							(
+							Math.floor(10 * (
 							  (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) *
 							  twistedidolarmorFactor +
 							  (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * FortifyTraitModifier -
 							  (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])
-							).toFixed(1)
+							)) / 10
 							}
-						</span></span>
+						</span>
+						<span id="weightDisplay"  class="weight-display" style="display: block; line-height: 2; color: ${weightColor}; font-size: 15px;">Weight: ${totalWeight}</span>
 
 						<div class="content-wrapper">
 							<div class="gear-container">
@@ -1065,13 +1100,13 @@ function resetArmorDropdowns() {
 
 						<div class="status-global-wrapper">
 							<div class="status-wrapper">
-								<span class="resistance-tooltip" data-tooltip="Bleed"><span class="redColor">${totalBleed}</span>&nbsp </span>
-								<span class="resistance-tooltip" data-tooltip="Burn"><span class="orangeColor">${totalFire}</span>&nbsp </span>
-								<span class="resistance-tooltip" data-tooltip="Shock"><span class="purpleColor">${totalShock}</span>&nbsp </span>
-								<span class="resistance-tooltip" data-tooltip="Corrosion"><span class="greenColor">${totalToxin}</span>&nbsp </span>
-								<span class="resistance-tooltip" data-tooltip="Blight"><span class="greyColor">${totalBlight}</span> </span>
+								<span class="text-tooltip" data-tooltip="Bleed"><span class="redColor">${totalBleed}</span>&nbsp </span>
+								<span class="text-tooltip" data-tooltip="Burn"><span class="orangeColor">${totalFire}</span>&nbsp </span>
+								<span class="text-tooltip" data-tooltip="Shock"><span class="purpleColor">${totalShock}</span>&nbsp </span>
+								<span class="text-tooltip" data-tooltip="Corrosion"><span class="greenColor">${totalToxin}</span>&nbsp </span>
+								<span class="text-tooltip" data-tooltip="Blight"><span class="greyColor">${totalBlight}</span> </span>
 							</div>
-							<span class="resistance-tooltip-right" data-tooltip="Sum of Status Resistances"><span style="color: #d6e0d0 ;">Total: ${totalBleed + totalFire + totalShock + totalToxin + totalBlight}</span></span>
+							<span class="text-tooltip-right" data-tooltip="Sum of Status Resistances"><span style="color: #d6e0d0 ;">Total: ${totalBleed + totalFire + totalShock + totalToxin + totalBlight}</span></span>
 						</div>
 						`;
 						resultContainer.appendChild(armorCard);
@@ -1093,11 +1128,13 @@ function resetArmorDropdowns() {
 				resultContainer.appendChild(noCombinationMessage);
 			}
 		}
+
 		async function calculateAndUpdate() {
 			StrongBackTraitModifier = parseFloat(StrongBackTrait.value);
 			FortifyTraitModifier = parseFloat(FortifyTrait.value);
+			ShadeskinTraitModifier = parseFloat(ShadeskinTrait.value);
 			const armorData = await fetchArmorData();
-			const weightLimit = parseInt(document.getElementById("weightInput").value) + StrongBackTraitModifier;
+			weightLimit = parseInt(document.getElementById("weightInput").value) + StrongBackTraitModifier;
 			let tolerance = parseInt(document.getElementById("toleranceInput").value);
 			tolerance = Math.max(0, tolerance); // Ensure tolerance is not negative
 			const {
@@ -1120,6 +1157,7 @@ function resetArmorDropdowns() {
 		document.getElementById("glovesDropdown").addEventListener("change", calculateAndUpdate);
 		document.getElementById("StrongBackTrait").addEventListener("change", calculateAndUpdate);
 		document.getElementById("FortifyTrait").addEventListener("change", calculateAndUpdate);
+		document.getElementById("ShadeskinTrait").addEventListener("change", calculateAndUpdate);
 
 		calculateAndUpdate(); // Initialize the result display when the page loads
 
