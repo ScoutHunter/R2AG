@@ -4,1315 +4,1167 @@
 	<meta content="width=device-width, initial-scale=1" name="viewport">
 	<title>R2 Armor Generator</title>
 </head>
+
 <body>
+<span id="loading"></span>
+<div id="loading-circle">
 	<span id="loading"></span>
-	<div id="loading-circle">
-		<span id="loading"></span>
+</div>
+
+<style>
+	html {zoom: 90%}
+
+	#loading-circle {
+		width: 30px;
+		height: 30px;
+		border: 5px solid #000000;
+		border-top: 4px solid #e94d35;
+		border-radius: 50%;
+		animation: spin 0.4s linear infinite;
+		position: absolute;
+		top: 10%;
+		left: 49%;
+		transform: translate(-50%, -50%); /* Center the element both horizontally and vertically */
+		display: none; /* Initially hidden */
+	}
+	@keyframes spin {
+		0% { transform: rotate(0deg); }
+		100% { transform: rotate(360deg); }
+	}
+
+	body {
+		font-family: Trebuchet ms, sans-serif;
+		background-color: #000;
+		font-size: 16px;
+		background-size: 100vh 100%;
+		margin-bottom: 85px;
+		padding: 0;
+		display: flex;
+		justify-content: center;
+		overflow-x: hidden;
+	}
+
+	.background-image {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-size: cover;
+		background-repeat: no-repeat;
+		z-index: -1;
+		border: 3px solid #000;
+		box-sizing: border-box;
+		opacity: 0.2; /* Initial opacity */
+		user-drag: none;
+		user-select: none;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background-position: center 0%; /* Centered horizontally */
+	}
+
+	.pagecontainer {
+		max-width: 1315px;
+		/* Set the fixed width of the content */
+		width: 90%;
+		/* Responsive width */
+		background-repeat: no-repeat;
+		box-sizing: border-box;
+		/* Include padding in the width */
+		user-drag: none;
+		user-select: none;
+		display: table;
+		align-items: center;
+		justify-content: center;
+		background-position: center;
+	}
+
+	.ImageTitle {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		/* Add this line to horizontally center the content */
+		text-align: center;
+		/* You can keep this if you want to center the text within the container */
+		margin-bottom: -55px;
+		margin-top: -10px;
+		user-drag: none;
+		user-select: none;
+	}
+
+	h1 {
+		font-family: Fantasy;
+		font-size: 24px;
+		text-align: center;
+		margin-top: 7px;
+		margin-left: 15px;
+		background: linear-gradient(75deg, #888888, #FFFDD0, #edecec, #999999);
+		-webkit-background-clip: text;
+		background-clip: text;
+		color: transparent;
+		opacity: 0.9;
+		font-weight: 100;
+		user-drag: none;
+		user-select: none;
+	}
+	h2,
+	h3 {
+		font-size: 26px;
+		text-align: center;
+		margin-top: 7px;
+		margin-left: 15px;
+	}
+
+	label {
+		display: block;
+		margin-bottom: 3px;
+	}
+
+	input {
+		width: 100px;
+		margin-bottom: 0px;
+	}
+
+	#amuletDropdown {
+		display: flex;
+		text-align: center;
+		align-items: center;
+		width: 215px;
+		font-size: 15px;
+		background-color: #ebefe7;
+		border-radius: 5px;
+	}
+	.label-container.amulet-container {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		/* Center elements horizontally */
+		align-items: center;
+	}
+
+	.ring-dropdown-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		background-color: #122;
+		padding: 5px 10px;
+		border-radius: 10px;
+	}
+
+	.concoction-checkbox-container {
+		display: flex;
+		width: 186px;
+		align-items: center;
+		background-color: #122;
+		padding: 5px 10px;
+		border-radius: 10px;
+	}
+
+	.ring-dropdown-group {
+		display: flex;
+		align-items: center;
+		margin-right: -10px;
+	}
+
+	.ring-dropdown-group .ring-select {
+		text-align: center;
+		width: 170px;
+		font-size: 15px;
+		margin-right: 10px;
+		margin-top: 3px;
+		background-color: #ebefe7;
+		border-radius: 5px;
+	}
+
+	.unequipRings-button-container {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.trait-container {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		background-color: #334;
+		background-image: linear-gradient(#999, #999), linear-gradient(to top, #110, #334);
+		background-position: top, bottom;
+		background-size: 100% 0px, 100% calc(100% - 10px);
+		background-repeat: no-repeat;
+		padding: 0px 10px;
+		border: 1px solid #000;
+		border-radius: 10px;
+		align-items: center;
+		width: 500px;
+	}
+
+	.armor-filter-container {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		background-color: #332;
+		background-image: linear-gradient(#999, #999), linear-gradient(to top, #110, #332);
+		background-position: top, bottom;
+		background-size: 100% 0px, 100% calc(100% - 10px);
+		background-repeat: no-repeat;
+		padding: 0px 10px;
+		border: 1px solid #000;
+		border-radius: 10px;
+		align-items: center;
+		width: 250px;
+	}
+
+	.armor-filter-title {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 16px;
+		background-color: #011;
+		padding: 5px 10px;
+		border-radius: 6px;
+		color: #d6e0d0;
+		margin-bottom: 5px;
+		margin-right: 15px;
+		font-weight: 100;
+	}
+
+	.trait-select-row {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-bottom: 3px;
+		margin-right: 0px;
+	}
+
+	label[for="StrongBackdropdown"] {
+		margin-right: 0px;
+		margin-left: 0px;
+		color: #f2e5f2 ;
+		font-size: 15px;
+		width: 100px
+	}
+
+	.armor-select-row {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-bottom: 0px;
+	}
+
+	.armor-select-row label {
+		width: 35px; /* Adjust this width as needed */
+		margin-right: 10px;
+		color: #fff2cc;
+	}
+
+	.trait-select {
+		text-align: center;
+		width: 50px;
+		font-size: 15px;
+		background-color: #ebefe7;
+		border-radius: 5px;
+	}
+
+	.armor-select {
+		text-align: center;
+		width: 195px;
+		font-size: 15px;
+		background-color: #ebefe7;
+		border-radius: 5px;
+	}
+
+	.reset-armor-button-container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 75px;
+		margin-bottom: 5px; /* Adjust as needed */
+		margin-left: 15px;
+	}
+
+	.unequip-button {
+		text-align: center;
+		width: 100px;
+		font-size: 13px;
+		margin-top: 10px;
+		margin-right: 10px;
+		margin-left: 0px;
+		border-radius: 5px;
+	}
+
+	.label-container {
+		display: flex;
+		justify-content: center;
+		/* Center elements horizontally */
+		background-color: #233;
+		background-image: linear-gradient(#999, #999), linear-gradient(to top, #122, #233);
+		background-position: top, bottom;
+		background-size: 100% 0px, 100% calc(100% - 0px);
+		background-repeat: no-repeat;
+		padding: 5px 10px;
+		border: 1px solid #000;
+		border-radius: 10px;
+		align-items: center;
+	}
+
+	.label-container label {
+		margin-right: 10px;
+		background-color: #011;
+		padding: 5px 15px;
+		border-radius: 6px;
+		color: #d6e0d0;
+		margin-bottom: 0px;
+	}
+
+	#toleranceInput {
+		text-align: left;
+		width: 170px;
+		/* Adjust the font size as needed */
+		/* Adjust the width as needed */
+		background-color: #ebefe7
+		user-drag: none;
+		user-select: none;
+	}
+
+	#weightInput {
+		text-align: center;
+		width: 150px;
+		height: 35px;
+		/* Adjust this value as needed */
+		font-size: 15px;
+		/* Adjust the font size as needed */
+		/* Adjust the width as needed */
+		background-color: #adffff;
+		border-radius: 5px;
+	}
+
+	.content-container {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin: 0 auto;
+		max-width: 1000px;
+		padding: 0 20px;
+		box-sizing: border-box;
+		width: 0px;
+	}
+	.content-container > * {
+		text-align: center;
+		margin: 10px;
+		flex-grow: 1;
+		margin-bottom: -5px;
+		<!-- box-shadow: 0 0 75px rgba(32, 32, 0, 1); -->
+	}
+
+	@media screen and (max-width: 1150px) {
+		.content-container {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			align-items: center;
+		}
+	}
+
+	.content-wrapper {
+		display: flex;
+		justify-content: center;
+	}
+
+	.gear-container {
+		text-align: left;
+		max-width: 300px;
+	}
+
+	.status-wrapper {
+		align-items: center;
+		letter-spacing: px;
+		font-size: 18px;
+		background-color: #022;
+		padding: 5px 10px;
+		border: 1px solid #000;
+		border-radius: 10px;
+	}
+
+	.status-global-wrapper {
+		display: flex;
+		justify-content: space-around;
+		max-width: 240px;
+		margin: 0 auto;
+		background-color: #011;
+		padding: 5px 5px;
+		border-radius: 25px;
+	}
+
+	#resultContainerWrapper {
+		user-drag: none;
+		user-select: none;
+		text-align: center;
+		margin-top: 0px;
+	}
+
+	#resultContainer {
+		user-drag: none;
+		user-select: none;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+		grid-gap: 75px;
+	}
+
+	.armor-card {
+		border: 1px solid #773;
+		padding: 10px;
+		min-width: 250px;
+		max-width: 300px;
+		margin: 0 auto;
+		border-radius: 10px;
+		background-image: linear-gradient(#133, #011), linear-gradient(to top, #010, #022);
+		background-position: top, bottom;
+		background-size: 100% 60px, 100% calc(100% - 60px);
+		background-repeat: no-repeat;
+		margin-bottom: -70px;
+		box-shadow: 0 0 50px rgba(128, 255, 255, 0.1);
+	}
+
+	.itemName {
+		color: #FFFFCC;
+	}
+
+	.redColor {
+		color: #FF0000;
+	}
+
+	.orangeColor {
+		color: #FF8C00;
+	}
+
+	.purpleColor {
+		color: #7df9ff;
+	}
+
+	.greenColor {
+		color: #80ff00;
+	}
+
+	.greyColor {
+		color: #f3f6f4;
+	}
+
+	.text-tooltip {
+		position: relative;
+		display: inline-block;
+	}
+
+	.text-tooltip::before {
+		content: attr(data-tooltip);
+		display: inline-block;
+		max-width: 1000px;
+		white-space: nowrap;
+		/* Prevent line breaks */
+		overflow: hidden;
+		/* Hide any overflow */
+		text-overflow: ellipsis;
+		/* Truncate with ellipsis if content overflows */
+		position: absolute;
+		bottom: 100%;
+		left: 50%;
+		transform: translateX(-50%);
+		background-color: rgba(0, 0, 0, 0.8);
+		color: white;
+		padding: 5px 10px;
+		border-radius: 5px;
+		font-size: 12px;
+		opacity: 0;
+		visibility: hidden;
+		transition: opacity 0.2s, visibility 0.2s;
+		pointer-events: none;
+		/* Make the tooltip image ignore pointer events */
+	}
+
+	.text-tooltip:hover::before {
+		opacity: 1;
+		visibility: visible;
+	}
+
+	.text-tooltip-right {
+		position: relative;
+		/* Ensure that tooltips are positioned relative to this element */
+		display: inline-block;
+	}
+
+	.text-tooltip-right::before {
+		content: attr(data-tooltip);
+		display: inline-block;
+		max-width: 1000px;
+		white-space: nowrap;
+		/* Prevent line breaks */
+		overflow: hidden;
+		/* Hide any overflow */
+		text-overflow: ellipsis;
+		/* Truncate with ellipsis if content overflows */
+		position: absolute;
+		bottom: -50%;
+		left: 50%;
+		transform: translateX(-50%);
+		background-color: rgba(0, 0, 0, 0.8);
+		color: white;
+		padding: 5px 10px;
+		border-radius: 5px;
+		font-size: 12px;
+		opacity: 0;
+		visibility: hidden;
+		transition: opacity 0.2s, visibility 0.2s;
+		pointer-events: none;
+		/* Make the tooltip image ignore pointer events */
+	}
+
+	.text-tooltip-right:hover::before {
+		opacity: 1;
+		visibility: visible;
+		text-align: right;
+	}
+
+	.armor-img-tooltip {
+		position: relative;
+		/* Ensure that tooltips are positioned relative to this element */
+		display: inline-block;
+	}
+
+	.armor-img-tooltip::before {
+		content: '';
+		display: inline-block;
+		width: 150px;
+		/* Adjust the width of the tooltip as needed */
+		height: 150px;
+		/* Adjust the height of the tooltip as needed */
+		background: var(--tooltip-bg-image), radial-gradient(circle at center, rgba(192, 255, 240, 0.2) 10%, transparent 65%);
+		/* Combine gradient and background image */
+		background-size: cover;
+		/* Scale the background image to cover the tooltip */
+		position: absolute;
+		bottom: -300%;
+		left: 100%;
+		transform: translateX(0%);
+		opacity: 0;
+		visibility: hidden;
+		transition: opacity 0.2s, visibility 0s;
+		pointer-events: none;
+		/* Make the tooltip image ignore pointer events */
+		border-radius: 50%;
+		/* Make the tooltip image circular */
+		z-index: 1;
+		/* Place the tooltip background behind the image */
+	}
+
+	.armor-img-tooltip:hover::before {
+		opacity: 1;
+		visibility: visible;
+		text-align: right;
+	}
+</style>
+
+<div class="background-image"></div><div class="background-image"></div>
+<div class="pagecontainer">
+	<div class="ImageTitle">
+		<img height="auto" src="https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Misc/Remnant2.png"width="150">
+		<h1>Armor Generator</h1>
 	</div>
-	<style>
-	   html {
-	       zoom: 90%;
-	   }
-
-	   #loading-circle {
-	     width: 30px;
-	     height: 30px;
-	     border: 5px solid #000000;
-	     border-top: 4px solid #e94d35;
-	     border-radius: 50%;
-	     animation: spin 0.4s linear infinite;
-	     position: absolute;
-	     top: 10%;
-	     left: 49%;
-	     transform: translate(-50%, -50%); /* Center the element both horizontally and vertically */
-	     display: none; /* Initially hidden */
-	   }
-
-	   @keyframes spin {
-	     0% { transform: rotate(0deg); }
-	     100% { transform: rotate(360deg); }
-	   }
-
-	   body {
-	       font-family: Trebuchet ms, sans-serif;
-	       background-color: #000;
-	       font-size: 16px;
-	       background-size: 100vh 100%;
-	       margin-bottom: 85px;
-	       padding: 0;
-	       display: flex;
-	       justify-content: center;
-	       overflow-x: hidden;
-	   }
-
-	   .background-image {
-	       position: fixed;
-	       top: 0;
-	       left: 0;
-	       width: 100%;
-	       height: 100%;
-	       background-size: cover;
-	       background-repeat: no-repeat;
-	       z-index: -1;
-	       border: 15px solid #011;
-	       box-sizing: border-box;
-	       opacity: 0.3; /* Initial opacity */
-	       user-drag: none;
-	       user-select: none;
-	   }
-
-	   .pagecontainer {
-	       max-width: 1315px;
-	       /* Set the fixed width of the content */
-	       width: 90%;
-	       /* Responsive width */
-	       background-repeat: no-repeat;
-	       box-sizing: border-box;
-	       /* Include padding in the width */
-	       user-drag: none;
-	       user-select: none;
-	   }
-
-	   .ImageTitle {
-	       display: flex;
-	       flex-direction: row;
-	       align-items: center;
-	       justify-content: center;
-	       /* Add this line to horizontally center the content */
-	       text-align: center;
-	       /* You can keep this if you want to center the text within the container */
-	       margin-bottom: -55px;
-	       margin-top: -10px;
-	       user-drag: none;
-	       user-select: none;
-	   }
-
-	   h1 {
-	       font-family: Fantasy;
-	       font-size: 24px;
-	       text-align: center;
-	       margin-top: 7px;
-	       margin-left: 15px;
-	       background: linear-gradient(75deg, #888888, #FFFDD0, #edecec, #999999);
-	       -webkit-background-clip: text;
-	       background-clip: text;
-	       color: transparent;
-	       opacity: 0.9;
-	       font-weight: 100;
-	       user-drag: none;
-	       user-select: none;
-	   }
-
-	   h2,
-	   h3 {
-	       font-size: 26px;
-	       text-align: center;
-	       margin-top: 7px;
-	       margin-left: 15px;
-	   }
-
-	   label {
-	       display: block;
-	       margin-bottom: 3px;
-	   }
-
-	   input {
-	       width: 100px;
-	       margin-bottom: 0px;
-	   }
-
-	   .archetype-dropdown-container {
-	       display: flex;
-	       flex-direction: column;
-	       align-items: center;
-	       background-color: #233;
-	       padding: 5px 10px;
-	       border: 1px solid #000;
-	       border-radius: 10px;
-	   }
-
-	   .archetype-dropdown-title {
-	       text-align: center;
-	   }
-
-	   .archetype-dropdown-group {
-	       display: flex;
-	       align-items: center;
-	       margin-right: -10px;
-	   }
-
-	   .archetype-dropdown-group .archetype-select {
-	       text-align: center;
-	       width: 110px;
-	       font-size: 15px;
-	       margin-right: 10px;
-	       background-color: #ebefe7;
-	       border-radius: 5px;
-	   }
-
-	   #amuletDropdown {
-	       display: flex;
-	       text-align: center;
-	       align-items: center;
-	       width: 215px;
-	       font-size: 15px;
-	       background-color: #ebefe7;
-	       border-radius: 5px;
-	   }
-
-	   .ring-dropdown-container {
-	       display: flex;
-	       flex-direction: column;
-	       align-items: center;
-	       background-color: #122;
-	       padding: 5px 10px;
-	       border-radius: 10px;
-	   }
-
-	   .concoction-checkbox-container {
-	       display: flex;
-	       width: 186px;
-	       align-items: center;
-	       background-color: #122;
-	       padding: 5px 10px;
-	       border-radius: 10px;
-	   }
-
-	   .ring-dropdown-title {
-	       text-align: center;
-	       margin-bottom: -10px;
-	       font-size: 12px;
-	   }
-
-	   .ring-dropdown-group {
-	       display: flex;
-	       align-items: center;
-	       margin-right: -10px;
-	   }
-
-	   .ring-dropdown-group .ring-select {
-	       text-align: center;
-	       width: 170px;
-	       font-size: 15px;
-	       margin-right: 10px;
-	       margin-top: 3px;
-	       background-color: #ebefe7;
-	       border-radius: 5px;
-	   }
-
-	   .unequipRings-button-container {
-	       display: flex;
-	       justify-content: space-between;
-	       align-items: center;
-	   }
-
-	   .trait-container {
-	       display: flex;
-	       flex-direction: column;
-	       justify-content: center;
-	       background-color: #334;
-	       background-image: linear-gradient(#999, #999), linear-gradient(to top, #110, #334);
-	       background-position: top, bottom;
-	       background-size: 100% 0px, 100% calc(100% - 10px);
-	       background-repeat: no-repeat;
-	       padding: 0px 10px;
-	       border: 1px solid #000;
-	       border-radius: 10px;
-	       align-items: center;
-	       width: 500px;
-	   }
-
-	   .armor-filter-container {
-	       display: flex;
-	       flex-direction: column;
-	       justify-content: center;
-	       background-color: #332;
-	       background-image: linear-gradient(#999, #999), linear-gradient(to top, #110, #332);
-	       background-position: top, bottom;
-	       background-size: 100% 0px, 100% calc(100% - 10px);
-	       background-repeat: no-repeat;
-	       padding: 0px 10px;
-	       border: 1px solid #000;
-	       border-radius: 10px;
-	       align-items: center;
-	       width: 250px;
-	   }
-
-	   .armor-filter-title {
-	       display: flex;
-	       justify-content: center;
-	       align-items: center;
-	       font-size: 16px;
-	       background-color: #011;
-	       padding: 5px 10px;
-	       border-radius: 6px;
-	       color: #d6e0d0;
-	       margin-bottom: 5px;
-	       margin-right: 15px;
-	       font-weight: 100;
-	   }
-
-	   .trait-select-row {
-	       display: flex;
-	       justify-content: center;
-	       align-items: center;
-	       margin-bottom: 3px;
-	       margin-right: 0px;
-	   }
-
-	   label[for="StrongBackdropdown"] {
-	       margin-right: 0px;
-	       margin-left: 0px;
-	       color: #f2e5f2 ;
-	       font-size: 15px;
-	       width: 100px
-	   }
-
-	   .armor-select-row {
-	       display: flex;
-	       justify-content: center;
-	       align-items: center;
-	       margin-bottom: 0px;
-	   }
-
-	   .armor-select-row label {
-	       width: 35px; /* Adjust this width as needed */
-	       margin-right: 10px;
-	       color: #fff2cc;
-	   }
-
-	   .trait-select {
-	       text-align: center;
-	       width: 50px;
-	       font-size: 15px;
-	       background-color: #ebefe7;
-	       border-radius: 5px;
-	   }
-
-	   .armor-select {
-	       text-align: center;
-	       width: 195px;
-	       font-size: 15px;
-	       background-color: #ebefe7;
-	       border-radius: 5px;
-	   }
-
-
-	   .reset-armor-button-container {
-	       display: flex;
-	       justify-content: center;
-	       align-items: center;
-	       width: 75px;
-	       margin-bottom: 5px; /* Adjust as needed */
-	       margin-left: 15px;
-	   }
-
-	   .unequip-button {
-	       text-align: center;
-	       width: 100px;
-	       font-size: 13px;
-	       margin-top: 10px;
-	       margin-right: 10px;
-	       margin-left: 0px;
-	       border-radius: 5px;
-	   }
-
-	   .label-container.amulet-container {
-	       display: flex;
-	       flex-direction: column;
-	       justify-content: center;
-	       /* Center elements horizontally */
-	       align-items: center;
-	   }
-
-	   .label-container {
-	       display: flex;
-	       justify-content: center;
-	       /* Center elements horizontally */
-	       background-color: #233;
-	       background-image: linear-gradient(#999, #999), linear-gradient(to top, #122, #233);
-	       background-position: top, bottom;
-	       background-size: 100% 0px, 100% calc(100% - 10px);
-	       background-repeat: no-repeat;
-	       padding: 5px 10px;
-	       border: 1px solid #000;
-	       border-radius: 10px;
-	       align-items: center;
-	   }
-
-	   .label-container label {
-	       margin-right: 10px;
-	       background-color: #011;
-	       padding: 5px 15px;
-	       border-radius: 6px;
-	       color: #d6e0d0;
-	       margin-bottom: 0px;
-	   }
-
-	   #toleranceInput {
-	       text-align: left;
-	       width: 170px;
-	       /* Adjust the font size as needed */
-	       /* Adjust the width as needed */
-	       background-color: #ebefe7
-	       user-drag: none;
-	       user-select: none;
-	   }
-
-	   #weightInput {
-	       text-align: center;
-	       width: 150px;
-	       height: 35px;
-	       /* Adjust this value as needed */
-	       font-size: 15px;
-	       /* Adjust the font size as needed */
-	       /* Adjust the width as needed */
-	       background-color: #adffff;
-	       border-radius: 5px;
-	   }
-
-	   .dropdown-container {
-	       display: flex;
-	       flex-direction: column;
-	       align-items: center;
-	   }
-
-	   .content-container {
-	       display: flex;
-	       align-items: center;
-	       justify-content: center;
-	       margin: 0 auto;
-	       max-width: 1000px;
-	       padding: 0 20px;
-	       box-sizing: border-box;
-	       width: 0px;
-	   }
-
-	   #cardsandtolerance {
-	   background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
-	   border-radius: 10px; /* Rounded corners */
-	   }
-
-	   /* Center the elements within the container */
-	   .content-container > * {
-	       text-align: center;
-	       margin: 10px;
-	       flex-grow: 1;
-	       margin-bottom: -5px;
-	   }
-
-	   /* Media query for handling wrapping */
-	   @media screen and (max-width: 1150px) {
-	       .content-container {
-	           display: flex;
-	           flex-wrap: wrap;
-	           align-items: center; /* Controls vertical alignment */
-	       }
-	   }
-
-	   .content-wrapper {
-	       display: flex;
-	       justify-content: center;
-	   }
-
-	   .gear-container {
-	       text-align: left;
-	       max-width: 300px;
-	   }
-
-	   .gear-container p {
-	       margin: 1;
-	   }
-
-	   .gear-container p span.itemName {
-	       padding-right: 0px;
-	       /* Add spacing between label and value */
-	       padding-left: 2px;
-	       /* Add spacing between label and value */
-	   }
-
-	   .status-wrapper {
-	       align-items: center;
-	       letter-spacing: px;
-	       font-size: 18px;
-	       background-color: #022;
-	       padding: 5px 10px;
-	       border: 1px solid #000;
-	       border-radius: 10px;
-	   }
-
-	   .status-global-wrapper {
-	       display: flex;
-	       justify-content: space-around;
-	       max-width: 240px;
-	       margin: 0 auto;
-	       background-color: #011;
-	       padding: 5px 5px;
-	       border-radius: 25px;
-	   }
-
-	   #resultContainerWrapper {
-	       user-drag: none;
-	       user-select: none;
-	       text-align: center;
-	       margin-top: 0px;
-	   }
-
-	   #resultContainer {
-	       user-drag: none;
-	       user-select: none;
-	       display: grid;
-	       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-	       grid-gap: 75px;
-	   }
-
-	   .armor-card {
-	       border: 1px solid #773;
-	       padding: 10px;
-	       min-width: 250px;
-	       max-width: 300px;
-	       margin: 0 auto;
-	       border-radius: 10px;
-	       background-image: linear-gradient(#133, #011), linear-gradient(to top, #010, #022);
-	       background-position: top, bottom;
-	       background-size: 100% 60px, 100% calc(100% - 60px);
-	       background-repeat: no-repeat;
-	       margin-bottom: -70px;
-	   }
-
-	   .itemName {
-	       color: #FFFFCC;
-	   }
-
-	   .redColor {
-	       color: #FF0000;
-	   }
-
-	   .orangeColor {
-	       color: #FF8C00;
-	   }
-
-	   .purpleColor {
-	       color: #7df9ff;
-	   }
-
-	   .greenColor {
-	       color: #80ff00;
-	   }
-
-	   .greyColor {
-	       color: #f3f6f4;
-	   }
-
-	   .text-with-border {
-	       text-shadow: -5px -0px 0 #000, 5px -0px 0 #000, 0px 5px 0 #000, 5px -5px 0 #000;
-	   }
-
-	   .text-tooltip {
-	       position: relative;
-	       display: inline-block;
-	   }
-
-	   .text-tooltip::before {
-	       content: attr(data-tooltip);
-	       display: inline-block;
-	       max-width: 1000px;
-	       white-space: nowrap;
-	       /* Prevent line breaks */
-	       overflow: hidden;
-	       /* Hide any overflow */
-	       text-overflow: ellipsis;
-	       /* Truncate with ellipsis if content overflows */
-	       position: absolute;
-	       bottom: 100%;
-	       left: 50%;
-	       transform: translateX(-50%);
-	       background-color: rgba(0, 0, 0, 0.8);
-	       color: white;
-	       padding: 5px 10px;
-	       border-radius: 5px;
-	       font-size: 12px;
-	       opacity: 0;
-	       visibility: hidden;
-	       transition: opacity 0.2s, visibility 0.2s;
-	       pointer-events: none;
-	       /* Make the tooltip image ignore pointer events */
-	   }
-
-	   .text-tooltip:hover::before {
-	       opacity: 1;
-	       visibility: visible;
-	   }
-
-	   .text-tooltip-right {
-	       position: relative;
-	       /* Ensure that tooltips are positioned relative to this element */
-	       display: inline-block;
-	   }
-
-	   .text-tooltip-right::before {
-	       content: attr(data-tooltip);
-	       display: inline-block;
-	       max-width: 1000px;
-	       white-space: nowrap;
-	       /* Prevent line breaks */
-	       overflow: hidden;
-	       /* Hide any overflow */
-	       text-overflow: ellipsis;
-	       /* Truncate with ellipsis if content overflows */
-	       position: absolute;
-	       bottom: -50%;
-	       left: 50%;
-	       transform: translateX(-50%);
-	       background-color: rgba(0, 0, 0, 0.8);
-	       color: white;
-	       padding: 5px 10px;
-	       border-radius: 5px;
-	       font-size: 12px;
-	       opacity: 0;
-	       visibility: hidden;
-	       transition: opacity 0.2s, visibility 0.2s;
-	       pointer-events: none;
-	       /* Make the tooltip image ignore pointer events */
-	   }
-
-	   .text-tooltip-right:hover::before {
-	       opacity: 1;
-	       visibility: visible;
-	       text-align: right;
-	   }
-
-	   .armor-img-tooltip {
-	       position: relative;
-	       /* Ensure that tooltips are positioned relative to this element */
-	       display: inline-block;
-	   }
-
-	   .armor-img-tooltip::before {
-	       content: '';
-	       display: inline-block;
-	       width: 150px;
-	       /* Adjust the width of the tooltip as needed */
-	       height: 150px;
-	       /* Adjust the height of the tooltip as needed */
-	       background: var(--tooltip-bg-image), radial-gradient(circle at center, rgba(192, 255, 240, 0.2) 10%, transparent 65%);
-	       /* Combine gradient and background image */
-	       background-size: cover;
-	       /* Scale the background image to cover the tooltip */
-	       position: absolute;
-	       bottom: -300%;
-	       left: 100%;
-	       transform: translateX(0%);
-	       opacity: 0;
-	       visibility: hidden;
-	       transition: opacity 0.2s, visibility 0s;
-	       pointer-events: none;
-	       /* Make the tooltip image ignore pointer events */
-	       border-radius: 50%;
-	       /* Make the tooltip image circular */
-	       z-index: 1;
-	       /* Place the tooltip background behind the image */
-	   }
-
-	   .armor-img-tooltip:hover::before {
-	       opacity: 1;
-	       visibility: visible;
-	       text-align: right;
-	   }
-	</style>
-	<div class="background-image"></div>
-	<div class="background-image"></div>
-	<div class="pagecontainer">
-		<div class="ImageTitle">
-			<img height="auto" src=
-			"https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Misc/Remnant2.png"
-			width="150">
-			<h1>Armor Generator</h1>
-		</div><br>
+	<br><br>
+	<div class="content-container">
+		<!-- Align the elements using the new label-container class -->
+		<div class="label-container">
+			<label for="weightInput">Max Stamina Penalty</label>
+			<select id="weightInput" onchange="updateBackgroundColor()">
+				<option data-color="#adffff" value="25">Light (0%)</option>
+				<option data-color="#adffad" value="50">Medium (25%)</option>
+				<option data-color="#ffffad" value="75">Heavy (50%)</option>
+				<option data-color="#ffbfad" value="1000000">Flop (75%)</option>
+			</select>
+		</div>
+		<div class="trait-container">
+			<h2 class="armor-filter-title">Trait Level</h2>
+			<div class="trait-select-row">
+				<label for="StrongBackdropdown">Strong Back (Challenger)</label>
+				<select class="trait-select" id="StrongBackTrait">
+					<option value="0">0</option>
+					<option value="1.5">1</option>
+					<option value="3">2</option>
+					<option value="4.5">3</option>
+					<option value="6">4</option>
+					<option value="7.5">5</option>
+					<option value="9">6</option>
+					<option value="10.5">7</option>
+					<option value="12">8</option>
+					<option value="13.5">9</option>
+					<option value="15">10</option>
+				</select>
+			</div>
+			<div class="trait-select-row">
+				<label for="StrongBackdropdown">Fortify (Engineer)</label>
+				<select class="trait-select" id="FortifyTrait">
+					<option value="1">0</option>
+					<option value="1.05">1</option>
+					<option value="1.1">2</option>
+					<option value="1.15">3</option>
+					<option value="1.2">4</option>
+					<option value="1.25">5</option>
+					<option value="1.3">6</option>
+					<option value="1.35">7</option>
+					<option value="1.4">8</option>
+					<option value="1.45">9</option>
+					<option value="1.5">10</option>
+				</select>
+			</div>
+			<div class="trait-select-row">
+				<label for="StrongBackdropdown" style=
+				"line-height: 2.5;">Shadeskin</label>
+				<select class="trait-select" id="ShadeskinTrait">
+					<option value="0">0</option>
+					<option value="2">1</option>
+					<option value="4">2</option>
+					<option value="6">3</option>
+					<option value="8">4</option>
+					<option value="10">5</option>
+					<option value="12">6</option>
+					<option value="14">7</option>
+					<option value="16">8</option>
+					<option value="18">9</option>
+					<option value="20">10</option>
+				</select>
+			</div>
+		</div>
+		<div class="label-container amulet-container">
+			<label for="amuletDropdown">Amulet</label>
+			<select id="amuletDropdown">
+				<option value="undefined">undefined</option>
+				<option value="leto">Leto's Amulet</option>
+				<option value="twistedidol">Twisted Idol</option>
+				<option value="navigatorspendant">Navigator's Pendant</option>
+				<option value="rustednavigatorspendant">Rusted Navigator's Pendant</option>
+			</select>
+		</div>
+		<div class="label-container ring-dropdown-container">
+			<label for="ring-dropdown-group">Rings</label>
+			<div class="ring-dropdown-group">
+				<select class="ring-select" id="ring1" onchange="equipRing('ring1')">
+				</select>
+			</div>
+			<div class="ring-dropdown-group">
+				<select class="ring-select" id="ring2" onchange="equipRing('ring2')">
+				</select>
+			</div>
+			<div class="ring-dropdown-group">
+				<select class="ring-select" id="ring3" onchange="equipRing('ring3')">
+				</select>
+			</div>
+			<div class="ring-dropdown-group">
+				<select class="ring-select" id="ring4" onchange="equipRing('ring4')">
+				</select>
+			</div>
+			<div class="unequipRings-button-container">
+				<button class="unequip-button" onclick=
+				"unequipAllRings(); calculateAndUpdate();">Unequip Rings</button>
+			</div>
+		</div>
+		<div class="label-container concoction-checkbox-container">
+			<label for="strongDrinkCheckbox">Strong Drink Concoction</label> <input id=
+			"strongDrinkCheckbox" type="checkbox">
+		</div>
+		<div class="armor-filter-container">
+			<h2 class="armor-filter-title">Armor Filter</h2>
+			<div class="armor-select-row">
+				<label for="headDropdown">Head</label>
+				<select class="armor-select" id="headDropdown">
+					<option value="Undefined">Any</option>
+				</select>
+			</div>
+			<div class="armor-select-row">
+				<label for="bodyDropdown">Body</label>
+				<select class="armor-select" id="bodyDropdown">
+					<option value="Undefined">Any</option>
+				</select>
+			</div>
+			<div class="armor-select-row">
+				<label for="legsDropdown">Legs</label>
+				<select class="armor-select" id="legsDropdown">
+					<option value="Undefined">Any</option>
+				</select>
+			</div>
+			<div class="armor-select-row">
+				<label for="glovesDropdown">Arms</label>
+				<select class="armor-select" id="glovesDropdown">
+					<option value="Undefined">Any</option>
+				</select>
+			</div>
+			<div class="reset-armor-button-container">
+				<button class="unequip-button" onclick="resetArmorDropdowns(); calculateAndUpdate();">Reset</button>
+			</div>
+		</div>
+	</div>
+	<div id="resultContainerWrapper">
 		<br>
-		<div class="content-container">
-			<!-- Align the elements using the new label-container class -->
-			<div class="label-container">
-				<label for="weightInput">Max Stamina Penalty</label> <select id=
-				"weightInput" onchange="updateBackgroundColor()">
-					<option data-color="#adffff" value="25">
-						Light (0%)
-					</option>
-					<option data-color="#adffad" value="50">
-						Medium (25%)
-					</option>
-					<option data-color="#ffffad" value="75">
-						Heavy (50%)
-					</option>
-					<option data-color="#ffbfad" value="1000000">
-						Flop (75%)
-					</option>
-				</select>
-			</div>
-			<div class="trait-container">
-				<h2 class="armor-filter-title">Trait Level</h2>
-				<div class="trait-select-row">
-					<label for="StrongBackdropdown">Strong Back (Challenger)</label>
-					<select class="trait-select" id="StrongBackTrait">
-						<option value="0">
-							0
-						</option>
-						<option value="1.5">
-							1
-						</option>
-						<option value="3">
-							2
-						</option>
-						<option value="4.5">
-							3
-						</option>
-						<option value="6">
-							4
-						</option>
-						<option value="7.5">
-							5
-						</option>
-						<option value="9">
-							6
-						</option>
-						<option value="10.5">
-							7
-						</option>
-						<option value="12">
-							8
-						</option>
-						<option value="13.5">
-							9
-						</option>
-						<option value="15">
-							10
-						</option>
-					</select>
-				</div>
-				<div class="trait-select-row">
-					<label for="StrongBackdropdown">Fortify (Engineer)</label> <select class=
-					"trait-select" id="FortifyTrait">
-						<option value="1">
-							0
-						</option>
-						<option value="1.05">
-							1
-						</option>
-						<option value="1.1">
-							2
-						</option>
-						<option value="1.15">
-							3
-						</option>
-						<option value="1.2">
-							4
-						</option>
-						<option value="1.25">
-							5
-						</option>
-						<option value="1.3">
-							6
-						</option>
-						<option value="1.35">
-							7
-						</option>
-						<option value="1.4">
-							8
-						</option>
-						<option value="1.45">
-							9
-						</option>
-						<option value="1.5">
-							10
-						</option>
-					</select>
-				</div>
-				<div class="trait-select-row">
-					<label for="StrongBackdropdown" style=
-					"line-height: 2.5;">Shadeskin</label> <select class="trait-select" id=
-					"ShadeskinTrait">
-						<option value="0">
-							0
-						</option>
-						<option value="2">
-							1
-						</option>
-						<option value="4">
-							2
-						</option>
-						<option value="6">
-							3
-						</option>
-						<option value="8">
-							4
-						</option>
-						<option value="10">
-							5
-						</option>
-						<option value="12">
-							6
-						</option>
-						<option value="14">
-							7
-						</option>
-						<option value="16">
-							8
-						</option>
-						<option value="18">
-							9
-						</option>
-						<option value="20">
-							10
-						</option>
-					</select>
-				</div>
-			</div>
-			<div class="label-container amulet-container">
-				<label for="amuletDropdown">Amulet</label> <select id="amuletDropdown">
-					<option value="undefined">
-						undefined
-					</option>
-					<option value="leto">
-						Leto's Amulet
-					</option>
-					<option value="twistedidol">
-						Twisted Idol
-					</option>
-					<option value="navigatorspendant">
-						Navigator's Pendant
-					</option>
-					<option value="rustednavigatorspendant">
-						Rusted Navigator's Pendant
-					</option>
-				</select>
-			</div>
-			<div class="label-container ring-dropdown-container">
-				<label for="ring-dropdown-group">Rings</label>
-				<div class="ring-dropdown-group">
-					<select class="ring-select" id="ring1" onchange="equipRing('ring1')">
-					</select>
-				</div>
-				<div class="ring-dropdown-group">
-					<select class="ring-select" id="ring2" onchange="equipRing('ring2')">
-					</select>
-				</div>
-				<div class="ring-dropdown-group">
-					<select class="ring-select" id="ring3" onchange="equipRing('ring3')">
-					</select>
-				</div>
-				<div class="ring-dropdown-group">
-					<select class="ring-select" id="ring4" onchange="equipRing('ring4')">
-					</select>
-				</div>
-				<div class="unequipRings-button-container">
-					<button class="unequip-button" onclick=
-					"unequipAllRings(); calculateAndUpdate();">Unequip Rings</button>
-				</div>
-			</div>
-			<div class="label-container concoction-checkbox-container">
-				<label for="strongDrinkCheckbox">Strong Drink Concoction</label> <input id=
-				"strongDrinkCheckbox" type="checkbox">
-			</div>
-			<div class="armor-filter-container">
-				<h2 class="armor-filter-title">Armor Filter</h2>
-				<div class="armor-select-row">
-					<label for="headDropdown">Head</label> <select class="armor-select" id=
-					"headDropdown">
-						<option value="Undefined">
-							Any
-						</option>
-					</select>
-				</div>
-				<div class="armor-select-row">
-					<label for="bodyDropdown">Body</label> <select class="armor-select" id=
-					"bodyDropdown">
-						<option value="Undefined">
-							Any
-						</option>
-					</select>
-				</div>
-				<div class="armor-select-row">
-					<label for="legsDropdown">Legs</label> <select class="armor-select" id=
-					"legsDropdown">
-						<option value="Undefined">
-							Any
-						</option>
-					</select>
-				</div>
-				<div class="armor-select-row">
-					<label for="glovesDropdown">Arms</label> <select class="armor-select" id=
-					"glovesDropdown">
-						<option value="Undefined">
-							Any
-						</option>
-					</select>
-				</div>
-				<div class="reset-armor-button-container">
-					<button class="unequip-button" onclick=
-					"resetArmorDropdowns(); calculateAndUpdate();">Reset</button>
-				</div>
-			</div>
-		</div>
-		<div id="resultContainerWrapper">
-			<label for="toleranceInput"><span style="color: #ebefe7;"><span class=
-			"text-tooltip" data-tooltip=
-			"Displays more armor sets, potentially with better Resistances but lower Damage Reduction">
-			</span></span></label> <input id="toleranceInput" max="10" min="0" step="1"
-			type="range" value="0">
-			<h2 id="totalDamageReduction"></h2>
-			<div id="resultContainer"></div>
-		</div>
+		<label for="toleranceInput"><span style="color: #ebefe7;"><span class="text-tooltip" data-tooltip="Displays more armor sets, potentially with better Resistances but lower Damage Reduction"></span></span></label>
+		<input id="toleranceInput" max="10" min="0" step="1" type="range" value="0">
+		<h2 id="totalDamageReduction"></h2>
+		<div id="resultContainer"></div>
 	</div>
-	<script>
-	   async function fetchArmorData() {
-	       try {
-	           const response = await fetch('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/armor_list.json');
-	           const data = await response.json();
-	           return data;
-	       } catch(error) {
-	           console.error('Error fetching armor data:', error);
-	       }
-	   }
+</div>
 
-	   async function populateArmorDropdowns() {
-	       const armorData = await fetchArmorData();
-	       populateDropdown("headDropdown", armorData['Head']);
-	       populateDropdown("bodyDropdown", armorData['Body']);
-	       populateDropdown("legsDropdown", armorData['Legs']);
-	       populateDropdown("glovesDropdown", armorData['Gloves']);
-	   }
+<script>
+	async function fetchArmorData() {
+		try {
+		const response = await fetch('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/armor_list.json');
+		const data = await response.json();
+		return data;
+		} catch(error) {
+		console.error('Error fetching armor data:', error);
+		}
+	}
 
-	   function populateDropdown(dropdownId, armorPieces) {
-	       const dropdown = document.getElementById(dropdownId);
-	       for (const armorPiece of armorPieces) {
-	           const option = document.createElement("option");
-	           option.value = armorPiece[0]; // Assuming armorPiece[0] is the identifier
-	           option.textContent = armorPiece[0]; // Display text for the option
-	           dropdown.appendChild(option);
-	       }
-	   }
+	async function populateArmorDropdowns() {
+		const armorData = await fetchArmorData();
+		populateDropdown("headDropdown", armorData['Head']);
+		populateDropdown("bodyDropdown", armorData['Body']);
+		populateDropdown("legsDropdown", armorData['Legs']);
+		populateDropdown("glovesDropdown", armorData['Gloves']);
+	}
 
-	   populateArmorDropdowns();
+	function populateDropdown(dropdownId, armorPieces) {
+		const dropdown = document.getElementById(dropdownId);
+		for (const armorPiece of armorPieces) {
+			const option = document.createElement("option");
+			option.value = armorPiece[0]; // Assuming armorPiece[0] is the identifier
+			option.textContent = armorPiece[0]; // Display text for the option
+			dropdown.appendChild(option);
+		}
+	}
 
-	   function resetArmorDropdowns() {
-	       const dropdowns = [
-	           document.getElementById("headDropdown"),
-	           document.getElementById("bodyDropdown"),
-	           document.getElementById("legsDropdown"),
-	           document.getElementById("glovesDropdown")
-	       ];
-	       for (const dropdown of dropdowns) {
-	           dropdown.value = "Undefined";
-	       }
-	   }
+	populateArmorDropdowns();
 
-	   const toleranceInput = document.getElementById("toleranceInput");
-	   const toleranceLabel = document.querySelector("#resultContainerWrapper label span span");
-	   toleranceInput.addEventListener("input", function() {
-	       const enteredValue = parseInt(toleranceInput.value);
-	       toleranceLabel.textContent = `Tolerance: ${enteredValue}`;
-	   });
-	   toleranceLabel.textContent = `Tolerance: ${toleranceInput.value}`;
-	   const ringSelects = document.querySelectorAll('.ring-select');
-	   const availableRings = ['undefined', 'Fae Protector Signet', 'Dran Memento', 'Meteorite Shard Ring'];
-	   const equippedRings = {};
+	function resetArmorDropdowns() {
+		const dropdowns = [
+		document.getElementById("headDropdown"),
+		document.getElementById("bodyDropdown"),
+		document.getElementById("legsDropdown"),
+		document.getElementById("glovesDropdown")
+		];
+		for (const dropdown of dropdowns) {
+			dropdown.value = "Undefined";
+		}
+	}
 
-	   function equipRing(selectedRing) {
-	       const selectedValue = document.getElementById(selectedRing).value;
-	       const prevEquippedRing = equippedRings[selectedRing];
-	       if(prevEquippedRing) enableRingOption(prevEquippedRing);
-	       if(selectedValue !== "undefined") {
-	           if(equippedRings[selectedRing]) enableRingOption(equippedRings[selectedRing]);
-	           disableRingOption(selectedValue);
-	           equippedRings[selectedRing] = selectedValue;
-	       } else equippedRings[selectedRing] = undefined;
-	   }
+	const toleranceInput = document.getElementById("toleranceInput");
+	const toleranceLabel = document.querySelector("#resultContainerWrapper label span span");
+	toleranceInput.addEventListener("input", function() {
+		const enteredValue = parseInt(toleranceInput.value);
+		toleranceLabel.textContent = `Tolerance: ${enteredValue}`;
+	});
+	toleranceLabel.textContent = `Tolerance: ${toleranceInput.value}`;
+	const ringSelects = document.querySelectorAll('.ring-select');
+	const availableRings = ['undefined', 'Fae Protector Signet', 'Dran Memento', 'Meteorite Shard Ring', 'Elevated Ring'];
+	const equippedRings = {};
 
-	   function enableRingOption(ring) {
-	       ringSelects.forEach((select) => {
-	           const option = select.querySelector(`option[value="${ring}"]`);
-	           option.disabled = false;
-	           option.style.display = 'block';
-	       });
-	   }
+	function equipRing(selectedRing) {
+		const selectedValue = document.getElementById(selectedRing).value;
+		const prevEquippedRing = equippedRings[selectedRing];
+		if(prevEquippedRing) enableRingOption(prevEquippedRing);
+		if(selectedValue !== "undefined") {
+			if(equippedRings[selectedRing]) enableRingOption(equippedRings[selectedRing]);
+			disableRingOption(selectedValue);
+			equippedRings[selectedRing] = selectedValue;
+		} else equippedRings[selectedRing] = undefined;
+	}
 
-	   function disableRingOption(ring) {
-	       ringSelects.forEach((select) => {
-	           const option = select.querySelector(`option[value="${ring}"]`);
-	           option.disabled = true;
-	           option.style.display = 'undefined';
-	       });
-	   }
+	function enableRingOption(ring) {
+		ringSelects.forEach((select) => {
+			const option = select.querySelector(`option[value="${ring}"]`);
+			option.disabled = false;
+			option.style.display = 'block';
+		});
+	}
 
-	   function unequipAllRings() {
-	       ringSelects.forEach((select) => {
-	           const selectedValue = select.value;
-	           if(selectedValue !== "undefined") {
-	               enableRingOption(selectedValue);
-	               select.value = "undefined";
-	               equippedRings[select.id] = undefined;
-	           }
-	       });
-	   }
+	function disableRingOption(ring) {
+		ringSelects.forEach((select) => {
+			const option = select.querySelector(`option[value="${ring}"]`);
+			option.disabled = true;
+			option.style.display = 'undefined';
+		});
+	}
 
-	   window.onload = function() {
-	       for(const select of ringSelects) {
-	           availableRings.forEach((ring) => {
-	               const option = new Option(ring, ring);
-	               select.add(option);
-	           });
-	       }
-	   };
+	function unequipAllRings() {
+		ringSelects.forEach((select) => {
+			const selectedValue = select.value;
+			if(selectedValue !== "undefined") {
+				enableRingOption(selectedValue);
+				select.value = "undefined";
+				equippedRings[select.id] = undefined;
+			}
+		});
+	}
 
-	   function find_best_combination(armor_list, weight_limit, tolerance) {
-	       let best_combinations = [];
-	       let candidate_combinations = []; // Store candidate combinations before applying tolerance
-	       let max_damage_reduction = 0;
-	       // Ensure that tolerance is within the valid range of 0 to 10
-	       tolerance = Math.max(0, Math.min(10, tolerance));
-	       for(const head of armor_list['Head']) {
-	           for(const body of armor_list['Body']) {
-	               for(const legs of armor_list['Legs']) {
-	                   for(const gloves of armor_list['Gloves']) {
+	window.onload = function() {
+		for(const select of ringSelects) {
+			availableRings.forEach((ring) => {
+				const option = new Option(ring, ring);
+				select.add(option);
+			});
+		}
+	};
 
-	                       // Check if the armor pieces match the selected dropdown values
-	                       const headDropdown = document.getElementById("headDropdown");
-	                       const bodyDropdown = document.getElementById("bodyDropdown");
-	                       const legsDropdown = document.getElementById("legsDropdown");
-	                       const glovesDropdown = document.getElementById("glovesDropdown");
+	function find_best_combination(armor_list, weight_limit, tolerance) {
+		let best_combinations = [];
+		let candidate_combinations = []; // Store candidate combinations before applying tolerance
+		let max_damage_reduction = 0;
+		// Ensure that tolerance is within the valid range of 0 to 10
+		tolerance = Math.max(0, Math.min(10, tolerance));
+		for(const head of armor_list['Head']) {
+			for(const body of armor_list['Body']) {
+				for(const legs of armor_list['Legs']) {
+					for(const gloves of armor_list['Gloves']) {
 
-	                       const selectedHead = headDropdown.value;
-	                       const selectedBody = bodyDropdown.value;
-	                       const selectedLegs = legsDropdown.value;
-	                       const selectedGloves = glovesDropdown.value;
+						// Check if the armor pieces match the selected dropdown values
+						const headDropdown = document.getElementById("headDropdown");
+						const bodyDropdown = document.getElementById("bodyDropdown");
+						const legsDropdown = document.getElementById("legsDropdown");
+						const glovesDropdown = document.getElementById("glovesDropdown");
 
-	                       if (
-	                           (selectedHead === "Undefined" || selectedHead === head[0]) &&
-	                           (selectedBody === "Undefined" || selectedBody === body[0]) &&
-	                           (selectedLegs === "Undefined" || selectedLegs === legs[0]) &&
-	                           (selectedGloves === "Undefined" || selectedGloves === gloves[0])
-	                       ){
-	                           const amuletDropdown = document.getElementById("amuletDropdown");
-	                           const selectedAmuletValue = amuletDropdown.value;
-	                           letoAmuletFactor = selectedAmuletValue === "leto" ? 0.6 : 1;
-	                           twistedidolFactor = selectedAmuletValue === "twistedidol" ? 15 : 0;
-	                           navigatorspendantFactor = selectedAmuletValue === "navigatorspendant" ? 10 : 0;
-	                           rustednavigatorspendantFactor = selectedAmuletValue === "rustednavigatorspendant" ? 15 : 0;
-	                           const strongDrinkCheckbox = document.getElementById("strongDrinkCheckbox");
-	                           strongdrinkFactor = strongDrinkCheckbox.checked ? 10 : 0;
+						const selectedHead = headDropdown.value;
+						const selectedBody = bodyDropdown.value;
+						const selectedLegs = legsDropdown.value;
+						const selectedGloves = glovesDropdown.value;
 
-	                           if(equippedRings.ring1 === "Fae Protector Signet" || equippedRings.ring2 === "Fae Protector Signet" || equippedRings.ring3 === "Fae Protector Signet" || equippedRings.ring4 === "Fae Protector Signet") {
-	                               faeprotectorsignetFactor = 5;
-	                           } else {
-	                               faeprotectorsignetFactor = 0;
-	                           }
+						if (
+						(selectedHead === "Undefined" || selectedHead === head[0]) &&
+						(selectedBody === "Undefined" || selectedBody === body[0]) &&
+						(selectedLegs === "Undefined" || selectedLegs === legs[0]) &&
+						(selectedGloves === "Undefined" || selectedGloves === gloves[0])
+						){
+							const amuletDropdown = document.getElementById("amuletDropdown");
+							const selectedAmuletValue = amuletDropdown.value;
+							letoAmuletFactor = selectedAmuletValue === "leto" ? 0.6 : 1;
+							twistedidolFactor = selectedAmuletValue === "twistedidol" ? 15 : 0;
+							navigatorspendantFactor = selectedAmuletValue === "navigatorspendant" ? 10 : 0;
+							rustednavigatorspendantFactor = selectedAmuletValue === "rustednavigatorspendant" ? 15 : 0;
+							const strongDrinkCheckbox = document.getElementById("strongDrinkCheckbox");
+							strongdrinkFactor = strongDrinkCheckbox.checked ? 10 : 0;
 
-	                           if(equippedRings.ring1 === "Dran Memento" || equippedRings.ring2 === "Dran Memento" || equippedRings.ring3 === "Dran Memento" || equippedRings.ring4 === "Dran Memento") {
-	                               dranmementoFactor = 5;
-	                           } else {
-	                               dranmementoFactor = 0;
-	                           }
+							if(equippedRings.ring1 === "Fae Protector Signet" || equippedRings.ring2 === "Fae Protector Signet" || equippedRings.ring3 === "Fae Protector Signet" || equippedRings.ring4 === "Fae Protector Signet") {
+								faeprotectorsignetFactor = 5;
+							} else {
+								faeprotectorsignetFactor = 0;
+							}
 
-	                           if(equippedRings.ring1 === "Meteorite Shard Ring" || equippedRings.ring2 === "Meteorite Shard Ring" || equippedRings.ring3 === "Meteorite Shard Ring" || equippedRings.ring4 === "Meteorite Shard Ring") {
-	                               shardringFactor = 50;
-	                           } else {
-	                               shardringFactor = 0;
-	                           }
+							if(equippedRings.ring1 === "Dran Memento" || equippedRings.ring2 === "Dran Memento" || equippedRings.ring3 === "Dran Memento" || equippedRings.ring4 === "Dran Memento") {
+								dranmementoFactor = 5;
+							} else {
+								dranmementoFactor = 0;
+							}
 
-	                           total_weight = (((head[2] + body[2] + legs[2] + gloves[2]) - strongdrinkFactor - twistedidolFactor - navigatorspendantFactor - rustednavigatorspendantFactor - faeprotectorsignetFactor - dranmementoFactor + shardringFactor) * letoAmuletFactor);
+							if(equippedRings.ring1 === "Meteorite Shard Ring" || equippedRings.ring2 === "Meteorite Shard Ring" || equippedRings.ring3 === "Meteorite Shard Ring" || equippedRings.ring4 === "Meteorite Shard Ring") {
+								shardringFactor = 50;
+							} else {
+								shardringFactor = 0;
+							}
 
-	                           if (total_weight <= weight_limit) {
-	                               twistedidolarmorFactor = selectedAmuletValue === "twistedidol" ? 1.35 : 1;
-	                               const total_damage_reduction_new = ((head[1] + body[1] + legs[1] + gloves[1]) * (twistedidolarmorFactor));
-	                               // Store candidate combinations without considering tolerance
-	                               candidate_combinations.push({
-	                                   'Head': head,
-	                                   'Body': body,
-	                                   'Legs': legs,
-	                                   'Gloves': gloves,
-	                                   'DamageReduction': total_damage_reduction_new
-	                               });
-	                           }
-	                       }
-	                   }
-	               }
-	           }
-	       }
+							if(equippedRings.ring1 === "Elevated Ring" || equippedRings.ring2 === "Elevated Ring" || equippedRings.ring3 === "Elevated Ring" || equippedRings.ring4 === "Elevated Ring") {
+								elevatedringFactor = 5;
+							} else {
+								elevatedringFactor = 0;
+							}
 
-	       // Find the highest damage reduction value from candidate combinations
-	       max_damage_reduction = candidate_combinations.reduce((max, combination) => {
-	           return Math.max(max, combination.DamageReduction);
-	       }, 0);
+							total_weight = (((head[2] + body[2] + legs[2] + gloves[2]) - strongdrinkFactor - twistedidolFactor - navigatorspendantFactor - rustednavigatorspendantFactor - faeprotectorsignetFactor - dranmementoFactor - elevatedringFactor + shardringFactor) * letoAmuletFactor);
 
-	       // Apply tolerance by filtering candidate combinations
-	       best_combinations = candidate_combinations.filter(combination =>
-	           combination.DamageReduction >= max_damage_reduction - (max_damage_reduction * tolerance / 100)
-	       );
+							if (total_weight <= weight_limit) {
+								twistedidolarmorFactor = selectedAmuletValue === "twistedidol" ? 1.35 : 1;
+								const total_damage_reduction_new = ((head[1] + body[1] + legs[1] + gloves[1]) * (twistedidolarmorFactor));
+								// Store candidate combinations without considering tolerance
+								candidate_combinations.push({
+								'Head': head,
+								'Body': body,
+								'Legs': legs,
+								'Gloves': gloves,
+								'DamageReduction': total_damage_reduction_new
+								});
+							}
+						}
+					}
+				}
+			}
+		}
 
-	       return {
-	           best_combinations,
-	           max_damage_reduction
-	       };
-	   }
+		// Find the highest damage reduction value from candidate combinations
+		max_damage_reduction = candidate_combinations.reduce((max, combination) => {
+		return Math.max(max, combination.DamageReduction);
+		}, 0);
 
-	   var backgroundColor = "#adffff"; // Declare backgroundColor as a global variable
-	   var color1 = "#adffff"; // Declare backgroundColor as a global variable
-	   var color2 = "#adffad";
-	   var color3 = "#ffffad";
-	   function updateBackgroundColor() {
-	       var selectElement = document.getElementById("weightInput");
-	       var selectedOption = selectElement.options[selectElement.selectedIndex];
-	       switch (selectedOption.value) {
-	           case "25":
-	               backgroundColor = "#adffff";
-	               break;
-	           case "50":
-	               backgroundColor = "#adffad";
-	               break;
-	           case "75":
-	               backgroundColor = "#ffffad";
-	               break;
-	           case "1000000":
-	               backgroundColor = "#ffbfad";
-	               break;
-	       }
-	       selectElement.style.backgroundColor = backgroundColor;
-	   }
+		// Apply tolerance by filtering candidate combinations
+		best_combinations = candidate_combinations.filter(combination =>
+		combination.DamageReduction >= max_damage_reduction - (max_damage_reduction * tolerance / 100)
+		);
 
-	   function display_combinations(best_combinations) {
-	       // Sort the best_combinations array based on total damage reduction and then total resistance
-	       best_combinations.sort((a, b) => {
-	           const totalDamageA = a.Head[1] + a.Body[1] + a.Legs[1] + a.Gloves[1];
-	           const totalDamageB = b.Head[1] + b.Body[1] + b.Legs[1] + b.Gloves[1];
-	           if(totalDamageA !== totalDamageB) {
-	               return totalDamageB - totalDamageA; // Sort by total damage reduction in descending order
-	           }
-	           // If total damage reduction is the same, sort by total resistance in descending order
-	           const totalResistanceA = a.Head[3] + a.Body[3] + a.Legs[3] + a.Gloves[3] + a.Head[4] + a.Body[4] + a.Legs[4] + a.Gloves[4] + a.Head[5] + a.Body[5] + a.Legs[5] + a.Gloves[5] + a.Head[7] + a.Body[7] + a.Legs[7] + a.Gloves[7] + a.Head[6] + a.Body[6] + a.Legs[6] + a.Gloves[6];
-	           const totalResistanceB = b.Head[3] + b.Body[3] + b.Legs[3] + b.Gloves[3] + b.Head[4] + b.Body[4] + b.Legs[4] + b.Gloves[4] + b.Head[5] + b.Body[5] + b.Legs[5] + b.Gloves[5] + b.Head[7] + b.Body[7] + b.Legs[7] + b.Gloves[7] + b.Head[6] + b.Body[6] + b.Legs[6] + b.Gloves[6];
-	           return totalResistanceB - totalResistanceA; // Sort by total resistance in descending order
-	       });
+		return {
+		best_combinations,
+		max_damage_reduction
+		};
+	}
 
-	       const resultContainer = document.getElementById("resultContainer");
-	       resultContainer.innerHTML = "";
+	var backgroundColor = "#adffff"; // Declare backgroundColor as a global variable
+	var color1 = "#adffff"; // Declare backgroundColor as a global variable
+	var color2 = "#adffad";
+	var color3 = "#ffffad";
+	function updateBackgroundColor() {
+		var selectElement = document.getElementById("weightInput");
+		var selectedOption = selectElement.options[selectElement.selectedIndex];
+		switch (selectedOption.value) {
+			case "25":
+			backgroundColor = "#adffff";
+			break;
+			case "50":
+			backgroundColor = "#adffad";
+			break;
+			case "75":
+			backgroundColor = "#ffffad";
+			break;
+			case "1000000":
+			backgroundColor = "#ffbfad";
+			break;
+		}
+		selectElement.style.backgroundColor = backgroundColor;
+	}
 
-	       if(best_combinations.length > 0) {
-	           const maxDamageReduction = best_combinations[0].Head[1] + best_combinations[0].Body[1] + best_combinations[0].Legs[1] + best_combinations[0].Gloves[1];
-	           const header = document.getElementById("totalDamageReduction");
-	           // Store the highest resistances of the previous set
-	           let highestResistances = {
-	               bleed: 0,
-	               fire: 0,
-	               shock: 0,
-	               toxin: 0,
-	               blight: 0,
-	               damage_reductionCheck: 0
-	           };
+	function display_combinations(best_combinations) {
+		// Sort the best_combinations array based on total damage reduction and then total resistance
+		best_combinations.sort((a, b) => {
+			const totalDamageA = a.Head[1] + a.Body[1] + a.Legs[1] + a.Gloves[1];
+			const totalDamageB = b.Head[1] + b.Body[1] + b.Legs[1] + b.Gloves[1];
+			if(totalDamageA !== totalDamageB) {
+				return totalDamageB - totalDamageA; // Sort by total damage reduction in descending order
+			}
+			// If total damage reduction is the same, sort by total resistance in descending order
+			const totalResistanceA = a.Head[3] + a.Body[3] + a.Legs[3] + a.Gloves[3] + a.Head[4] + a.Body[4] + a.Legs[4] + a.Gloves[4] + a.Head[5] + a.Body[5] + a.Legs[5] + a.Gloves[5] + a.Head[7] + a.Body[7] + a.Legs[7] + a.Gloves[7] + a.Head[6] + a.Body[6] + a.Legs[6] + a.Gloves[6];
+			const totalResistanceB = b.Head[3] + b.Body[3] + b.Legs[3] + b.Gloves[3] + b.Head[4] + b.Body[4] + b.Legs[4] + b.Gloves[4] + b.Head[5] + b.Body[5] + b.Legs[5] + b.Gloves[5] + b.Head[7] + b.Body[7] + b.Legs[7] + b.Gloves[7] + b.Head[6] + b.Body[6] + b.Legs[6] + b.Gloves[6];
+			return totalResistanceB - totalResistanceA; // Sort by total resistance in descending order
+		});
 
-	           let selectedArmors = [];
+		const resultContainer = document.getElementById("resultContainer");
+		resultContainer.innerHTML = "";
 
-	           best_combinations.forEach((combination, index) => {
-	               const armorSet = combination;
-	               const totaldamage_reductionCheck = (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]);
-	               const totalWeight = Math.max(0, (n => Number.isInteger(n) ? n : Math.round(n * 10) / 10)(((armorSet.Head[2] + armorSet.Body[2] + armorSet.Legs[2] + armorSet.Gloves[2]) - strongdrinkFactor - twistedidolFactor - navigatorspendantFactor - rustednavigatorspendantFactor - faeprotectorsignetFactor - dranmementoFactor + shardringFactor) * letoAmuletFactor));
-	               const totalBleed = (armorSet.Head[3] + armorSet.Body[3] + armorSet.Legs[3] + armorSet.Gloves[3]);
-	               const totalFire = (armorSet.Head[4] + armorSet.Body[4] + armorSet.Legs[4] + armorSet.Gloves[4]) + ShadeskinTraitModifier;
-	               const totalShock = (armorSet.Head[5] + armorSet.Body[5] + armorSet.Legs[5] + armorSet.Gloves[5]) + ShadeskinTraitModifier;
-	               const totalToxin = (armorSet.Head[6] + armorSet.Body[6] + armorSet.Legs[6] + armorSet.Gloves[6]) + ShadeskinTraitModifier;
-	               const totalBlight = (armorSet.Head[7] + armorSet.Body[7] + armorSet.Legs[7] + armorSet.Gloves[7]);
-	               let isBetter = true; // Flag to determine if the armor set is better than any previous sets
-	               // Compare resistances with all previously selected armor sets
-	               for(const selectedArmor of selectedArmors) {
-	                   if(totalBleed === selectedArmor.bleed && totalFire === selectedArmor.fire && totalShock === selectedArmor.shock && totalToxin === selectedArmor.toxin && totalBlight === selectedArmor.blight && totaldamage_reductionCheck >= selectedArmor.damage_reductionCheck) {
-	                       isBetter = true;
-	                   } else if(totalBleed <= selectedArmor.bleed && totalFire <= selectedArmor.fire && totalShock <= selectedArmor.shock && totalToxin <= selectedArmor.toxin && totalBlight <= selectedArmor.blight) {
-	                       isBetter = false;
-	                       break
-	                   }
-	               }
+		if(best_combinations.length > 0) {
+			const maxDamageReduction = best_combinations[0].Head[1] + best_combinations[0].Body[1] + best_combinations[0].Legs[1] + best_combinations[0].Gloves[1];
+			const header = document.getElementById("totalDamageReduction");
+			// Store the highest resistances of the previous set
+			let highestResistances = {
+			bleed: 0,
+			fire: 0,
+			shock: 0,
+			toxin: 0,
+			blight: 0,
+			damage_reductionCheck: 0
+			};
 
-	               var weightColor =
-	               (totalWeight - StrongBackTraitModifier <= 25) ? color1 :
-	               (totalWeight - StrongBackTraitModifier <= 50) ? color2 :
-	               (totalWeight - StrongBackTraitModifier <= 75) ? color3 : backgroundColor
+			let selectedArmors = [];
 
-	               if(isBetter) {
-	                   const armorCard = document.createElement("div");
-	                   armorCard.classList.add("armor-card");
+			best_combinations.forEach((combination, index) => {
+				const armorSet = combination;
+				const totaldamage_reductionCheck = (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]);
+				const totalWeight = Math.max(0, (n => Number.isInteger(n) ? n : Math.round(n * 10) / 10)(((armorSet.Head[2] + armorSet.Body[2] + armorSet.Legs[2] + armorSet.Gloves[2]) - strongdrinkFactor - twistedidolFactor - navigatorspendantFactor - rustednavigatorspendantFactor - faeprotectorsignetFactor - dranmementoFactor - elevatedringFactor + shardringFactor) * letoAmuletFactor));
+				const totalBleed = (armorSet.Head[3] + armorSet.Body[3] + armorSet.Legs[3] + armorSet.Gloves[3]);
+				const totalFire = (armorSet.Head[4] + armorSet.Body[4] + armorSet.Legs[4] + armorSet.Gloves[4]) + ShadeskinTraitModifier;
+				const totalShock = (armorSet.Head[5] + armorSet.Body[5] + armorSet.Legs[5] + armorSet.Gloves[5]) + ShadeskinTraitModifier;
+				const totalToxin = (armorSet.Head[6] + armorSet.Body[6] + armorSet.Legs[6] + armorSet.Gloves[6]) + ShadeskinTraitModifier;
+				const totalBlight = (armorSet.Head[7] + armorSet.Body[7] + armorSet.Legs[7] + armorSet.Gloves[7]);
+				let isBetter = true; // Flag to determine if the armor set is better than any previous sets
+				// Compare resistances with all previously selected armor sets
+				for(const selectedArmor of selectedArmors) {
+					if(totalBleed === selectedArmor.bleed && totalFire === selectedArmor.fire && totalShock === selectedArmor.shock && totalToxin === selectedArmor.toxin && totalBlight === selectedArmor.blight && totaldamage_reductionCheck >= selectedArmor.damage_reductionCheck) {
+						isBetter = true;
+					} else if(totalBleed <= selectedArmor.bleed && totalFire <= selectedArmor.fire && totalShock <= selectedArmor.shock && totalToxin <= selectedArmor.toxin && totalBlight <= selectedArmor.blight) {
+						isBetter = false;
+						break
+					}
+				}
 
-	                   armorCard.innerHTML = `<
-	                       <span class="text-tooltip" data-tooltip="Total Damage Reduction" style="display: block; color: #ffee69 ; margin-top: -22px;">Armor: ${Number.isInteger(
-	                               (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) *
-	                               twistedidolarmorFactor +
-	                               (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * FortifyTraitModifier -
-	                               (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])
-	                           ) ?
-	                           (
-	                               (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) *
-	                               twistedidolarmorFactor +
-	                               (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * FortifyTraitModifier -
-	                               (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])
-	                           ) :
-	                           Math.floor(10 * (
-	                               (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) *
-	                               twistedidolarmorFactor +
-	                               (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * FortifyTraitModifier -
-	                               (armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])
-	                           )) / 10
-	                           }
-	                       <\/span>
+				var weightColor =
+				(totalWeight - StrongBackTraitModifier - elevatedringFactor <= 25) ? color1 :
+				(totalWeight - StrongBackTraitModifier - elevatedringFactor <= 50) ? color2 :
+				(totalWeight - StrongBackTraitModifier - elevatedringFactor <= 75) ? color3 : backgroundColor
 
-	                       <span id="weightDisplay"  class="weight-display" style="display: block; line-height: 2; color: ${weightColor}; font-size: 15px;">Weight: ${totalWeight}<\/span>
+				if(isBetter) {
+					const armorCard = document.createElement("div");
+					armorCard.classList.add("armor-card");
 
-	                       <div class="content-wrapper">
-	                           <div class="gear-container">
-	                               <p><span style="color: #d6e0d0;">Head:<\/span>
-	                                   <span class="itemName headColor">
-	                                       <span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Head/${armorSet.Head[0].replace(/\s+/g, '_')}.png')">
-	                                           ${armorSet.Head[0].trim() === "none" ? `<span style="color: #99997a;">none<\/span>` : armorSet.Head[0]}
-	                                       <\/span>
-	                                   <\/span>
-	                               <\/p>
-	                               <p><span style="color: #d6e0d0;">Body:<\/span>
-	                                   <span class="itemName bodyColor">
-	                                       <span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Body/${armorSet.Body[0].replace(/\s+/g, '_')}.png')">
-	                                           ${armorSet.Body[0].trim() === "none" ? `<span style="color: #99997a;">none<\/span>` : armorSet.Body[0]}
-	                                       <\/span>
-	                                   <\/span>
-	                               <\/p>
-	                               <p><span style="color: #d6e0d0;">Legs:&nbsp;<\/span>
-	                                   <span class="itemName legsColor">
-	                                       <span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Legs/${armorSet.Legs[0].replace(/\s+/g, '_')}.png')">
-	                                           ${armorSet.Legs[0].trim() === "none" ? `<span style="color: #99997a;">none<\/span>` : armorSet.Legs[0]}
-	                                       <\/span>
-	                                   <\/span>
-	                               <\/p>
-	                               <p><span style="color: #d6e0d0;">Arms:<\/span>
-	                                   <span class="itemName glovesColor">
-	                                       <span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Gloves/${armorSet.Gloves[0].replace(/\s+/g, '_')}.png')">
-	                                           ${armorSet.Gloves[0].trim() === "none" ? `<span style="color: #99997a;">none<\/span>` : armorSet.Gloves[0]}
-	                                       <\/span>
-	                                   <\/span>
-	                               <\/p>
-	                           <\/div>
-	                       <\/div>
+					armorCard.innerHTML = `<
+						<span class="text-tooltip" data-tooltip="Total Damage Reduction" style="display: block; color: #ffee69 ; margin-top: -22px;">Armor: ${Number.isInteger(
+						(armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) *
+						twistedidolarmorFactor +
+						(armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * FortifyTraitModifier -
+						(armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])
+						) ?
+						(
+						(armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) *
+						twistedidolarmorFactor +
+						(armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * FortifyTraitModifier -
+						(armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])
+						) :
+						Math.floor(10 * (
+						(armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) *
+						twistedidolarmorFactor +
+						(armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1]) * FortifyTraitModifier -
+						(armorSet.Head[1] + armorSet.Body[1] + armorSet.Legs[1] + armorSet.Gloves[1])
+						)) / 10
+						}
+						<\/span>
 
-	                       <div class="status-global-wrapper">
-	                           <div class="status-wrapper">
-	                               <span class="text-tooltip" data-tooltip="Bleed"><span class="redColor">${totalBleed}<\/span>&nbsp <\/span>
-	                               <span class="text-tooltip" data-tooltip="Burn"><span class="orangeColor">${totalFire}<\/span>&nbsp <\/span>
-	                               <span class="text-tooltip" data-tooltip="Shock"><span class="purpleColor">${totalShock}<\/span>&nbsp <\/span>
-	                               <span class="text-tooltip" data-tooltip="Corrosion"><span class="greenColor">${totalToxin}<\/span>&nbsp <\/span>
-	                               <span class="text-tooltip" data-tooltip="Blight"><span class="greyColor">${totalBlight}<\/span> <\/span>
-	                           <\/div>
-	                           <span class="text-tooltip-right" data-tooltip="Sum of Status Resistances"><span style="color: #d6e0d0 ;">Total: ${totalBleed + totalFire + totalShock + totalToxin + totalBlight}<\/span><\/span>
-	                       <\/div>
-	                   `;
+						<span id="weightDisplay"  class="weight-display" style="display: block; line-height: 2; color: ${weightColor}; font-size: 15px;">Weight: ${totalWeight}<\/span>
 
-	                   resultContainer.appendChild(armorCard);
-	                   // Update the selectedArmors array with the new armor set's resistances
-	                   selectedArmors.push({
-	                       bleed: totalBleed,
-	                       fire: totalFire,
-	                       shock: totalShock,
-	                       toxin: totalToxin,
-	                       blight: totalBlight,
-	                       damage_reductionCheck: totaldamage_reductionCheck
-	                   });
-	               }
-	           });
+						<div class="content-wrapper">
+						<div class="gear-container">
+						<p><span style="color: #d6e0d0;">Head:<\/span>
+						<span class="itemName headColor">
+						<span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Head/${armorSet.Head[0].replace(/\s+/g, '_')}.png')">
+						${armorSet.Head[0].trim() === "none" ? `<span style="color: #99997a;">none<\/span>` : armorSet.Head[0]}
+						<\/span>
+						<\/span>
+						<\/p>
+						<p><span style="color: #d6e0d0;">Body:<\/span>
+						<span class="itemName bodyColor">
+						<span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Body/${armorSet.Body[0].replace(/\s+/g, '_')}.png')">
+						${armorSet.Body[0].trim() === "none" ? `<span style="color: #99997a;">none<\/span>` : armorSet.Body[0]}
+						<\/span>
+						<\/span>
+						<\/p>
+						<p><span style="color: #d6e0d0;">Legs:&nbsp;<\/span>
+						<span class="itemName legsColor">
+						<span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Legs/${armorSet.Legs[0].replace(/\s+/g, '_')}.png')">
+						${armorSet.Legs[0].trim() === "none" ? `<span style="color: #99997a;">none<\/span>` : armorSet.Legs[0]}
+						<\/span>
+						<\/span>
+						<\/p>
+						<p><span style="color: #d6e0d0;">Arms:<\/span>
+						<span class="itemName glovesColor">
+						<span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Gloves/${armorSet.Gloves[0].replace(/\s+/g, '_')}.png')">
+						${armorSet.Gloves[0].trim() === "none" ? `<span style="color: #99997a;">none<\/span>` : armorSet.Gloves[0]}
+						<\/span>
+						<\/span>
+						<\/p>
+						<\/div>
+						<\/div>
 
-	       } else {
-	           const noCombinationMessage = document.createElement("p");
-	           noCombinationMessage.textContent = "No armor matching current stamina penalty";
-	           noCombinationMessage.style.color = "red"; // Set the color using the style property
-	           resultContainer.appendChild(noCombinationMessage);
-	       }
-	   }
+						<div class="status-global-wrapper">
+						<div class="status-wrapper">
+						<span class="text-tooltip" data-tooltip="Bleed"><span class="redColor">${totalBleed}<\/span>&nbsp <\/span>
+						<span class="text-tooltip" data-tooltip="Burn"><span class="orangeColor">${totalFire}<\/span>&nbsp <\/span>
+						<span class="text-tooltip" data-tooltip="Shock"><span class="purpleColor">${totalShock}<\/span>&nbsp <\/span>
+						<span class="text-tooltip" data-tooltip="Corrosion"><span class="greenColor">${totalToxin}<\/span>&nbsp <\/span>
+						<span class="text-tooltip" data-tooltip="Blight"><span class="greyColor">${totalBlight}<\/span> <\/span>
+						<\/div>
+						<span class="text-tooltip-right" data-tooltip="Sum of Status Resistances"><span style="color: #d6e0d0 ;">Total: ${totalBleed + totalFire + totalShock + totalToxin + totalBlight}<\/span><\/span>
+						<\/div>
+					`;
 
-	   async function calculateAndUpdate() {
-	       document.getElementById('loading-circle').style.display = 'block';
+					resultContainer.appendChild(armorCard);
+					// Update the selectedArmors array with the new armor set's resistances
+					selectedArmors.push({
+					bleed: totalBleed,
+					fire: totalFire,
+					shock: totalShock,
+					toxin: totalToxin,
+					blight: totalBlight,
+					damage_reductionCheck: totaldamage_reductionCheck
+					});
+				}
+			});
 
-	       StrongBackTraitModifier = parseFloat(StrongBackTrait.value);
-	       FortifyTraitModifier = parseFloat(FortifyTrait.value);
-	       ShadeskinTraitModifier = parseFloat(ShadeskinTrait.value);
-	       const armorData = await fetchArmorData();
-	       weightLimit = parseInt(document.getElementById("weightInput").value) + StrongBackTraitModifier;
-	       let tolerance = parseInt(document.getElementById("toleranceInput").value);
-	       tolerance = Math.max(0, tolerance); // Ensure tolerance is not negative
-	       const {
-	           best_combinations
-	       } = find_best_combination(armorData, weightLimit, tolerance);
-	       display_combinations(best_combinations);
+		} else {
+			const noCombinationMessage = document.createElement("p");
+			noCombinationMessage.textContent = "No armor matching current stamina penalty";
+			noCombinationMessage.style.color = "red"; // Set the color using the style property
+			resultContainer.appendChild(noCombinationMessage);
+		}
+	}
 
-	       document.getElementById('loading-circle').style.display = 'none';
-	   }
+	async function calculateAndUpdate() {
+		document.getElementById('loading-circle').style.display = 'block';
 
-	   document.getElementById("weightInput").addEventListener("change", calculateAndUpdate);
-	   document.getElementById("amuletDropdown").addEventListener("change", calculateAndUpdate);
-	   document.getElementById("toleranceInput").addEventListener("input", calculateAndUpdate);
-	   document.getElementById("ring1").addEventListener("change", calculateAndUpdate);
-	   document.getElementById("ring2").addEventListener("change", calculateAndUpdate);
-	   document.getElementById("ring3").addEventListener("change", calculateAndUpdate);
-	   document.getElementById("ring4").addEventListener("change", calculateAndUpdate);
-	   document.getElementById("strongDrinkCheckbox").addEventListener("change", calculateAndUpdate);
-	   document.getElementById("headDropdown").addEventListener("change", calculateAndUpdate);
-	   document.getElementById("bodyDropdown").addEventListener("change", calculateAndUpdate);
-	   document.getElementById("legsDropdown").addEventListener("change", calculateAndUpdate);
-	   document.getElementById("glovesDropdown").addEventListener("change", calculateAndUpdate);
-	   document.getElementById("StrongBackTrait").addEventListener("change", calculateAndUpdate);
-	   document.getElementById("FortifyTrait").addEventListener("change", calculateAndUpdate);
-	   document.getElementById("ShadeskinTrait").addEventListener("change", calculateAndUpdate);
+		StrongBackTraitModifier = parseFloat(StrongBackTrait.value);
+		FortifyTraitModifier = parseFloat(FortifyTrait.value);
+		ShadeskinTraitModifier = parseFloat(ShadeskinTrait.value);
+		const armorData = await fetchArmorData();
 
-	   calculateAndUpdate(); // Initialize the result display when the page loads
+			if(equippedRings.ring1 === "Elevated Ring" || equippedRings.ring2 === "Elevated Ring" || equippedRings.ring3 === "Elevated Ring" || equippedRings.ring4 === "Elevated Ring") {
+				elevatedringFactor = 5;
+			} else {
+				elevatedringFactor = 0;
+			}
+		weightLimit = parseInt(document.getElementById("weightInput").value) + StrongBackTraitModifier + elevatedringFactor;
+		let tolerance = parseInt(document.getElementById("toleranceInput").value);
+		tolerance = Math.max(0, tolerance); // Ensure tolerance is not negative
+		const {best_combinations} = find_best_combination(armorData, weightLimit, tolerance);
+		display_combinations(best_combinations);
 
-	  // List of image URLs
-	   const imageUrls = [
-	       'https://images.hdqwalls.com/download/remnant-2-r7-3840x2400.jpg',
-	       'https://images.hdqwalls.com/download/2023-remnant-ii-yg-5120x2880.jpg',
-	       'https://images5.alphacoders.com/129/1293142.png',
-	       'https://images2.alphacoders.com/129/1293146.png',
-	       'https://images2.alphacoders.com/129/1293143.png',
-	       'https://images3.alphacoders.com/129/1293140.png',
-	       'https://images.hdqwalls.com/download/2023-remnant-2-5k-bi-5120x2880.jpg',
-	       'https://images4.alphacoders.com/129/1293141.png',
-	   ];
+		document.getElementById('loading-circle').style.display = 'none';
+	}
 
-	   let currentImageIndex = 0;
-	   const backgroundImages = document.querySelectorAll('.background-image');
+	document.getElementById("weightInput").addEventListener("change", calculateAndUpdate);
+	document.getElementById("amuletDropdown").addEventListener("change", calculateAndUpdate);
+	document.getElementById("toleranceInput").addEventListener("input", calculateAndUpdate);
+	document.getElementById("ring1").addEventListener("change", calculateAndUpdate);
+	document.getElementById("ring2").addEventListener("change", calculateAndUpdate);
+	document.getElementById("ring3").addEventListener("change", calculateAndUpdate);
+	document.getElementById("ring4").addEventListener("change", calculateAndUpdate);
+	document.getElementById("strongDrinkCheckbox").addEventListener("change", calculateAndUpdate);
+	document.getElementById("headDropdown").addEventListener("change", calculateAndUpdate);
+	document.getElementById("bodyDropdown").addEventListener("change", calculateAndUpdate);
+	document.getElementById("legsDropdown").addEventListener("change", calculateAndUpdate);
+	document.getElementById("glovesDropdown").addEventListener("change", calculateAndUpdate);
+	document.getElementById("StrongBackTrait").addEventListener("change", calculateAndUpdate);
+	document.getElementById("FortifyTrait").addEventListener("change", calculateAndUpdate);
+	document.getElementById("ShadeskinTrait").addEventListener("change", calculateAndUpdate);
 
-	   function setBackgroundImage() {
-	       const currentBackgroundImage = backgroundImages[currentImageIndex % 2];
-	       const nextBackgroundImage = backgroundImages[(currentImageIndex + 1) % 2];
+	calculateAndUpdate(); // Initialize the result display when the page loads
 
-	       // Load the next image
-	       nextBackgroundImage.style.backgroundImage = `url('${imageUrls[(currentImageIndex + 1) % imageUrls.length]}')`;
-	       nextBackgroundImage.style.opacity = 0; // Start with 0 opacity
+	// List of image URLs
+	const imageUrls = [
+		'https://images.hdqwalls.com/download/remnant-2-r7-3840x2400.jpg',
+		'https://images.hdqwalls.com/download/2023-remnant-ii-yg-5120x2880.jpg',
+		'https://images5.alphacoders.com/129/1293142.png',
+		'https://images2.alphacoders.com/129/1293146.png',
+		'https://images2.alphacoders.com/129/1293143.png',
+		'https://images3.alphacoders.com/129/1293140.png',
+		'https://images.hdqwalls.com/download/2023-remnant-2-5k-bi-5120x2880.jpg',
+		'https://images4.alphacoders.com/129/1293141.png',
+	];
 
-	       // Trigger reflow by reading the nextBackgroundImage's offsetHeight
-	       nextBackgroundImage.offsetHeight;
+	let currentImageIndex = 0;
+	const backgroundImages = document.querySelectorAll('.background-image');
 
-	       // Adjust the opacity limits and transition properties
-	       const maxOpacity = 0.4;
-	       const fadeDuration = 9000; // Duration of fade in milliseconds
+	function setBackgroundImage() {
+		const currentBackgroundImage = backgroundImages[currentImageIndex % 2];
+		const nextBackgroundImage = backgroundImages[(currentImageIndex + 1) % 2];
+		// Load the next image
+		nextBackgroundImage.style.backgroundImage = `url('${imageUrls[(currentImageIndex + 1) % imageUrls.length]}')`;
+		nextBackgroundImage.style.opacity = 0; // Start with 0 opacity
+		// Trigger reflow by reading the nextBackgroundImage's offsetHeight
+		nextBackgroundImage.offsetHeight;
+		// Adjust the opacity limits and transition properties
+		const maxOpacity = 0.2;
+		const fadeDuration = 9000; // Duration of fade in milliseconds
+		nextBackgroundImage.style.transition = `opacity ${fadeDuration}ms ease`;
+		currentBackgroundImage.style.transition = `opacity ${fadeDuration}ms ease`;
+		// Fade in the next image while fading out the current image
+		nextBackgroundImage.style.opacity = maxOpacity;
+		currentBackgroundImage.style.opacity = 0;
+		setTimeout(() => {
+		// Reset transition properties and prepare for the next iteration
+		nextBackgroundImage.style.transition = '';
+		currentBackgroundImage.style.transition = '';
+		currentImageIndex++;
+		}, fadeDuration);
+	}
 
-	       nextBackgroundImage.style.transition = `opacity ${fadeDuration}ms ease`;
-	       currentBackgroundImage.style.transition = `opacity ${fadeDuration}ms ease`;
-
-	       // Fade in the next image while fading out the current image
-	       nextBackgroundImage.style.opacity = maxOpacity;
-	       currentBackgroundImage.style.opacity = 0;
-
-	       setTimeout(() => {
-	           // Reset transition properties and prepare for the next iteration
-	           nextBackgroundImage.style.transition = '';
-	           currentBackgroundImage.style.transition = '';
-	           currentImageIndex++;
-	       }, fadeDuration);
-	   }
-
-	   setBackgroundImage();
-	   setInterval(setBackgroundImage, 10000);
-	</script>
+	setBackgroundImage();
+	setInterval(setBackgroundImage, 10000);
+</script>
 </body>
 </html>
