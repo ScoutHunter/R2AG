@@ -100,7 +100,7 @@
 		text-align: center;
 		margin-top: 7px;
 		margin-left: 15px;
-		background: linear-gradient(75deg, #888888, #FFFDD0, #edecec, #999999);
+		background: linear-gradient(75deg, #888888, #ddd5c6, #eae2dc, #999999);
 		-webkit-background-clip: text;
 		background-clip: text;
 		color: transparent;
@@ -173,7 +173,7 @@
 		width: 170px;
 		font-size: 15px;
 		margin-right: 10px;
-		margin-top: 3px;
+		margin-top: 5px;
 		background-color: #ebefe7;
 		border-radius: 5px;
 	}
@@ -269,7 +269,7 @@
 
 	.armor-select {
 		text-align: center;
-		width: 195px;
+		width: 201.5px;
 		font-size: 15px;
 		background-color: #ebefe7;
 		border-radius: 5px;
@@ -424,7 +424,7 @@
 		background-size: 100% 60px, 100% calc(100% - 60px);
 		background-repeat: no-repeat;
 		margin-bottom: -70px;
-		box-shadow: 0 0 50px rgba(128, 255, 255, 0.1);
+		box-shadow: 0 0 50px rgba(128, 255, 255, 0.05);
 	}
 
 	.itemName {
@@ -562,6 +562,33 @@
 		visibility: visible;
 		text-align: right;
 	}
+
+	.armor-select-row {
+		height: 22px;
+	}
+
+	.armor-select-row.active .armor-select {
+		z-index: 1;
+		transform: translateY(48.5%);
+		width: 180px;
+	}
+
+	.armor-select-row:not(.active) .armor-select {
+		height: 18px;
+		z-index: 0;
+		text-align: center;
+		width: 180px;
+		font-size: 15px;
+		margin-top: 3px;
+		background-color: #ebefe7;
+		border-radius: 5px;
+	}
+
+    select {
+        border: none;
+        outline: none;
+		overflow: hidden;
+    }
 </style>
 
 <div class="background-image"></div><div class="background-image"></div>
@@ -637,7 +664,7 @@
 		<div class="label-container amulet-container">
 			<label for="amuletDropdown">Amulet</label>
 			<select id="amuletDropdown">
-				<option value="undefined">undefined</option>
+				<option value="unequipped">unequipped</option>
 				<option value="leto">Leto's Amulet</option>
 				<option value="twistedidol">Twisted Idol</option>
 				<option value="navigatorspendant">Navigator's Pendant</option>
@@ -675,26 +702,30 @@
 			<h2 class="armor-filter-title">Armor Filter</h2>
 			<div class="armor-select-row">
 				<label for="headDropdown">Head</label>
-				<select class="armor-select" id="headDropdown">
-					<option value="Undefined">Any</option>
+				<select class="armor-select" id="headDropdown" multiple size=1>
+					<option value="any">any</option>
+					<option value="any">any</option>
 				</select>
 			</div>
 			<div class="armor-select-row">
 				<label for="bodyDropdown">Body</label>
-				<select class="armor-select" id="bodyDropdown">
-					<option value="Undefined">Any</option>
+				<select class="armor-select" id="bodyDropdown" multiple size=1>
+					<option value="any">any</option>
+					<option value="any">any</option>
 				</select>
 			</div>
 			<div class="armor-select-row">
 				<label for="legsDropdown">Legs</label>
-				<select class="armor-select" id="legsDropdown">
-					<option value="Undefined">Any</option>
+				<select class="armor-select" id="legsDropdown" multiple size=1>
+					<option value="any">any</option>
+					<option value="any">any</option>
 				</select>
 			</div>
 			<div class="armor-select-row">
 				<label for="glovesDropdown">Arms</label>
-				<select class="armor-select" id="glovesDropdown">
-					<option value="Undefined">Any</option>
+				<select class="armor-select" id="glovesDropdown" multiple size=1>
+					<option value="any">any</option>
+					<option value="any">any</option>
 				</select>
 			</div>
 			<div class="reset-armor-button-container">
@@ -704,7 +735,7 @@
 	</div>
 	<div id="resultContainerWrapper">
 		<br>
-		<label for="toleranceInput"><span style="color: #ebefe7;"><span class="text-tooltip" data-tooltip="Displays more armor sets, potentially with better Resistances but lower Damage Reduction"></span></span></label>
+		<label for="toleranceInput"><span style="color: #ebefe7;"><span class="text-tooltip" data-tooltip="Display more armor sets, potentially with better Status resistances but lower Damage Reduction"></span></span></label>
 		<input id="toleranceInput" max="10" min="0" step="1" type="range" value="0">
 		<h2 id="totalDamageReduction"></h2>
 		<div id="resultContainer"></div>
@@ -732,27 +763,97 @@
 
 	function populateDropdown(dropdownId, armorPieces) {
 		const dropdown = document.getElementById(dropdownId);
+		let isOpen = false;
+		dropdown.addEventListener('focus', () => {
+			dropdown.size = armorPieces.length + 1;
+			dropdown.parentNode.classList.add('active');
+			isOpen = true;
+			dropdown.options[0].style.display = 'none';
+		});
+
+		dropdown.addEventListener('blur', () => {
+			dropdown.size = 1;
+			dropdown.parentNode.classList.remove('active');
+			isOpen = false;
+			for (const option of dropdown.options) {
+				option.style.display = '';
+			}
+			// Display the selected value(s) when the dropdown is closed
+			displaySelectedValues(dropdown);
+		});
+
+		dropdown.addEventListener('mousedown', (event) => {
+			const clickedOption = event.target;
+			if (!isOpen) {
+				// Open the dropdown without selecting an option on the first click
+				event.preventDefault();
+				dropdown.focus();
+				isOpen = true;
+			} else {
+				if (clickedOption.tagName === 'OPTION') {
+					toggleOptionSelection(clickedOption);
+					event.preventDefault(); // Prevent the default behavior of collapsing the dropdown
+					dropdown.focus(); // Ensure the dropdown retains focus
+				}
+			}
+		});
+
 		for (const armorPiece of armorPieces) {
 			const option = document.createElement("option");
-			option.value = armorPiece[0]; // Assuming armorPiece[0] is the identifier
-			option.textContent = armorPiece[0]; // Display text for the option
+			option.value = armorPiece[0];
+			option.textContent = armorPiece[0];
+			option.style.borderTop = '1px solid #ccc'; // Adjust color and thickness as needed
 			dropdown.appendChild(option);
 		}
+		// Display the selected value(s) initially
+		displaySelectedValues(dropdown);
 	}
 
-	populateArmorDropdowns();
-
-	function resetArmorDropdowns() {
-		const dropdowns = [
-		document.getElementById("headDropdown"),
-		document.getElementById("bodyDropdown"),
-		document.getElementById("legsDropdown"),
-		document.getElementById("glovesDropdown")
-		];
-		for (const dropdown of dropdowns) {
-			dropdown.value = "Undefined";
+	function displaySelectedValues(dropdown) {
+		const selectedValues = Array.from(dropdown.selectedOptions).map(option => option.value);
+		if (selectedValues.length > 0) {
+			dropdown.options[0].textContent = selectedValues.join(', ');
+			dropdown.options[0].style.backgroundColor = "#ebefe7"; // Set the background color to #ebefe7
+			dropdown.options[0].style.fontSize = "15px";
+			dropdown.options[0].style.borderRadius = "5px";
+		} else {
+			dropdown.options[0].textContent = "any";
+			dropdown.options[0].style.backgroundColor = "#ebefe7"; // Set the background color to #ebefe7
+			dropdown.options[0].style.fontSize = "15px";
+			dropdown.options[0].style.borderRadius = "5px";
 		}
 	}
+
+	function toggleOptionSelection(option) {
+		const dropdown = option.parentNode;
+		if (option.value === "any") {
+			// Unselect all "any" options if "any" is selected
+			Array.from(dropdown.options).forEach(opt => opt.selected = false);
+		} else {
+			// Unselect all "any" options if any other option is selected
+			Array.from(dropdown.options)
+				.filter(opt => opt.value === "any" && opt !== option)
+				.forEach(anyOption => anyOption.selected = false);
+		}
+		option.selected = !option.selected;
+		calculateAndUpdate(); // Call your update function here
+	}
+
+    populateArmorDropdowns();
+
+    function resetArmorDropdowns() {
+        const dropdowns = [
+            document.getElementById("headDropdown"),
+            document.getElementById("bodyDropdown"),
+            document.getElementById("legsDropdown"),
+            document.getElementById("glovesDropdown")
+        ];
+        for (const dropdown of dropdowns) {
+            dropdown.value = "any";
+            dropdown.size = 1; // Reset dropdown size
+			dropdown.options[0].textContent = "any";
+        }
+    }
 
 	const toleranceInput = document.getElementById("toleranceInput");
 	const toleranceLabel = document.querySelector("#resultContainerWrapper label span span");
@@ -762,18 +863,18 @@
 	});
 	toleranceLabel.textContent = `Tolerance: ${toleranceInput.value}`;
 	const ringSelects = document.querySelectorAll('.ring-select');
-	const availableRings = ['undefined', 'Fae Protector Signet', 'Dran Memento', 'Meteorite Shard Ring', 'Elevated Ring'];
+	const availableRings = ['unequipped', 'Fae Protector Signet', 'Dran Memento', 'Meteorite Shard Ring', 'Elevated Ring'];
 	const equippedRings = {};
 
 	function equipRing(selectedRing) {
 		const selectedValue = document.getElementById(selectedRing).value;
 		const prevEquippedRing = equippedRings[selectedRing];
 		if(prevEquippedRing) enableRingOption(prevEquippedRing);
-		if(selectedValue !== "undefined") {
+		if(selectedValue !== "unequipped") {
 			if(equippedRings[selectedRing]) enableRingOption(equippedRings[selectedRing]);
 			disableRingOption(selectedValue);
 			equippedRings[selectedRing] = selectedValue;
-		} else equippedRings[selectedRing] = undefined;
+		} else equippedRings[selectedRing] = unequipped;
 	}
 
 	function enableRingOption(ring) {
@@ -788,17 +889,17 @@
 		ringSelects.forEach((select) => {
 			const option = select.querySelector(`option[value="${ring}"]`);
 			option.disabled = true;
-			option.style.display = 'undefined';
+			option.style.display = 'unequipped';
 		});
 	}
 
 	function unequipAllRings() {
 		ringSelects.forEach((select) => {
 			const selectedValue = select.value;
-			if(selectedValue !== "undefined") {
+			if(selectedValue !== "unequipped") {
 				enableRingOption(selectedValue);
-				select.value = "undefined";
-				equippedRings[select.id] = undefined;
+				select.value = "unequipped";
+				equippedRings[select.id] = unequipped;
 			}
 		});
 	}
@@ -818,28 +919,29 @@
 		let max_damage_reduction = 0;
 		// Ensure that tolerance is within the valid range of 0 to 10
 		tolerance = Math.max(0, Math.min(10, tolerance));
-		for(const head of armor_list['Head']) {
-			for(const body of armor_list['Body']) {
-				for(const legs of armor_list['Legs']) {
-					for(const gloves of armor_list['Gloves']) {
+
+		const headDropdown = document.getElementById("headDropdown");
+		const bodyDropdown = document.getElementById("bodyDropdown");
+		const legsDropdown = document.getElementById("legsDropdown");
+		const glovesDropdown = document.getElementById("glovesDropdown");
+
+		const headSelected = Array.from(headDropdown.selectedOptions).map(option => option.value);
+		const bodySelected = Array.from(bodyDropdown.selectedOptions).map(option => option.value);
+		const legsSelected = Array.from(legsDropdown.selectedOptions).map(option => option.value);
+		const glovesSelected = Array.from(glovesDropdown.selectedOptions).map(option => option.value);
+
+		for (const head of armor_list['Head']) {
+			for (const body of armor_list['Body']) {
+				for (const legs of armor_list['Legs']) {
+					for (const gloves of armor_list['Gloves']) {
 
 						// Check if the armor pieces match the selected dropdown values
-						const headDropdown = document.getElementById("headDropdown");
-						const bodyDropdown = document.getElementById("bodyDropdown");
-						const legsDropdown = document.getElementById("legsDropdown");
-						const glovesDropdown = document.getElementById("glovesDropdown");
+						const headMatch = headSelected.length === 0 || headSelected.includes("any") || headSelected.includes(head[0]);
+						const bodyMatch = bodySelected.length === 0 || bodySelected.includes("any") || bodySelected.includes(body[0]);
+						const legsMatch = legsSelected.length === 0 || legsSelected.includes("any") || legsSelected.includes(legs[0]);
+						const glovesMatch = glovesSelected.length === 0 || glovesSelected.includes("any") || glovesSelected.includes(gloves[0]);
 
-						const selectedHead = headDropdown.value;
-						const selectedBody = bodyDropdown.value;
-						const selectedLegs = legsDropdown.value;
-						const selectedGloves = glovesDropdown.value;
-
-						if (
-						(selectedHead === "Undefined" || selectedHead === head[0]) &&
-						(selectedBody === "Undefined" || selectedBody === body[0]) &&
-						(selectedLegs === "Undefined" || selectedLegs === legs[0]) &&
-						(selectedGloves === "Undefined" || selectedGloves === gloves[0])
-						){
+						if (headMatch && bodyMatch && legsMatch && glovesMatch) {
 							const amuletDropdown = document.getElementById("amuletDropdown");
 							const selectedAmuletValue = amuletDropdown.value;
 							letoAmuletFactor = selectedAmuletValue === "leto" ? 0.6 : 1;
@@ -892,7 +994,6 @@
 				}
 			}
 		}
-
 		// Find the highest damage reduction value from candidate combinations
 		max_damage_reduction = candidate_combinations.reduce((max, combination) => {
 		return Math.max(max, combination.DamageReduction);
@@ -1123,10 +1224,11 @@
 	document.getElementById("ShadeskinTrait").addEventListener("change", calculateAndUpdate);
 
 	calculateAndUpdate(); // Initialize the result display when the page loads
-
 	// List of image URLs
 	const imageUrls = [
 		'https://images.hdqwalls.com/download/remnant-2-r7-3840x2400.jpg',
+		'https://imgheybox.max-c.com/web/bbs/2023/06/14/1afa887914f3072625d89dfc21ee245e/thumb.jpeg',
+		'https://images.hdqwalls.com/wallpapers/remnant-ii-0k.jpg',
 		'https://images.hdqwalls.com/download/2023-remnant-ii-yg-5120x2880.jpg',
 		'https://images5.alphacoders.com/129/1293142.png',
 		'https://images2.alphacoders.com/129/1293146.png',
@@ -1134,6 +1236,10 @@
 		'https://images3.alphacoders.com/129/1293140.png',
 		'https://images.hdqwalls.com/download/2023-remnant-2-5k-bi-5120x2880.jpg',
 		'https://images4.alphacoders.com/129/1293141.png',
+		'https://w.wallhaven.cc/full/we/wallhaven-wedmwq.jpg',
+		'https://gamemag.ru/images/imagemanager/cache/2f/9531/2f9531_remnant-2-game-monster-2k-wallpaper-uhdpaper.com-631-1-l.jpg',
+		'https://p2.bahamut.com.tw/B/2KU/48/95fe3eae92331247d8fec450a51jjq85.JPG',
+		'https://p2.bahamut.com.tw/B/2KU/51/3894796e8a54ce6365aa70fdf81jjqb5.JPG',
 	];
 
 	let currentImageIndex = 0;
@@ -1148,8 +1254,8 @@
 		// Trigger reflow by reading the nextBackgroundImage's offsetHeight
 		nextBackgroundImage.offsetHeight;
 		// Adjust the opacity limits and transition properties
-		const maxOpacity = 0.2;
-		const fadeDuration = 9000; // Duration of fade in milliseconds
+		const maxOpacity = 0.15;
+		const fadeDuration = 5000; // Duration of fade in milliseconds
 		nextBackgroundImage.style.transition = `opacity ${fadeDuration}ms ease`;
 		currentBackgroundImage.style.transition = `opacity ${fadeDuration}ms ease`;
 		// Fade in the next image while fading out the current image
@@ -1164,7 +1270,7 @@
 	}
 
 	setBackgroundImage();
-	setInterval(setBackgroundImage, 10000);
+	setInterval(setBackgroundImage, 7000);
 </script>
 </body>
 </html>
