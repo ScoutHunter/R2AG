@@ -863,18 +863,18 @@
 	});
 	toleranceLabel.textContent = `Tolerance: ${toleranceInput.value}`;
 	const ringSelects = document.querySelectorAll('.ring-select');
-	const availableRings = ['unequipped', 'Fae Protector Signet', 'Dran Memento', 'Meteorite Shard Ring', 'Elevated Ring'];
+	const availableRings = ['undefined', 'Fae Protector Signet', 'Dran Memento', 'Meteorite Shard Ring', 'Elevated Ring'];
 	const equippedRings = {};
 
 	function equipRing(selectedRing) {
 		const selectedValue = document.getElementById(selectedRing).value;
 		const prevEquippedRing = equippedRings[selectedRing];
 		if(prevEquippedRing) enableRingOption(prevEquippedRing);
-		if(selectedValue !== "unequipped") {
+		if(selectedValue !== "undefined") {
 			if(equippedRings[selectedRing]) enableRingOption(equippedRings[selectedRing]);
 			disableRingOption(selectedValue);
 			equippedRings[selectedRing] = selectedValue;
-		} else equippedRings[selectedRing] = unequipped;
+		} else equippedRings[selectedRing] = undefined;
 	}
 
 	function enableRingOption(ring) {
@@ -889,17 +889,17 @@
 		ringSelects.forEach((select) => {
 			const option = select.querySelector(`option[value="${ring}"]`);
 			option.disabled = true;
-			option.style.display = 'unequipped';
+			option.style.display = 'undefined';
 		});
 	}
 
 	function unequipAllRings() {
 		ringSelects.forEach((select) => {
 			const selectedValue = select.value;
-			if(selectedValue !== "unequipped") {
+			if(selectedValue !== "undefined") {
 				enableRingOption(selectedValue);
-				select.value = "unequipped";
-				equippedRings[select.id] = unequipped;
+				select.value = "undefined";
+				equippedRings[select.id] = undefined;
 			}
 		});
 	}
