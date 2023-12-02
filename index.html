@@ -910,14 +910,14 @@
 		});
 	}
 
-	window.onload = function() {
-		for(const select of ringSelects) {
+	document.addEventListener('DOMContentLoaded', function() {
+		for (const select of ringSelects) {
 			availableRings.forEach((ring) => {
 				const option = new Option(ring, ring);
 				select.add(option);
 			});
 		}
-	};
+	});
 
 	function find_best_combination(armor_list, weight_limit, tolerance) {
 		let best_combinations = [];
