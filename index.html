@@ -189,14 +189,24 @@
 	}
 
 	.concoction-checkbox-container {
-		display: flex;
 		width: 186px;
-		align-items: center;
 		background-color: #122;
 		padding: 5px 10px;
 		border-radius: 10px;
+		display: flex;
+		flex-direction: column; /* Align items vertically */
 	}
-	#strongDrinkCheckbox {
+
+	.checkbox-label-container {
+		display: flex;
+		justify-content: space-between; /* Align items with space in between */
+		margin: 2px;
+		align-items: center; /* Center items vertically */
+	}
+
+	#strongDrinkCheckbox, #eggDrinkCheckbox {
+		margin-right: -10px;
+		margin-left: -20px;
 		transform: scale(1.2);
 	}
 
@@ -743,10 +753,17 @@
 				"unequipAllRings(); calculateAndUpdate();">Unequip Rings</button>
 			</div>
 		</div>
-		<div class="label-container concoction-checkbox-container">
-			<label for="strongDrinkCheckbox">Strong Drink Concoction</label> <input id=
-			"strongDrinkCheckbox" type="checkbox">
-		</div>
+<div class="label-container concoction-checkbox-container">
+    <div class="checkbox-label-container">
+        <label for="strongDrinkCheckbox">Strong Drink Concoction</label>
+        <input id="strongDrinkCheckbox" type="checkbox">
+    </div>
+    <div class="checkbox-label-container">
+        <label for="eggDrinkCheckbox">Egg Drink Concoction</label>
+        <input id="eggDrinkCheckbox" type="checkbox">
+    </div>
+</div>
+
 		<div class="armor-filter-container">
 			<h2 class="armor-filter-title">Armor Filter</h2>
 			<div class="armor-select-row">
@@ -994,11 +1011,13 @@
 							const amuletDropdown = document.getElementById("amuletDropdown");
 							const selectedAmuletValue = amuletDropdown.value;
 							letoAmuletFactor = selectedAmuletValue === "leto" ? 0.6 : 1;
-							twistedidolFactor = selectedAmuletValue === "twistedidol" ? 15 : 0;
+							twistedidolFactor = selectedAmuletValue === "twistedidol" ? 20 : 0;
 							navigatorspendantFactor = selectedAmuletValue === "navigatorspendant" ? 10 : 0;
 							rustednavigatorspendantFactor = selectedAmuletValue === "rustednavigatorspendant" ? 15 : 0;
 							const strongDrinkCheckbox = document.getElementById("strongDrinkCheckbox");
 							strongdrinkFactor = strongDrinkCheckbox.checked ? 10 : 0;
+							const eggDrinkCheckbox = document.getElementById("eggDrinkCheckbox");
+							eggdrinkFactor = eggDrinkCheckbox.checked ? 10 : 0;
 
 							if(equippedRings.ring1 === "Fae Protector Signet" || equippedRings.ring2 === "Fae Protector Signet" || equippedRings.ring3 === "Fae Protector Signet" || equippedRings.ring4 === "Fae Protector Signet") {
 								faeprotectorsignetFactor = 5;
@@ -1019,7 +1038,7 @@
 							}
 
 							if(equippedRings.ring1 === "Elevated Ring" || equippedRings.ring2 === "Elevated Ring" || equippedRings.ring3 === "Elevated Ring" || equippedRings.ring4 === "Elevated Ring") {
-								elevatedringFactor = 5;
+								elevatedringFactor = 10;
 							} else {
 								elevatedringFactor = 0;
 							}
@@ -1136,9 +1155,9 @@
 				}
 
 				var weightColor =
-				(totalWeight - StrongBackTraitModifier - elevatedringFactor <= 25) ? color1 :
-				(totalWeight - StrongBackTraitModifier - elevatedringFactor <= 50) ? color2 :
-				(totalWeight - StrongBackTraitModifier - elevatedringFactor <= 75) ? color3 : backgroundColor
+				(totalWeight - StrongBackTraitModifier - elevatedringFactor - eggdrinkFactor <= 25) ? color1 :
+				(totalWeight - StrongBackTraitModifier - elevatedringFactor - eggdrinkFactor <= 50) ? color2 :
+				(totalWeight - StrongBackTraitModifier - elevatedringFactor - eggdrinkFactor <= 75) ? color3 : backgroundColor
 
 				if(isBetter) {
 					const armorCard = document.createElement("div");
@@ -1172,28 +1191,28 @@
 						<div class="gear-container">
 						<p><span style="color: #d6e0d0;">Head:<\/span>
 						<span class="itemName headColor">
-						<span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Head/${armorSet.Head[0].replace(/\s+/g, '_')}.png')">
+						<span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Head/${armorSet.Head[0].replace(/ /g, '_').replace(/'/g, "\\'")}.png')">
 						${armorSet.Head[0].trim() === "none" ? `<span style="color: #99997a;">none<\/span>` : armorSet.Head[0]}
 						<\/span>
 						<\/span>
 						<\/p>
 						<p><span style="color: #d6e0d0;">Body:<\/span>
 						<span class="itemName bodyColor">
-						<span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Body/${armorSet.Body[0].replace(/\s+/g, '_')}.png')">
+						<span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Body/${armorSet.Body[0].replace(/ /g, '_').replace(/'/g, "\\'")}.png')">
 						${armorSet.Body[0].trim() === "none" ? `<span style="color: #99997a;">none<\/span>` : armorSet.Body[0]}
 						<\/span>
 						<\/span>
 						<\/p>
 						<p><span style="color: #d6e0d0;">Legs:&nbsp;<\/span>
 						<span class="itemName legsColor">
-						<span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Legs/${armorSet.Legs[0].replace(/\s+/g, '_')}.png')">
+						<span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Legs/${armorSet.Legs[0].replace(/ /g, '_').replace(/'/g, "\\'")}.png')">
 						${armorSet.Legs[0].trim() === "none" ? `<span style="color: #99997a;">none<\/span>` : armorSet.Legs[0]}
 						<\/span>
 						<\/span>
 						<\/p>
 						<p><span style="color: #d6e0d0;">Arms:<\/span>
 						<span class="itemName glovesColor">
-						<span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Gloves/${armorSet.Gloves[0].replace(/\s+/g, '_')}.png')">
+						<span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Gloves/${armorSet.Gloves[0].replace(/ /g, '_').replace(/'/g, "\\'")}.png')">
 						${armorSet.Gloves[0].trim() === "none" ? `<span style="color: #99997a;">none<\/span>` : armorSet.Gloves[0]}
 						<\/span>
 						<\/span>
@@ -1240,14 +1259,16 @@
 		StrongBackTraitModifier = parseFloat(StrongBackTrait.value);
 		FortifyTraitModifier = parseFloat(FortifyTrait.value);
 		ShadeskinTraitModifier = parseFloat(ShadeskinTrait.value);
+		let eggdrinkFactor = document.getElementById('eggDrinkCheckbox').checked ? 10 : 0;
+
 		const armorData = await fetchArmorData();
 
 			if(equippedRings.ring1 === "Elevated Ring" || equippedRings.ring2 === "Elevated Ring" || equippedRings.ring3 === "Elevated Ring" || equippedRings.ring4 === "Elevated Ring") {
-				elevatedringFactor = 5;
+				elevatedringFactor = 10;
 			} else {
 				elevatedringFactor = 0;
 			}
-		weightLimit = parseInt(document.getElementById("weightInput").value) + StrongBackTraitModifier + elevatedringFactor;
+		weightLimit = parseInt(document.getElementById("weightInput").value) + StrongBackTraitModifier + elevatedringFactor + eggdrinkFactor;
 		let tolerance = parseInt(document.getElementById("toleranceInput").value);
 		tolerance = Math.max(0, tolerance); // Ensure tolerance is not negative
 		const {best_combinations} = find_best_combination(armorData, weightLimit, tolerance);
@@ -1264,6 +1285,7 @@
 	document.getElementById("ring3").addEventListener("change", calculateAndUpdate);
 	document.getElementById("ring4").addEventListener("change", calculateAndUpdate);
 	document.getElementById("strongDrinkCheckbox").addEventListener("change", calculateAndUpdate);
+	document.getElementById("eggDrinkCheckbox").addEventListener("change", calculateAndUpdate);
 	document.getElementById("headDropdown").addEventListener("change", calculateAndUpdate);
 	document.getElementById("bodyDropdown").addEventListener("change", calculateAndUpdate);
 	document.getElementById("legsDropdown").addEventListener("change", calculateAndUpdate);
