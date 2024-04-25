@@ -660,12 +660,12 @@
 	<div class="content-container">
 		<!-- Align the elements using the new label-container class -->
 		<div class="label-container">
-			<label for="weightInput">Max Stamina Penalty</label>
+			<label for="weightInput">Weight Class</label>
 			<select id="weightInput" onchange="updateBackgroundColor()">
-				<option data-color="#adffff" value="25">Light (0%)</option>
-				<option data-color="#adffad" value="50">Medium (25%)</option>
-				<option data-color="#ffffad" value="75">Heavy (50%)</option>
-				<option data-color="#ffbfad" value="1000000">Flop (75%)</option>
+				<option data-color="#adffff" value="25">Light</option>
+				<option data-color="#adffad" value="50">Medium</option>
+				<option data-color="#ffffad" value="75">Heavy</option>
+				<option data-color="#ffbfad" value="1000000">Flop</option>
 			</select>
 		</div>
 		<div class="trait-container">
@@ -929,7 +929,7 @@
 	});
 	toleranceLabel.textContent = `Tolerance: ${toleranceInput.value}`;
 	const ringSelects = document.querySelectorAll('.ring-select');
-	const availableRings = ['undefined', 'Fae Protector Signet', 'Dran Memento', 'Meteorite Shard Ring', 'Elevated Ring'];
+	const availableRings = ['undefined', 'Burden of the Mason', 'Dran Memento', 'Dull Steel Ring', 'Elevated Ring', 'Fae Protector Signet', 'Meteorite Shard Ring'];
 	const equippedRings = {};
 
 	function equipRing(selectedRing) {
@@ -1155,9 +1155,9 @@
 				}
 
 				var weightColor =
-				(totalWeight - StrongBackTraitModifier - elevatedringFactor - eggdrinkFactor <= 25) ? color1 :
-				(totalWeight - StrongBackTraitModifier - elevatedringFactor - eggdrinkFactor <= 50) ? color2 :
-				(totalWeight - StrongBackTraitModifier - elevatedringFactor - eggdrinkFactor <= 75) ? color3 : backgroundColor
+				(totalWeight - StrongBackTraitModifier - elevatedringFactor - eggdrinkFactor - dullsteelringFactor + burdenofthemasonFactor <= 25) ? color1 :
+				(totalWeight - StrongBackTraitModifier - elevatedringFactor - eggdrinkFactor - dullsteelringFactor + burdenofthemasonFactor <= 50) ? color2 :
+				(totalWeight - StrongBackTraitModifier - elevatedringFactor - eggdrinkFactor - dullsteelringFactor + burdenofthemasonFactor<= 75) ? color3 : backgroundColor
 
 				if(isBetter) {
 					const armorCard = document.createElement("div");
@@ -1268,7 +1268,17 @@
 			} else {
 				elevatedringFactor = 0;
 			}
-		weightLimit = parseInt(document.getElementById("weightInput").value) + StrongBackTraitModifier + elevatedringFactor + eggdrinkFactor;
+			if(equippedRings.ring1 === "Dull Steel Ring" || equippedRings.ring2 === "Dull Steel Ring" || equippedRings.ring3 === "Dull Steel Ring" || equippedRings.ring4 === "Dull Steel Ring") {
+				dullsteelringFactor = 25;
+			} else {
+				dullsteelringFactor = 0;
+			}
+			if(equippedRings.ring1 === "Burden of the Mason" || equippedRings.ring2 === "Burden of the Mason" || equippedRings.ring3 === "Burden of the Mason" || equippedRings.ring4 === "Burden of the Mason") {
+				burdenofthemasonFactor = 25;
+			} else {
+				burdenofthemasonFactor = 0;
+			}
+		weightLimit = parseInt(document.getElementById("weightInput").value) + StrongBackTraitModifier + elevatedringFactor + eggdrinkFactor + dullsteelringFactor - burdenofthemasonFactor;
 		let tolerance = parseInt(document.getElementById("toleranceInput").value);
 		tolerance = Math.max(0, tolerance); // Ensure tolerance is not negative
 		const {best_combinations} = find_best_combination(armorData, weightLimit, tolerance);
