@@ -147,10 +147,12 @@
 	}
 	h2,
 	h3 {
-		font-size: 26px;
 		text-align: center;
 		margin-top: 7px;
 		margin-left: 15px;
+		font-size: 15px;
+		background-color: #adffff;
+		border-radius: 5px;
 	}
 
 	label {
@@ -370,8 +372,6 @@
 	#toleranceInput {
 		text-align: left;
 		width: 170px;
-		/* Adjust the font size as needed */
-		/* Adjust the width as needed */
 		background-color: #ebefe7
 		user-drag: none;
 		user-select: none;
@@ -381,10 +381,7 @@
 		text-align: center;
 		width: 150px;
 		height: 35px;
-		/* Adjust this value as needed */
 		font-size: 15px;
-		/* Adjust the font size as needed */
-		/* Adjust the width as needed */
 		background-color: #adffff;
 		border-radius: 5px;
 	}
@@ -645,12 +642,10 @@
 
 <div class="background-image"></div><div class="background-image"></div>
 <div class="pagecontainer">
-    <!-- Your Main Logo and Title -->
     <div class="ImageTitle">
         <img height="auto" src="https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Misc/Remnant2.png" width="150">
         <h1>Armor Generator</h1>
     </div>
-    <!-- Partner Button -->
     <div class="button-container">
         <a href="https://www.remnant2toolkit.com/" target="_blank" class="partner-button">
             <img src="https://cowaii.io/images/R2TK.png" width="50" height="auto">
@@ -659,7 +654,6 @@
     </div>
     <br><br>
 	<div class="content-container">
-		<!-- Align the elements using the new label-container class -->
 		<div class="label-container">
 			<label for="weightInput">Weight Class</label>
 			<select id="weightInput" onchange="updateBackgroundColor()">
