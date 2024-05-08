@@ -18,11 +18,10 @@
 	.button-container {
 		position: absolute;
 		top: 10px;
-		left: calc(50%);
+		left: calc(47.7%);
 		transform: translateX(-360%);
 		z-index: 999;
 	}
-
 	.partner-button {
 		display: flex;
 		justify-content: center;
@@ -31,20 +30,44 @@
 		background-color: #111112;
 		color: #edf0e4;
 		border-radius: 10px;
-		width: 195px;
-		height: 40px;
+		width: 175px;
+		height: 31px;
 		border: 2px solid #555;
 		font-family: Trebuchet ms, sans-serif;
+		font-size: 14px;
 	}
-
 	.partner-button img {
-		width: 35px;
+		width: 30px;
 		height: auto;
 		margin-right: 10px;
 	}
-
 	.partner-button:hover {
 		background-color: #222225;
+	}
+
+	.contact-container {
+		position: absolute;
+		top: 10px;
+		transform: translateX(1150%);
+		z-index: 999;
+	}
+	.contact-button {
+		display: flex;
+		align-items: center;
+		text-decoration: none;
+		color: #edf0e4;
+		font-family: Trebuchet ms, sans-serif;
+		font-size: 15px;
+		cursor: pointer;
+	}
+	.contact-button img {
+		margin-right: 7px;
+		cursor: pointer;
+		width: 22px;
+	}
+	.contact-button span::before {
+		content: '@';
+		color: #b5b5b5;
 	}
 
 	#loading-circle {
@@ -413,10 +436,15 @@
 		margin-bottom: -5px;
 	}
 
-	@media screen and (max-width: 1150px) {
+	@media screen and (max-width: 1285px) {
 	    .button-container {
-        top: 92px;
-        transform: translateX(-30%);
+        top: 100px;
+        transform: translateX(-25%);
+		}
+	    .contact-container {
+        top: 10px;
+	    right: 15px;
+        transform: none;
 		}
 		.content-container {
 			display: flex;
@@ -664,6 +692,13 @@
             <span>Remnant2Toolkit</span>
         </a>
     </div>
+	<div class="contact-container">
+		<a class="contact-button" onclick="copyToClipboard('weshuggah')">
+			<img src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a69f118df70ad7828d4_icon_clyde_blurple_RGB.svg" width="25" height="auto">
+			<span style="font-family: Trebuchet ms, sans-serif; font-size: 14px; color: #edf0e4;">weshuggah</span>
+		</a>
+	</div>
+
     <br><br>
 	<div class="content-container">
 		<!-- Align the elements using the new label-container class -->
@@ -824,6 +859,41 @@
 </div>
 
 <script>
+	function copyToClipboard(text, button) {
+		const el = document.createElement('textarea');
+		el.value = text;
+		document.body.appendChild(el);
+		el.select();
+		document.execCommand('copy');
+		document.body.removeChild(el);
+
+		const notification = document.createElement('div');
+		notification.textContent = 'Copied to clipboard';
+		notification.style.position = 'fixed';
+		notification.style.top = '0px'; // Position 20px from the bottom
+		notification.style.left = '50%'; // Center horizontally
+		notification.style.transform = 'translateX(-50%)'; // Center horizontally
+		notification.style.padding = '10px';
+		notification.style.backgroundColor = 'rgba(32, 32, 64, 0.2)'; // Lighter and more transparent background
+		notification.style.color = 'rgba(255, 255, 255, 0.8)'; // Slightly more transparent font color
+		notification.style.borderRadius = '10px';
+		notification.style.opacity = '0';
+		notification.style.transition = 'opacity 0.5s ease';
+		notification.style.fontSize = '14px'; // Slightly bigger font size
+
+		document.body.appendChild(notification);
+
+		setTimeout(() => {
+			notification.style.opacity = '1';
+		}, 100);
+		setTimeout(() => {
+			notification.style.opacity = '0';
+			setTimeout(() => {
+				document.body.removeChild(notification);
+			}, 500);
+		}, 1000);
+	}
+
 	async function fetchArmorData() {
 		try {
 		const response = await fetch('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/armor_list.json');
