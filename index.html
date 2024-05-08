@@ -671,10 +671,10 @@
 			<div class="label-container">
 				<label for="weightInput">Max Weight Class</label>
 				<select id="weightInput" onchange="updateBackgroundColor()">
-					<option data-color="#adffff" value="25">Light</option>
+					<option data-color="#adffff" value="25" selected>Light</option>
 					<option data-color="#adffad" value="50">Medium</option>
 					<option data-color="#ffffad" value="75">Heavy</option>
-					<option data-color="#ffbfad" value="1000000" selected>Flop</option>
+					<option data-color="#ffbfad" value="1000000">Flop</option>
 				</select>
 			</div>
 			<div class="label-container" style="margin-top: 2px;">
@@ -1099,8 +1099,6 @@
 	var color1 = "#adffff"; // Declare backgroundColor as a global variable
 	var color2 = "#adffad";
 	var color3 = "#ffffad";
-
-	updateBackgroundColor();
 
 	function updateBackgroundColor() {
 		var selectElement = document.getElementById("weightInput");
