@@ -288,7 +288,7 @@
 		margin-bottom: 5px;
 		margin-right: 15px;
 		font-family: Trebuchet ms, sans-serif;
-		font-weight: 100;
+		font-weight: 500;
 	}
 
 	.trait-select-row {
@@ -337,7 +337,6 @@
 	.label-container {
 		display: flex;
 		justify-content: center;
-		/* Center elements horizontally */
 		background: linear-gradient(to top, rgba(0, 25, 35, 0.5), rgba(0, 240, 240, 0.2));
 		padding: 5px 10px;
 		border: 1px solid #000;
@@ -396,12 +395,13 @@
 	}
 	.content-container > * {
 		text-align: center;
-		margin: 10px;
+		margin: 7px;
 		flex-grow: 1;
-		margin-bottom: -5px;
+		margin-bottom: -10px;
 	}
 
 	@media screen and (max-width: 1285px) {
+		html {zoom: 70%}
 	    .button-container {
         top: 100px;
         transform: translateX(-25%);
@@ -460,22 +460,21 @@
 		user-drag: none;
 		user-select: none;
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-		grid-gap: 68px;
+		grid-template-columns: repeat(auto-fit, minmax(263px, 1fr));
 	}
 
 	.armor-card {
 		border: 3px solid #000;
 		padding: 10px;
-		min-width: 254px;
-		max-width: 250px;
+		min-width: 241px;
+		max-width: 230px;
 		margin: 0px auto;
 		border-radius: 10px;
 		background-image: linear-gradient(rgba(10, 50, 65, 0.8), rgba(0, 10, 17, 0.8)), linear-gradient(to top, rgba(0, 5, 5, 0.8), rgba(0, 30, 35, 0.8));
 		background-position: top, bottom;
 		background-size: 100% 60px, 100% calc(100% - 60px);
 		background-repeat: no-repeat;
-		margin-bottom: -70px;
+		margin-bottom: -2px;
 		box-shadow: 0 0 50px rgba(128, 255, 255, 0.05);
 	}
 
@@ -888,6 +887,7 @@
 	}
 
     populateArmorDropdowns();
+	resetArmorDropdowns();
 	async function populateArmorDropdowns() {
 		const armorData = await fetchArmorData();
 		populateDropdown("headDropdown", armorData['Head']);
