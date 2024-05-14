@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta content="width=device-width, initial-scale=1" name="viewport">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<title>R2 Armor Generator</title>
 	<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Misc/icon.png">
 </head>
@@ -71,6 +71,7 @@
 	}
 
 	#loading-circle {
+		z-index: 999;
 		width: 20px;
 		height: 20px;
 		border: 5px solid #000000;
@@ -125,12 +126,9 @@
 
 	.pagecontainer {
 		max-width: 1315px;
-		/* Set the fixed width of the content */
 		width: 90%;
-		/* Responsive width */
 		background-repeat: no-repeat;
 		box-sizing: border-box;
-		/* Include padding in the width */
 		user-drag: none;
 		user-select: none;
 		display: table;
@@ -1380,30 +1378,54 @@
 		'https://p2.bahamut.com.tw/B/2KU/51/3894796e8a54ce6365aa70fdf81jjqb5.JPG',
 	];
 
+
 	let currentImageIndex = 0;
+	let lastImageIndex = -1; // Initialize the last image index to an invalid value
 	const backgroundImages = document.querySelectorAll('.background-image');
 
+	function shuffle(array) {
+		for (let i = array.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[array[i], array[j]] = [array[j], array[i]];
+		}
+		return array;
+	}
+
 	function setBackgroundImage() {
+		const shuffledImageUrls = shuffle(imageUrls);
+		let nextImageIndex;
+
+		do {
+			nextImageIndex = Math.floor(Math.random() * shuffledImageUrls.length);
+		} while (nextImageIndex === lastImageIndex); // Keep generating a new index until it's different from the last one
+
+		lastImageIndex = nextImageIndex; // Update the last image index
+
 		const currentBackgroundImage = backgroundImages[currentImageIndex % 2];
 		const nextBackgroundImage = backgroundImages[(currentImageIndex + 1) % 2];
+
 		// Load the next image
-		nextBackgroundImage.style.backgroundImage = `url('${imageUrls[(currentImageIndex + 1) % imageUrls.length]}')`;
+		nextBackgroundImage.style.backgroundImage = `url('${shuffledImageUrls[nextImageIndex]}')`;
 		nextBackgroundImage.style.opacity = 0; // Start with 0 opacity
+
 		// Trigger reflow by reading the nextBackgroundImage's offsetHeight
 		nextBackgroundImage.offsetHeight;
+
 		// Adjust the opacity limits and transition properties
-		const maxOpacity = 0.15;
+		const maxOpacity = 0.3;
 		const fadeDuration = 5000; // Duration of fade in milliseconds
 		nextBackgroundImage.style.transition = `opacity ${fadeDuration}ms ease`;
 		currentBackgroundImage.style.transition = `opacity ${fadeDuration}ms ease`;
+
 		// Fade in the next image while fading out the current image
 		nextBackgroundImage.style.opacity = maxOpacity;
 		currentBackgroundImage.style.opacity = 0;
+
 		setTimeout(() => {
-		// Reset transition properties and prepare for the next iteration
-		nextBackgroundImage.style.transition = '';
-		currentBackgroundImage.style.transition = '';
-		currentImageIndex++;
+			// Reset transition properties and prepare for the next iteration
+			nextBackgroundImage.style.transition = '';
+			currentBackgroundImage.style.transition = '';
+			currentImageIndex++;
 		}, fadeDuration);
 	}
 
