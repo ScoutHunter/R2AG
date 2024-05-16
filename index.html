@@ -707,22 +707,6 @@
 		<div class="trait-container">
 			<h2 class="armor-filter-title">Trait Level</h2>
 			<div class="trait-select-row">
-				<label for="StrongBackdropdown">Strong Back (Challenger)</label>
-				<select class="trait-select" id="StrongBackTrait">
-					<option value="0">0</option>
-					<option value="1.5">1</option>
-					<option value="3">2</option>
-					<option value="4.5">3</option>
-					<option value="6">4</option>
-					<option value="7.5">5</option>
-					<option value="9">6</option>
-					<option value="10.5">7</option>
-					<option value="12">8</option>
-					<option value="13.5">9</option>
-					<option value="15">10</option>
-				</select>
-			</div>
-			<div class="trait-select-row">
 				<label for="StrongBackdropdown">Fortify (Engineer)</label>
 				<select class="trait-select" id="FortifyTrait">
 					<option value="1">0</option>
@@ -738,6 +722,38 @@
 					<option value="1.5">10</option>
 				</select>
 			</div>
+			<div class="trait-select-row">
+				<label for="StrongBackdropdown">Strong Back (Challenger)</label>
+				<select class="trait-select" id="StrongBackTrait">
+					<option value="0">0</option>
+					<option value="1.5">1</option>
+					<option value="3">2</option>
+					<option value="4.5">3</option>
+					<option value="6">4</option>
+					<option value="7.5">5</option>
+					<option value="9">6</option>
+					<option value="10.5">7</option>
+					<option value="12">8</option>
+					<option value="13.5">9</option>
+					<option value="15">10</option>
+				</select>
+			</div>
+			<!-- <div class="trait-select-row"> -->
+				<!-- <label for="StrongBackdropdown">Barkskin</label> -->
+				<!-- <select class="trait-select" id="BarkskinTrait"> -->
+					<!-- <option value="0">0</option> -->
+					<!-- <option value="0.01">1</option> -->
+					<!-- <option value="0.02">2</option> -->
+					<!-- <option value="0.03">3</option> -->
+					<!-- <option value="0.04">4</option> -->
+					<!-- <option value="0.05">5</option> -->
+					<!-- <option value="0.06">6</option> -->
+					<!-- <option value="0.07">7</option> -->
+					<!-- <option value="0.08">8</option> -->
+					<!-- <option value="0.09">9</option> -->
+					<!-- <option value="0.1">10</option> -->
+				<!-- </select> -->
+			<!-- </div> -->
 			<div class="trait-select-row">
 				<label for="StrongBackdropdown" style=
 				"line-height: 2.5;">Shadeskin</label>
@@ -762,7 +778,7 @@
 				<option value="undefined">undefined</option>
 				<option value="leto">Leto's Amulet</option>
 				<option value="navigatorspendant">Navigator's Pendant</option>
-				<option value="participationmedal">Participation Medal</option>
+				<!-- <option value="participationmedal">Participation Medal</option> -->
 				<option value="rustednavigatorspendant">Rusted Navigator's Pendant</option>
 				<option value="twistedidol">Twisted Idol</option>
 			</select>
@@ -960,7 +976,8 @@
 	});
 	toleranceLabel.textContent = `Tolerance: ${toleranceInput.value}`;
 	const ringSelects = document.querySelectorAll('.ring-select');
-	const availableRings = ['undefined', 'Burden of the Mason', 'Dran Memento', 'Dull Steel Ring', 'Elevated Ring', 'Fae Protector Signet', 'Gul Signet', 'Meteorite Shard Ring', 'Ring of the Robust'];
+	<!-- const availableRings = ['undefined', 'Burden of the Mason', 'Dran Memento', 'Dull Steel Ring', 'Elevated Ring', 'Fae Protector Signet', 'Gul Signet', 'Meteorite Shard Ring', 'Ring of the Robust']; -->
+	const availableRings = ['undefined', 'Burden of the Mason', 'Dran Memento', 'Dull Steel Ring', 'Elevated Ring', 'Fae Protector Signet', 'Meteorite Shard Ring', 'Ring of the Robust'];
 	const equippedRings = {};
 
 	function equipRing(selectedRing) {
@@ -1028,7 +1045,7 @@
 		twistedidolarmorFactor = document.getElementById("amuletDropdown").value === "twistedidol" ? 1.35 : 1;
 		navigatorspendantFactor = document.getElementById("amuletDropdown").value === "navigatorspendant" ? 10 : 0;
 		rustednavigatorspendantFactor = document.getElementById("amuletDropdown").value === "rustednavigatorspendant" ? 15 : 0;
-		participationmedalFactor = document.getElementById("amuletDropdown").value === "participationmedal" ? 0.1 : 0;
+		<!-- participationmedalFactor = document.getElementById("amuletDropdown").value === "participationmedal" ? 0.1 : 0; -->
 
 		strongDrinkCheckbox = document.getElementById("strongDrinkCheckbox");
 		strongdrinkFactor = strongDrinkCheckbox.checked ? 10 : 0;
@@ -1088,7 +1105,7 @@
 		};
 	}
 
-	function display_combinations(best_combinations) {
+	function display_combinations(best_combinations, index) {
 		// Sort the best_combinations array based on total damage reduction and then total resistance
 		best_combinations.sort((a, b) => {
 			const totalDamageA = a.Head[1] + a.Body[1] + a.Legs[1] + a.Gloves[1];
@@ -1136,10 +1153,13 @@
 				(totalWeight - StrongBackTraitModifier - elevatedringFactor - eggdrinkFactor - dullsteelringFactor + burdenofthemasonFactor <= 50) ? color2 :
 				(totalWeight - StrongBackTraitModifier - elevatedringFactor - eggdrinkFactor - dullsteelringFactor + burdenofthemasonFactor <= 75) ? color3 : backgroundColor
 
-				gulsignetFactor = ['ring1', 'ring2', 'ring3', 'ring4'].some(slot => equippedRings[slot] === "Gul Signet") ? (weightColor === color1 ? 0.1 : (weightColor === color2 ? 0.075 : (weightColor === color3 ? 0.05 : 0.025))) : 0;
+				<!-- gulsignetFactor = ['ring1', 'ring2', 'ring3', 'ring4'].some(slot => equippedRings[slot] === "Gul Signet") ? (weightColor === color1 ? 0.1 : (weightColor === color2 ? 0.075 : (weightColor === color3 ? 0.05 : 0.025))) : 0; -->
+
+				<!-- BarkskinTraitModifier = parseFloat(BarkskinTrait.value); -->
 
 				const ArmorDR = (((DRwithFactors / (DRwithFactors + 200)) * 100)).toFixed(1)
-				const TotalDR = 1 - (1 - (ArmorDR / 100)) * (1 - gulsignetFactor - participationmedalFactor)
+				<!-- const TotalDR = 1 - (1 - (ArmorDR / 100)) * (1 - gulsignetFactor - participationmedalFactor - BarkskinTraitModifier) -->
+				const TotalDR = 1 - (1 - (ArmorDR / 100)) * (1)
 				const TotalDRformat = Number.isInteger(TotalDR * 100) ? TotalDR * 100 : Math.floor(10 * TotalDR * 100) / 10  + '%'
 
 				let isBetter = true; // Flag to determine if the armor set is better than any previous sets
@@ -1304,6 +1324,7 @@
 	document.getElementById("StrongBackTrait").addEventListener("change", calculateAndUpdate);
 	document.getElementById("FortifyTrait").addEventListener("change", calculateAndUpdate);
 	document.getElementById("ShadeskinTrait").addEventListener("change", calculateAndUpdate);
+	<!-- document.getElementById("BarkskinTrait").addEventListener("change", calculateAndUpdate); -->
 
 	calculateAndUpdate(); // Initialize the result display when the page loads
 	// List of image URLs
