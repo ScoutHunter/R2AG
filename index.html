@@ -1096,7 +1096,7 @@
 
 		// Apply tolerance by filtering candidate combinations
 		best_combinations = candidate_combinations.filter(combination =>
-		combination.DamageReduction >= max_damage_reduction - (max_damage_reduction * tolerance / 100)
+		combination.DamageReduction >= max_damage_reduction - (max_damage_reduction * tolerance / 500)
 		);
 
 		return {
@@ -1160,7 +1160,7 @@
 				const ArmorDR = (((DRwithFactors / (DRwithFactors + 200)) * 100)).toFixed(1)
 				<!-- const TotalDR = 1 - (1 - (ArmorDR / 100)) * (1 - gulsignetFactor - participationmedalFactor - BarkskinTraitModifier) -->
 				const TotalDR = 1 - (1 - (ArmorDR / 100)) * (1)
-				const TotalDRformat = Number.isInteger(TotalDR * 100) ? TotalDR * 100 : Math.floor(10 * TotalDR * 100) / 10  + '%'
+				const TotalDRformat = Number.isInteger(TotalDR * 100) ? TotalDR * 100 + '%' : Math.floor(10 * TotalDR * 100) / 10  + '%'
 
 				let isBetter = true; // Flag to determine if the armor set is better than any previous sets
 				// Compare resistances with all previously selected armor sets
