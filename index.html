@@ -1164,14 +1164,15 @@
 
 				let isBetter = true; // Flag to determine if the armor set is better than any previous sets
 				// Compare resistances with all previously selected armor sets
-				for(const selectedArmor of selectedArmors) {
-					if(totalBleed === selectedArmor.bleed && totalFire === selectedArmor.fire && totalShock === selectedArmor.shock && totalToxin === selectedArmor.toxin && totalBlight === selectedArmor.blight && DRwithFactors >= selectedArmor.damage_reductionCheck) {
-						isBetter = true;
-					} else if(totalBleed <= selectedArmor.bleed && totalFire <= selectedArmor.fire && totalShock <= selectedArmor.shock && totalToxin <= selectedArmor.toxin && totalBlight <= selectedArmor.blight) {
-						isBetter = false;
-						break
-					}
-				}
+				<!-- for(const selectedArmor of selectedArmors) { -->
+					<!-- if(totalBleed === selectedArmor.bleed && totalFire === selectedArmor.fire && totalShock === selectedArmor.shock && totalToxin === selectedArmor.toxin && totalBlight === selectedArmor.blight && DRwithFactors >= selectedArmor.damage_reductionCheck) { -->
+						<!-- isBetter = true; -->
+					<!-- }  -->
+					<!-- else if(totalBleed <= selectedArmor.bleed && totalFire <= selectedArmor.fire && totalShock <= selectedArmor.shock && totalToxin <= selectedArmor.toxin && totalBlight <= selectedArmor.blight) { -->
+						<!-- isBetter = false; -->
+						<!-- break -->
+					<!-- } -->
+				<!-- } -->
 
 				if(isBetter) {
 					const armorCard = document.createElement("div");
