@@ -1026,6 +1026,22 @@
 		}
 	});
 
+	document.addEventListener('DOMContentLoaded', (event) => {
+		const handleBlurEvent = (inputElement, defaultValue) => {
+			inputElement.addEventListener('blur', () => {
+				if (inputElement.value === '') {
+					inputElement.value = defaultValue;
+				}
+			});
+		};
+
+		const encumbranceInput = document.getElementById('encumbranceInput');
+		handleBlurEvent(encumbranceInput, encumbranceInput.value);
+
+		const armorInput = document.getElementById('armorInput');
+		handleBlurEvent(armorInput, armorInput.value);
+	});
+
 	async function calculateAndUpdate() {
 		document.getElementById('loading-circle').style.display = 'block';
 
