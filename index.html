@@ -1026,14 +1026,14 @@
 		}
 	});
 
-	function find_best_combination(armor_list, weight_limit, tolerance) {
+	async function calculateAndUpdate() {
+		document.getElementById('loading-circle').style.display = 'block';
 
-		let candidate_combinations = []; // Store candidate combinations before applying tolerance
+		const armor_list = await fetchArmorData();
 
-		const headSelected = Array.from(document.getElementById("headDropdown").selectedOptions).map(option => option.value);
-		const bodySelected = Array.from(document.getElementById("bodyDropdown").selectedOptions).map(option => option.value);
-		const legsSelected = Array.from(document.getElementById("legsDropdown").selectedOptions).map(option => option.value);
-		const glovesSelected = Array.from(document.getElementById("glovesDropdown").selectedOptions).map(option => option.value);
+		StrongBackTraitModifier = parseFloat(StrongBackTrait.value);
+		FortifyTraitModifier = parseFloat(FortifyTrait.value);
+		ShadeskinTraitModifier = parseFloat(ShadeskinTrait.value);
 
 		letoAmuletFactor = document.getElementById("amuletDropdown").value === "leto" ? 0.6 : 1;
 		twistedidolFactor = document.getElementById("amuletDropdown").value === "twistedidol" ? 20 : 0;
@@ -1041,19 +1041,30 @@
 		navigatorspendantFactor = document.getElementById("amuletDropdown").value === "navigatorspendant" ? 10 : 0;
 		rustednavigatorspendantFactor = document.getElementById("amuletDropdown").value === "rustednavigatorspendant" ? 15 : 0;
 
-		strongDrinkCheckbox = document.getElementById("strongDrinkCheckbox");
-		strongdrinkFactor = strongDrinkCheckbox.checked ? 10 : 0;
-		eggDrinkCheckbox = document.getElementById("eggDrinkCheckbox");
-		eggdrinkFactor = eggDrinkCheckbox.checked ? 10 : 0;
+		const ringSlots = ['ring1', 'ring2', 'ring3', 'ring4'];
+			elevatedringFactor = ringSlots.some(slot => equippedRings[slot] === "Elevated Ring") ? 10 : 0;
+			dullsteelringFactor = ringSlots.some(slot => equippedRings[slot] === "Dull Steel Ring") ? 25 : 0;
+			burdenofthemasonFactor = ringSlots.some(slot => equippedRings[slot] === "Burden of the Mason") ? 25 : 0;
+			faeprotectorsignetFactor = ringSlots.some(slot => equippedRings[slot] === "Fae Protector Signet") ? 5 : 0;
+			dranmementoFactor = ringSlots.some(slot => equippedRings[slot] === "Dran Memento") ? 5 : 0;
+			shardringFactor = ringSlots.some(slot => equippedRings[slot] === "Meteorite Shard Ring") ? 50 : 0;
+			elevatedringFactor = ringSlots.some(slot => equippedRings[slot] === "Elevated Ring") ? 10 : 0;
+			ringoftherobustFactor = ringSlots.some(slot => equippedRings[slot] === "Ring of the Robust") ? 20 : 0;
 
-		faeprotectorsignetFactor = ['ring1', 'ring2', 'ring3', 'ring4'].some(slot => equippedRings[slot] === "Fae Protector Signet") ? 5 : 0;
-		dranmementoFactor = ['ring1', 'ring2', 'ring3', 'ring4'].some(slot => equippedRings[slot] === "Dran Memento") ? 5 : 0;
-		shardringFactor = ['ring1', 'ring2', 'ring3', 'ring4'].some(slot => equippedRings[slot] === "Meteorite Shard Ring") ? 50 : 0;
-		elevatedringFactor = ['ring1', 'ring2', 'ring3', 'ring4'].some(slot => equippedRings[slot] === "Elevated Ring") ? 10 : 0;
-		ringoftherobustFactor = ['ring1', 'ring2', 'ring3', 'ring4'].some(slot => equippedRings[slot] === "Ring of the Robust") ? 20 : 0;
+		strongdrinkFactor = document.getElementById('strongDrinkCheckbox').checked ? 10 : 0;
+		eggdrinkFactor = document.getElementById('eggDrinkCheckbox').checked ? 10 : 0;
+
+		weight_limit = parseInt(document.getElementById("weightInput").value) + StrongBackTraitModifier + elevatedringFactor + eggdrinkFactor + dullsteelringFactor - burdenofthemasonFactor;
+
+		const headSelected = Array.from(document.getElementById("headDropdown").selectedOptions).map(option => option.value);
+		const bodySelected = Array.from(document.getElementById("bodyDropdown").selectedOptions).map(option => option.value);
+		const legsSelected = Array.from(document.getElementById("legsDropdown").selectedOptions).map(option => option.value);
+		const glovesSelected = Array.from(document.getElementById("glovesDropdown").selectedOptions).map(option => option.value);
 
 		const encumbranceValue = encumbranceInput.value;
 		const armorValue = armorInput.value;
+
+		let candidate_combinations = []; // Store candidate combinations before applying tolerance
 
 		for (const head of armor_list['Head']) {
 			for (const body of armor_list['Body']) {
@@ -1083,6 +1094,7 @@
 				}
 			}
 		}
+		tolerance = parseInt(document.getElementById("toleranceInput").value); // Ensure tolerance is not negative
 
 		const DRwithFactors = (DR + ringoftherobustFactor) * (twistedidolarmorFactor + FortifyTraitModifier - 1)
 		const roundedDR = Number.isInteger(DRwithFactors) ? DRwithFactors : (Math.round(10 * DRwithFactors) / 10);
@@ -1097,20 +1109,15 @@
 			if (combination.DamageReduction !== currentDamageReduction) {
 				currentDamageReduction = combination.DamageReduction;
 				currentLayer++;
-				if (currentLayer > tolerance + 1) {
+				if (currentLayer > tolerance + 1)
 					break;
-				}
 			}
-			if (currentLayer <= tolerance + 1) {
+			if (currentLayer <= tolerance + 1)
 				best_combinations.push(combination);
-			} else {
+			else
 				break; // Break once a lower damage reduction combination is encountered
-			}
 		}
-		return { best_combinations };
-	}
 
-	function display_combinations(best_combinations) {
 		// Sort the best_combinations array based on total damage reduction and then total resistance
 		best_combinations.sort((a, b) => {
 			const totalDamageA = (a.Head[1] + a.Body[1] + a.Legs[1] + a.Gloves[1] + ringoftherobustFactor) * (twistedidolarmorFactor + FortifyTraitModifier - 1)
@@ -1215,17 +1222,16 @@
 						<span class="text-tooltip-right" data-tooltip="Sum of Status Resistances"><span style="color: #d6e0d0 ;">Total: ${totalBleed + totalFire + totalShock + totalToxin + totalBlight}<\/span><\/span>
 						<\/div>
 					`;
-
 					resultContainer.appendChild(armorCard);
 				}
 			});
-
 		} else {
 			const noCombinationMessage = document.createElement("p");
 			noCombinationMessage.textContent = "No armor matching current weight/weight class";
 			noCombinationMessage.style.color = "red"; // Set the color using the style property
 			resultContainer.appendChild(noCombinationMessage);
 		}
+		document.getElementById('loading-circle').style.display = 'none';
 	}
 
 	var backgroundColor = "#adffff"; // Declare backgroundColor as a global variable
@@ -1253,48 +1259,17 @@
 		selectElement.style.backgroundColor = backgroundColor;
 	}
 
-	async function calculateAndUpdate() {
-		document.getElementById('loading-circle').style.display = 'block';
+	const elementsToWatch = [
+		"weightInput", "amuletDropdown", "toleranceInput", "encumbranceInput",
+		"armorInput", "ring1", "ring2", "ring3", "ring4", "strongDrinkCheckbox",
+		"eggDrinkCheckbox", "headDropdown", "bodyDropdown", "legsDropdown",
+		"glovesDropdown", "StrongBackTrait", "FortifyTrait", "ShadeskinTrait"
+	];
 
-		StrongBackTraitModifier = parseFloat(StrongBackTrait.value);
-		FortifyTraitModifier = parseFloat(FortifyTrait.value);
-		ShadeskinTraitModifier = parseFloat(ShadeskinTrait.value);
-		let eggdrinkFactor = document.getElementById('eggDrinkCheckbox').checked ? 10 : 0;
-
-		const armorData = await fetchArmorData();
-
-		const ringSlots = ['ring1', 'ring2', 'ring3', 'ring4'];
-			elevatedringFactor = ringSlots.some(slot => equippedRings[slot] === "Elevated Ring") ? 10 : 0;
-			dullsteelringFactor = ringSlots.some(slot => equippedRings[slot] === "Dull Steel Ring") ? 25 : 0;
-			burdenofthemasonFactor = ringSlots.some(slot => equippedRings[slot] === "Burden of the Mason") ? 25 : 0;
-
-		weightLimit = parseInt(document.getElementById("weightInput").value) + StrongBackTraitModifier + elevatedringFactor + eggdrinkFactor + dullsteelringFactor - burdenofthemasonFactor;
-		let tolerance = parseInt(document.getElementById("toleranceInput").value);
-		tolerance = Math.max(0, tolerance); // Ensure tolerance is not negative
-		const {best_combinations} = find_best_combination(armorData, weightLimit, tolerance);
-		display_combinations(best_combinations);
-
-		document.getElementById('loading-circle').style.display = 'none';
-	}
-
-	document.getElementById("weightInput").addEventListener("change", calculateAndUpdate);
-	document.getElementById("amuletDropdown").addEventListener("change", calculateAndUpdate);
-	document.getElementById("toleranceInput").addEventListener("input", calculateAndUpdate);
-	document.getElementById("encumbranceInput").addEventListener("input", calculateAndUpdate);
-	document.getElementById("armorInput").addEventListener("input", calculateAndUpdate);
-	document.getElementById("ring1").addEventListener("change", calculateAndUpdate);
-	document.getElementById("ring2").addEventListener("change", calculateAndUpdate);
-	document.getElementById("ring3").addEventListener("change", calculateAndUpdate);
-	document.getElementById("ring4").addEventListener("change", calculateAndUpdate);
-	document.getElementById("strongDrinkCheckbox").addEventListener("change", calculateAndUpdate);
-	document.getElementById("eggDrinkCheckbox").addEventListener("change", calculateAndUpdate);
-	document.getElementById("headDropdown").addEventListener("change", calculateAndUpdate);
-	document.getElementById("bodyDropdown").addEventListener("change", calculateAndUpdate);
-	document.getElementById("legsDropdown").addEventListener("change", calculateAndUpdate);
-	document.getElementById("glovesDropdown").addEventListener("change", calculateAndUpdate);
-	document.getElementById("StrongBackTrait").addEventListener("change", calculateAndUpdate);
-	document.getElementById("FortifyTrait").addEventListener("change", calculateAndUpdate);
-	document.getElementById("ShadeskinTrait").addEventListener("change", calculateAndUpdate);
+	elementsToWatch.forEach(id => {
+		document.getElementById(id).addEventListener("change", calculateAndUpdate);
+		document.getElementById(id).addEventListener("input", calculateAndUpdate);
+	});
 
 	calculateAndUpdate(); // Initialize the result display when the page loads
 
