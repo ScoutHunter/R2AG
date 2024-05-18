@@ -976,7 +976,6 @@
 	});
 	toleranceLabel.textContent = `Tolerance: ${toleranceInput.value}`;
 	const ringSelects = document.querySelectorAll('.ring-select');
-	<!-- const availableRings = ['undefined', 'Burden of the Mason', 'Dran Memento', 'Dull Steel Ring', 'Elevated Ring', 'Fae Protector Signet', 'Gul Signet', 'Meteorite Shard Ring', 'Ring of the Robust']; -->
 	const availableRings = ['undefined', 'Burden of the Mason', 'Dran Memento', 'Dull Steel Ring', 'Elevated Ring', 'Fae Protector Signet', 'Meteorite Shard Ring', 'Ring of the Robust'];
 	const equippedRings = {};
 
@@ -1028,12 +1027,8 @@
 	});
 
 	function find_best_combination(armor_list, weight_limit, tolerance) {
-		const encumbranceValue = encumbranceInput.value;
-		<!-- let best_combinations = []; -->
+
 		let candidate_combinations = []; // Store candidate combinations before applying tolerance
-		<!-- let max_damage_reduction = 0; -->
-		// Ensure that tolerance is within the valid range of 0 to 10
-		<!-- tolerance = Math.max(0, Math.min(10, tolerance)); -->
 
 		const headSelected = Array.from(document.getElementById("headDropdown").selectedOptions).map(option => option.value);
 		const bodySelected = Array.from(document.getElementById("bodyDropdown").selectedOptions).map(option => option.value);
@@ -1045,7 +1040,6 @@
 		twistedidolarmorFactor = document.getElementById("amuletDropdown").value === "twistedidol" ? 1.35 : 1;
 		navigatorspendantFactor = document.getElementById("amuletDropdown").value === "navigatorspendant" ? 10 : 0;
 		rustednavigatorspendantFactor = document.getElementById("amuletDropdown").value === "rustednavigatorspendant" ? 15 : 0;
-		<!-- participationmedalFactor = document.getElementById("amuletDropdown").value === "participationmedal" ? 0.1 : 0; -->
 
 		strongDrinkCheckbox = document.getElementById("strongDrinkCheckbox");
 		strongdrinkFactor = strongDrinkCheckbox.checked ? 10 : 0;
@@ -1057,6 +1051,9 @@
 		shardringFactor = ['ring1', 'ring2', 'ring3', 'ring4'].some(slot => equippedRings[slot] === "Meteorite Shard Ring") ? 50 : 0;
 		elevatedringFactor = ['ring1', 'ring2', 'ring3', 'ring4'].some(slot => equippedRings[slot] === "Elevated Ring") ? 10 : 0;
 		ringoftherobustFactor = ['ring1', 'ring2', 'ring3', 'ring4'].some(slot => equippedRings[slot] === "Ring of the Robust") ? 20 : 0;
+
+		const encumbranceValue = encumbranceInput.value;
+		const armorValue = armorInput.value;
 
 		for (const head of armor_list['Head']) {
 			for (const body of armor_list['Body']) {
@@ -1070,18 +1067,15 @@
 
 						if (headMatch && bodyMatch && legsMatch && glovesMatch) {
 							total_weight = (((head[2] + body[2] + legs[2] + gloves[2]) - strongdrinkFactor - twistedidolFactor - navigatorspendantFactor - rustednavigatorspendantFactor - faeprotectorsignetFactor - dranmementoFactor - elevatedringFactor + shardringFactor) * letoAmuletFactor);
+							DR = Math.round(10 * (head[1] + body[1] + legs[1] + gloves[1])) / 10
 
-							<!-- const total_damage_reduction_new = ((head[1] + body[1] + legs[1] + gloves[1] + ringoftherobustFactor) * (twistedidolarmorFactor)); -->
-							<!-- const DRwithFactors = total_damage_reduction_new * (twistedidolarmorFactor + FortifyTraitModifier - 1) -->
-							const DRwithFactors = (head[1] + body[1] + legs[1] + gloves[1] + ringoftherobustFactor) * (twistedidolarmorFactor + FortifyTraitModifier - 1)
-
-							if (total_weight <= encumbranceValue && total_weight <= weight_limit && armorInput.value <= DRwithFactors) {
+							if (total_weight <= encumbranceValue && total_weight <= weight_limit && armorValue <= DR) {
 								candidate_combinations.push({
 								'Head': head,
 								'Body': body,
 								'Legs': legs,
 								'Gloves': gloves,
-								'DamageReduction': DRwithFactors
+								'DamageReduction': DR
 								});
 							}
 						}
@@ -1089,33 +1083,47 @@
 				}
 			}
 		}
-		// Find the highest damage reduction value from candidate combinations
-		max_damage_reduction = candidate_combinations.reduce((max, combination) => {
-			return Math.max(max, combination.DamageReduction);
-		}, 0);
 
-		// Apply tolerance by filtering candidate combinations
-		best_combinations = candidate_combinations.filter(combination =>
-		combination.DamageReduction >= max_damage_reduction - (max_damage_reduction * tolerance / 500)
-		);
+		const DRwithFactors = (DR + ringoftherobustFactor) * (twistedidolarmorFactor + FortifyTraitModifier - 1)
+		const roundedDR = Number.isInteger(DRwithFactors) ? DRwithFactors : (Math.round(10 * DRwithFactors) / 10);
+		// Assuming candidate_combinations is sorted beforehand, if not, sort it
+		candidate_combinations.sort((a, b) => b.DamageReduction - a.DamageReduction);
+		// Collect the best combinations based on the specified layers
+		const best_combinations = [];
+		let currentLayer = 0;
+		let currentDamageReduction = null;
 
-		return {
-		best_combinations,
-		max_damage_reduction
-		};
+		for (const combination of candidate_combinations) {
+			if (combination.DamageReduction !== currentDamageReduction) {
+				currentDamageReduction = combination.DamageReduction;
+				currentLayer++;
+				if (currentLayer > tolerance + 1) {
+					break;
+				}
+			}
+			if (currentLayer <= tolerance + 1) {
+				best_combinations.push(combination);
+			} else {
+				break; // Break once a lower damage reduction combination is encountered
+			}
+		}
+		return { best_combinations };
 	}
 
-	function display_combinations(best_combinations, index) {
+	function display_combinations(best_combinations) {
 		// Sort the best_combinations array based on total damage reduction and then total resistance
 		best_combinations.sort((a, b) => {
-			const totalDamageA = a.Head[1] + a.Body[1] + a.Legs[1] + a.Gloves[1];
-			const totalDamageB = b.Head[1] + b.Body[1] + b.Legs[1] + b.Gloves[1];
-			if(totalDamageA !== totalDamageB) {
-				return totalDamageB - totalDamageA; // Sort by total damage reduction in descending order
+			const totalDamageA = (a.Head[1] + a.Body[1] + a.Legs[1] + a.Gloves[1] + ringoftherobustFactor) * (twistedidolarmorFactor + FortifyTraitModifier - 1)
+			const totalDamageAwithFactors = Number.isInteger(totalDamageA) ? totalDamageA : (Math.round(10 * totalDamageA) / 10);
+			const totalDamageB = (b.Head[1] + b.Body[1] + b.Legs[1] + b.Gloves[1] + ringoftherobustFactor) * (twistedidolarmorFactor + FortifyTraitModifier - 1)
+			const totalDamageBwithFactors = Number.isInteger(totalDamageB) ? totalDamageB : (Math.round(10 * totalDamageB) / 10);
+
+			if(totalDamageAwithFactors !== totalDamageBwithFactors) {
+				return totalDamageBwithFactors - totalDamageAwithFactors; // Sort by total damage reduction in descending order
 			}
-			// If total damage reduction is the same, sort by total resistance in descending order
-			const totalResistanceA = a.Head[3] + a.Body[3] + a.Legs[3] + a.Gloves[3] + a.Head[4] + a.Body[4] + a.Legs[4] + a.Gloves[4] + a.Head[5] + a.Body[5] + a.Legs[5] + a.Gloves[5] + a.Head[7] + a.Body[7] + a.Legs[7] + a.Gloves[7] + a.Head[6] + a.Body[6] + a.Legs[6] + a.Gloves[6];
-			const totalResistanceB = b.Head[3] + b.Body[3] + b.Legs[3] + b.Gloves[3] + b.Head[4] + b.Body[4] + b.Legs[4] + b.Gloves[4] + b.Head[5] + b.Body[5] + b.Legs[5] + b.Gloves[5] + b.Head[7] + b.Body[7] + b.Legs[7] + b.Gloves[7] + b.Head[6] + b.Body[6] + b.Legs[6] + b.Gloves[6];
+			<!-- // If total damage reduction is the same, sort by total resistance in descending order -->
+			const totalResistanceA = a.Head[3] + a.Body[3] + a.Legs[3] + a.Gloves[3] + a.Head[4] + a.Body[4] + a.Legs[4] + a.Gloves[4] + a.Head[5] + a.Body[5] + a.Legs[5] + a.Gloves[5] + a.Head[7] + a.Body[7] + a.Legs[7] + a.Gloves[7] + a.Head[6] + a.Body[6] + a.Legs[6] + a.Gloves[6] + (ShadeskinTraitModifier * 3);
+			const totalResistanceB = b.Head[3] + b.Body[3] + b.Legs[3] + b.Gloves[3] + b.Head[4] + b.Body[4] + b.Legs[4] + b.Gloves[4] + b.Head[5] + b.Body[5] + b.Legs[5] + b.Gloves[5] + b.Head[7] + b.Body[7] + b.Legs[7] + b.Gloves[7] + b.Head[6] + b.Body[6] + b.Legs[6] + b.Gloves[6] + (ShadeskinTraitModifier * 3);
 			return totalResistanceB - totalResistanceA; // Sort by total resistance in descending order
 		});
 
@@ -1123,20 +1131,6 @@
 		resultContainer.innerHTML = "";
 
 		if(best_combinations.length > 0) {
-			<!-- const maxDamageReduction = best_combinations[0].Head[1] + best_combinations[0].Body[1] + best_combinations[0].Legs[1] + best_combinations[0].Gloves[1]; -->
-			<!-- const header = document.getElementById("totalDamageReduction"); -->
-			// Store the highest resistances of the previous set
-			let highestResistances = {
-				bleed: 0,
-				fire: 0,
-				shock: 0,
-				toxin: 0,
-				blight: 0,
-				damage_reductionCheck: 0
-			};
-
-			let selectedArmors = [];
-
 			best_combinations.forEach((combination) => {
 				const totalWeight = Math.max(0, (n => Number.isInteger(n) ? n : Math.round(n * 10) / 10)(((combination.Head[2] + combination.Body[2] + combination.Legs[2] + combination.Gloves[2]) - strongdrinkFactor - twistedidolFactor - navigatorspendantFactor - rustednavigatorspendantFactor - faeprotectorsignetFactor - dranmementoFactor - elevatedringFactor + shardringFactor) * letoAmuletFactor));
 				const totalBleed = (combination.Head[3] + combination.Body[3] + combination.Legs[3] + combination.Gloves[3]);
@@ -1153,26 +1147,11 @@
 				(totalWeight - StrongBackTraitModifier - elevatedringFactor - eggdrinkFactor - dullsteelringFactor + burdenofthemasonFactor <= 50) ? color2 :
 				(totalWeight - StrongBackTraitModifier - elevatedringFactor - eggdrinkFactor - dullsteelringFactor + burdenofthemasonFactor <= 75) ? color3 : backgroundColor
 
-				<!-- gulsignetFactor = ['ring1', 'ring2', 'ring3', 'ring4'].some(slot => equippedRings[slot] === "Gul Signet") ? (weightColor === color1 ? 0.1 : (weightColor === color2 ? 0.075 : (weightColor === color3 ? 0.05 : 0.025))) : 0; -->
-
-				<!-- BarkskinTraitModifier = parseFloat(BarkskinTrait.value); -->
-
 				const ArmorDR = (((DRwithFactors / (DRwithFactors + 200)) * 100)).toFixed(1)
-				<!-- const TotalDR = 1 - (1 - (ArmorDR / 100)) * (1 - gulsignetFactor - participationmedalFactor - BarkskinTraitModifier) -->
 				const TotalDR = 1 - (1 - (ArmorDR / 100)) * (1)
 				const TotalDRformat = Number.isInteger(TotalDR * 100) ? TotalDR * 100 + '%' : Math.floor(10 * TotalDR * 100) / 10  + '%'
 
 				let isBetter = true; // Flag to determine if the armor set is better than any previous sets
-				// Compare resistances with all previously selected armor sets
-				<!-- for(const selectedArmor of selectedArmors) { -->
-					<!-- if(totalBleed === selectedArmor.bleed && totalFire === selectedArmor.fire && totalShock === selectedArmor.shock && totalToxin === selectedArmor.toxin && totalBlight === selectedArmor.blight && DRwithFactors >= selectedArmor.damage_reductionCheck) { -->
-						<!-- isBetter = true; -->
-					<!-- }  -->
-					<!-- else if(totalBleed <= selectedArmor.bleed && totalFire <= selectedArmor.fire && totalShock <= selectedArmor.shock && totalToxin <= selectedArmor.toxin && totalBlight <= selectedArmor.blight) { -->
-						<!-- isBetter = false; -->
-						<!-- break -->
-					<!-- } -->
-				<!-- } -->
 
 				if(isBetter) {
 					const armorCard = document.createElement("div");
@@ -1238,15 +1217,6 @@
 					`;
 
 					resultContainer.appendChild(armorCard);
-					// Update the selectedArmors array with the new armor set's resistances
-					selectedArmors.push({
-					bleed: totalBleed,
-					fire: totalFire,
-					shock: totalShock,
-					toxin: totalToxin,
-					blight: totalBlight,
-					damage_reductionCheck: DRwithFactors,
-					});
 				}
 			});
 
@@ -1269,16 +1239,16 @@
 		switch (selectedOption.value) {
 			case "25":
 			backgroundColor = "#adffff";
-			break;
+			break
 			case "50":
 			backgroundColor = "#adffad";
-			break;
+			break
 			case "75":
 			backgroundColor = "#ffffad";
-			break;
+			break
 			case "1000000":
 			backgroundColor = "#f56e6e";
-			break;
+			break
 		}
 		selectElement.style.backgroundColor = backgroundColor;
 	}
@@ -1325,10 +1295,9 @@
 	document.getElementById("StrongBackTrait").addEventListener("change", calculateAndUpdate);
 	document.getElementById("FortifyTrait").addEventListener("change", calculateAndUpdate);
 	document.getElementById("ShadeskinTrait").addEventListener("change", calculateAndUpdate);
-	<!-- document.getElementById("BarkskinTrait").addEventListener("change", calculateAndUpdate); -->
 
 	calculateAndUpdate(); // Initialize the result display when the page loads
-	// List of image URLs
+
 	const imageUrls = [
 		'https://images.hdqwalls.com/download/remnant-2-r7-3840x2400.jpg',
 		'https://imgheybox.max-c.com/web/bbs/2023/06/14/1afa887914f3072625d89dfc21ee245e/thumb.jpeg',
@@ -1371,25 +1340,20 @@
 		const currentBackgroundImage = backgroundImages[currentImageIndex % 2];
 		const nextBackgroundImage = backgroundImages[(currentImageIndex + 1) % 2];
 
-		// Load the next image
 		nextBackgroundImage.style.backgroundImage = `url('${shuffledImageUrls[nextImageIndex]}')`;
 		nextBackgroundImage.style.opacity = 0; // Start with 0 opacity
 
-		// Trigger reflow by reading the nextBackgroundImage's offsetHeight
 		nextBackgroundImage.offsetHeight;
 
-		// Adjust the opacity limits and transition properties
 		const maxOpacity = 0.3;
 		const fadeDuration = 5000; // Duration of fade in milliseconds
 		nextBackgroundImage.style.transition = `opacity ${fadeDuration}ms ease`;
 		currentBackgroundImage.style.transition = `opacity ${fadeDuration}ms ease`;
 
-		// Fade in the next image while fading out the current image
 		nextBackgroundImage.style.opacity = maxOpacity;
 		currentBackgroundImage.style.opacity = 0;
 
 		setTimeout(() => {
-			// Reset transition properties and prepare for the next iteration
 			nextBackgroundImage.style.transition = '';
 			currentBackgroundImage.style.transition = '';
 			currentImageIndex++;
