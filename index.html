@@ -738,22 +738,6 @@
 					<option value="15">10</option>
 				</select>
 			</div>
-			<!-- <div class="trait-select-row"> -->
-				<!-- <label for="StrongBackdropdown">Barkskin</label> -->
-				<!-- <select class="trait-select" id="BarkskinTrait"> -->
-					<!-- <option value="0">0</option> -->
-					<!-- <option value="0.01">1</option> -->
-					<!-- <option value="0.02">2</option> -->
-					<!-- <option value="0.03">3</option> -->
-					<!-- <option value="0.04">4</option> -->
-					<!-- <option value="0.05">5</option> -->
-					<!-- <option value="0.06">6</option> -->
-					<!-- <option value="0.07">7</option> -->
-					<!-- <option value="0.08">8</option> -->
-					<!-- <option value="0.09">9</option> -->
-					<!-- <option value="0.1">10</option> -->
-				<!-- </select> -->
-			<!-- </div> -->
 			<div class="trait-select-row">
 				<label for="StrongBackdropdown" style=
 				"line-height: 2.5;">Shadeskin</label>
@@ -778,7 +762,6 @@
 				<option value="undefined">undefined</option>
 				<option value="leto">Leto's Amulet</option>
 				<option value="navigatorspendant">Navigator's Pendant</option>
-				<!-- <option value="participationmedal">Participation Medal</option> -->
 				<option value="rustednavigatorspendant">Rusted Navigator's Pendant</option>
 				<option value="twistedidol">Twisted Idol</option>
 			</select>
@@ -864,95 +847,95 @@
 <script>
 	async function fetchArmorData() {
 		try {
-			const response = await fetch('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/armor_list.json');
-			const data = await response.json();
-			return data;
-		} catch(error) {console.error('Error fetching armor data:', error);}
+			const response = await fetch('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/armor_list.json')
+			const data = await response.json()
+			return data
+		} catch(error) {console.error('Error fetching armor data:', error)}
 	}
 
-    populateArmorDropdowns();
-	resetArmorDropdowns();
+    populateArmorDropdowns()
+	resetArmorDropdowns()
 	async function populateArmorDropdowns() {
-		const armorData = await fetchArmorData();
-		populateDropdown("headDropdown", armorData['Head']);
-		populateDropdown("bodyDropdown", armorData['Body']);
-		populateDropdown("legsDropdown", armorData['Legs']);
-		populateDropdown("glovesDropdown", armorData['Gloves']);
+		const armorData = await fetchArmorData()
+		populateDropdown("headDropdown", armorData['Head'])
+		populateDropdown("bodyDropdown", armorData['Body'])
+		populateDropdown("legsDropdown", armorData['Legs'])
+		populateDropdown("glovesDropdown", armorData['Gloves'])
 	}
 	function populateDropdown(dropdownId, armorPieces) {
-		const dropdown = document.getElementById(dropdownId);
-		let isOpen = true;
+		const dropdown = document.getElementById(dropdownId)
+		let isOpen = true
 		dropdown.addEventListener('focus', () => {
-			dropdown.size = armorPieces.length + 1;
-			dropdown.parentNode.classList.add('active');
-			isOpen = true;
-			dropdown.options[0].style.display = 'none';
-		});
+			dropdown.size = armorPieces.length + 1
+			dropdown.parentNode.classList.add('active')
+			isOpen = true
+			dropdown.options[0].style.display = 'none'
+		})
 
 		dropdown.addEventListener('blur', () => {
-			<!-- dropdown.size = 1; -->
-			dropdown.parentNode.classList.remove('active');
-			isOpen = false;
+			<!-- dropdown.size = 1 -->
+			dropdown.parentNode.classList.remove('active')
+			isOpen = false
 			for (const option of dropdown.options) {
-				option.style.display = '';
+				option.style.display = ''
 			}
 			// Display the selected value(s) when the dropdown is closed
-			displaySelectedValues(dropdown);
-		});
+			displaySelectedValues(dropdown)
+		})
 
 		dropdown.addEventListener('mousedown', (event) => {
-			const clickedOption = event.target;
+			const clickedOption = event.target
 			if (!isOpen) {
 				// Open the dropdown without selecting an option on the first click
-				event.preventDefault();
-				dropdown.focus();
-				isOpen = true;
+				event.preventDefault()
+				dropdown.focus()
+				isOpen = true
 			} else {
 				if (clickedOption.tagName === 'OPTION') {
-					toggleOptionSelection(clickedOption);
-					event.preventDefault(); // Prevent the default behavior of collapsing the dropdown
-					dropdown.focus(); // Ensure the dropdown retains focus
+					toggleOptionSelection(clickedOption)
+					event.preventDefault() // Prevent the default behavior of collapsing the dropdown
+					dropdown.focus() // Ensure the dropdown retains focus
 				}
 			}
-		});
+		})
 
 		for (const armorPiece of armorPieces) {
-			const option = document.createElement("option");
-			option.value = armorPiece[0];
-			option.textContent = armorPiece[0];
-			option.style.borderTop = '1px solid #ccc'; // Adjust color and thickness as needed
-			dropdown.appendChild(option);
+			const option = document.createElement("option")
+			option.value = armorPiece[0]
+			option.textContent = armorPiece[0]
+			option.style.borderTop = '1px solid #ccc' // Adjust color and thickness as needed
+			dropdown.appendChild(option)
 		}
 		// Display the selected value(s) initially
-		displaySelectedValues(dropdown);
+		displaySelectedValues(dropdown)
 	}
 	function displaySelectedValues(dropdown) {
-		const selectedValues = Array.from(dropdown.selectedOptions).map(option => option.value);
+		const selectedValues = Array.from(dropdown.selectedOptions).map(option => option.value)
 		if (selectedValues.length > 0) {
-			dropdown.options[0].textContent = selectedValues.join(', ');
-			dropdown.options[0].style.backgroundColor = "#ebefe7"; // Set the background color to #ebefe7
-			dropdown.options[0].style.fontSize = "15px";
-			dropdown.options[0].style.borderRadius = "5px";
+			dropdown.options[0].textContent = selectedValues.join(', ')
+			dropdown.options[0].style.backgroundColor = "#ebefe7" // Set the background color to #ebefe7
+			dropdown.options[0].style.fontSize = "15px"
+			dropdown.options[0].style.borderRadius = "5px"
 		} else {
-			dropdown.options[0].textContent = "any";
-			dropdown.options[0].style.backgroundColor = "#ebefe7"; // Set the background color to #ebefe7
-			dropdown.options[0].style.fontSize = "15px";
-			dropdown.options[0].style.borderRadius = "5px";
+			dropdown.options[0].textContent = "any"
+			dropdown.options[0].style.backgroundColor = "#ebefe7" // Set the background color to #ebefe7
+			dropdown.options[0].style.fontSize = "15px"
+			dropdown.options[0].style.borderRadius = "5px"
 		}
 	}
 	function toggleOptionSelection(option) {
-		const dropdown = option.parentNode;
+		const dropdown = option.parentNode
 		if (option.value === "any") {
 			// Unselect all "any" options if "any" is selected
-			Array.from(dropdown.options).forEach(opt => opt.selected = false);
+			Array.from(dropdown.options).forEach(opt => opt.selected = false)
 		} else {
 			// Unselect all "any" options if any other option is selected
 			Array.from(dropdown.options)
 				.filter(opt => opt.value === "any" && opt !== option)
-				.forEach(anyOption => anyOption.selected = false);
+				.forEach(anyOption => anyOption.selected = false)
 		}
-		option.selected = !option.selected;
-		calculateAndUpdate(); // Call your update function here
+		option.selected = !option.selected
+		calculateAndUpdate() // Call your update function here
 	}
     function resetArmorDropdowns() {
         const dropdowns = [
@@ -960,140 +943,140 @@
             document.getElementById("bodyDropdown"),
             document.getElementById("legsDropdown"),
             document.getElementById("glovesDropdown")
-        ];
+        ]
         for (const dropdown of dropdowns) {
-            dropdown.value = "any";
-            dropdown.size = 1; // Reset dropdown size
-			dropdown.options[0].textContent = "any";
+            dropdown.value = "any"
+            dropdown.size = 1 // Reset dropdown size
+			dropdown.options[0].textContent = "any"
         }
     }
 
-	const toleranceInput = document.getElementById("toleranceInput");
-	const toleranceLabel = document.querySelector("#resultContainerWrapper label span span");
+	const toleranceInput = document.getElementById("toleranceInput")
+	const toleranceLabel = document.querySelector("#resultContainerWrapper label span span")
 	toleranceInput.addEventListener("input", function() {
-		const enteredValue = parseInt(toleranceInput.value);
-		toleranceLabel.textContent = `Tolerance: ${enteredValue}`;
-	});
-	toleranceLabel.textContent = `Tolerance: ${toleranceInput.value}`;
-	const ringSelects = document.querySelectorAll('.ring-select');
-	const availableRings = ['undefined', 'Burden of the Mason', 'Dran Memento', 'Dull Steel Ring', 'Elevated Ring', 'Fae Protector Signet', 'Meteorite Shard Ring', 'Ring of the Robust'];
-	const equippedRings = {};
+		const enteredValue = parseInt(toleranceInput.value)
+		toleranceLabel.textContent = `Tolerance: ${enteredValue}`
+	})
+	toleranceLabel.textContent = `Tolerance: ${toleranceInput.value}`
+	const ringSelects = document.querySelectorAll('.ring-select')
+	const availableRings = ['undefined', 'Burden of the Mason', 'Dran Memento', 'Dull Steel Ring', 'Elevated Ring', 'Fae Protector Signet', 'Meteorite Shard Ring', 'Ring of the Robust']
+	const equippedRings = {}
 
 	function equipRing(selectedRing) {
-		const selectedValue = document.getElementById(selectedRing).value;
-		const prevEquippedRing = equippedRings[selectedRing];
-		if(prevEquippedRing) enableRingOption(prevEquippedRing);
+		const selectedValue = document.getElementById(selectedRing).value
+		const prevEquippedRing = equippedRings[selectedRing]
+		if(prevEquippedRing) enableRingOption(prevEquippedRing)
 		if(selectedValue !== "undefined") {
-			if(equippedRings[selectedRing]) enableRingOption(equippedRings[selectedRing]);
-			disableRingOption(selectedValue);
-			equippedRings[selectedRing] = selectedValue;
-		} else equippedRings[selectedRing] = undefined;
+			if(equippedRings[selectedRing]) enableRingOption(equippedRings[selectedRing])
+			disableRingOption(selectedValue)
+			equippedRings[selectedRing] = selectedValue
+		} else equippedRings[selectedRing] = undefined
 	}
 
 	function enableRingOption(ring) {
 		ringSelects.forEach((select) => {
-			const option = select.querySelector(`option[value="${ring}"]`);
-			option.disabled = false;
-			option.style.display = 'block';
-		});
+			const option = select.querySelector(`option[value="${ring}"]`)
+			option.disabled = false
+			option.style.display = 'block'
+		})
 	}
 
 	function disableRingOption(ring) {
 		ringSelects.forEach((select) => {
-			const option = select.querySelector(`option[value="${ring}"]`);
-			option.disabled = true;
-			option.style.display = 'undefined';
-		});
+			const option = select.querySelector(`option[value="${ring}"]`)
+			option.disabled = true
+			option.style.display = 'undefined'
+		})
 	}
 
 	function unequipAllRings() {
 		ringSelects.forEach((select) => {
-			const selectedValue = select.value;
+			const selectedValue = select.value
 			if(selectedValue !== "undefined") {
-				enableRingOption(selectedValue);
-				select.value = "undefined";
-				equippedRings[select.id] = undefined;
+				enableRingOption(selectedValue)
+				select.value = "undefined"
+				equippedRings[select.id] = undefined
 			}
-		});
+		})
 	}
 
 	document.addEventListener('DOMContentLoaded', function() {
 		for (const select of ringSelects) {
 			availableRings.forEach((ring) => {
-				const option = new Option(ring, ring);
-				select.add(option);
-			});
+				const option = new Option(ring, ring)
+				select.add(option)
+			})
 		}
-	});
+	})
 
 	document.addEventListener('DOMContentLoaded', (event) => {
 		const handleBlurEvent = (inputElement, defaultValue) => {
 			inputElement.addEventListener('blur', () => {
 				if (inputElement.value === '') {
-					inputElement.value = defaultValue;
+					inputElement.value = defaultValue
 				}
-			});
-		};
+			})
+		}
 
-		const encumbranceInput = document.getElementById('encumbranceInput');
-		handleBlurEvent(encumbranceInput, encumbranceInput.value);
+		const encumbranceInput = document.getElementById('encumbranceInput')
+		handleBlurEvent(encumbranceInput, encumbranceInput.value)
 
-		const armorInput = document.getElementById('armorInput');
-		handleBlurEvent(armorInput, armorInput.value);
-	});
+		const armorInput = document.getElementById('armorInput')
+		handleBlurEvent(armorInput, armorInput.value)
+	})
 
 	async function calculateAndUpdate() {
-		document.getElementById('loading-circle').style.display = 'block';
+		document.getElementById('loading-circle').style.display = 'block'
 
-		const armor_list = await fetchArmorData();
+		const armor_list = await fetchArmorData()
 
-		StrongBackTraitModifier = parseFloat(StrongBackTrait.value);
-		FortifyTraitModifier = parseFloat(FortifyTrait.value);
-		ShadeskinTraitModifier = parseFloat(ShadeskinTrait.value);
+		StrongBackTraitModifier = parseFloat(StrongBackTrait.value)
+		FortifyTraitModifier = parseFloat(FortifyTrait.value)
+		ShadeskinTraitModifier = parseFloat(ShadeskinTrait.value)
 
-		letoAmuletFactor = document.getElementById("amuletDropdown").value === "leto" ? 0.6 : 1;
-		twistedidolFactor = document.getElementById("amuletDropdown").value === "twistedidol" ? 20 : 0;
-		twistedidolarmorFactor = document.getElementById("amuletDropdown").value === "twistedidol" ? 1.35 : 1;
-		navigatorspendantFactor = document.getElementById("amuletDropdown").value === "navigatorspendant" ? 10 : 0;
-		rustednavigatorspendantFactor = document.getElementById("amuletDropdown").value === "rustednavigatorspendant" ? 15 : 0;
+		letoAmuletFactor = document.getElementById("amuletDropdown").value === "leto" ? 0.6 : 1
+		twistedidolFactor = document.getElementById("amuletDropdown").value === "twistedidol" ? 20 : 0
+		twistedidolarmorFactor = document.getElementById("amuletDropdown").value === "twistedidol" ? 1.35 : 1
+		navigatorspendantFactor = document.getElementById("amuletDropdown").value === "navigatorspendant" ? 10 : 0
+		rustednavigatorspendantFactor = document.getElementById("amuletDropdown").value === "rustednavigatorspendant" ? 15 : 0
 
-		const ringSlots = ['ring1', 'ring2', 'ring3', 'ring4'];
-			elevatedringFactor = ringSlots.some(slot => equippedRings[slot] === "Elevated Ring") ? 10 : 0;
-			dullsteelringFactor = ringSlots.some(slot => equippedRings[slot] === "Dull Steel Ring") ? 25 : 0;
-			burdenofthemasonFactor = ringSlots.some(slot => equippedRings[slot] === "Burden of the Mason") ? 25 : 0;
-			faeprotectorsignetFactor = ringSlots.some(slot => equippedRings[slot] === "Fae Protector Signet") ? 5 : 0;
-			dranmementoFactor = ringSlots.some(slot => equippedRings[slot] === "Dran Memento") ? 5 : 0;
-			shardringFactor = ringSlots.some(slot => equippedRings[slot] === "Meteorite Shard Ring") ? 50 : 0;
-			elevatedringFactor = ringSlots.some(slot => equippedRings[slot] === "Elevated Ring") ? 10 : 0;
-			ringoftherobustFactor = ringSlots.some(slot => equippedRings[slot] === "Ring of the Robust") ? 20 : 0;
+		const ringSlots = ['ring1', 'ring2', 'ring3', 'ring4']
+			elevatedringFactor = ringSlots.some(slot => equippedRings[slot] === "Elevated Ring") ? 10 : 0
+			dullsteelringFactor = ringSlots.some(slot => equippedRings[slot] === "Dull Steel Ring") ? 25 : 0
+			burdenofthemasonFactor = ringSlots.some(slot => equippedRings[slot] === "Burden of the Mason") ? 25 : 0
+			faeprotectorsignetFactor = ringSlots.some(slot => equippedRings[slot] === "Fae Protector Signet") ? 5 : 0
+			dranmementoFactor = ringSlots.some(slot => equippedRings[slot] === "Dran Memento") ? 5 : 0
+			shardringFactor = ringSlots.some(slot => equippedRings[slot] === "Meteorite Shard Ring") ? 50 : 0
+			elevatedringFactor = ringSlots.some(slot => equippedRings[slot] === "Elevated Ring") ? 10 : 0
+			ringoftherobustFactor = ringSlots.some(slot => equippedRings[slot] === "Ring of the Robust") ? 20 : 0
 
-		strongdrinkFactor = document.getElementById('strongDrinkCheckbox').checked ? 10 : 0;
-		eggdrinkFactor = document.getElementById('eggDrinkCheckbox').checked ? 10 : 0;
+		strongdrinkFactor = document.getElementById('strongDrinkCheckbox').checked ? 10 : 0
+		eggdrinkFactor = document.getElementById('eggDrinkCheckbox').checked ? 10 : 0
 
-		weight_limit = parseInt(document.getElementById("weightInput").value) + StrongBackTraitModifier + elevatedringFactor + eggdrinkFactor + dullsteelringFactor - burdenofthemasonFactor;
+		weight_limit = parseInt(document.getElementById("weightInput").value) + StrongBackTraitModifier + elevatedringFactor + eggdrinkFactor + dullsteelringFactor - burdenofthemasonFactor
 
-		const headSelected = Array.from(document.getElementById("headDropdown").selectedOptions).map(option => option.value);
-		const bodySelected = Array.from(document.getElementById("bodyDropdown").selectedOptions).map(option => option.value);
-		const legsSelected = Array.from(document.getElementById("legsDropdown").selectedOptions).map(option => option.value);
-		const glovesSelected = Array.from(document.getElementById("glovesDropdown").selectedOptions).map(option => option.value);
+		const headSelected = Array.from(document.getElementById("headDropdown").selectedOptions).map(option => option.value)
+		const bodySelected = Array.from(document.getElementById("bodyDropdown").selectedOptions).map(option => option.value)
+		const legsSelected = Array.from(document.getElementById("legsDropdown").selectedOptions).map(option => option.value)
+		const glovesSelected = Array.from(document.getElementById("glovesDropdown").selectedOptions).map(option => option.value)
 
-		const encumbranceValue = encumbranceInput.value;
-		const armorValue = armorInput.value;
+		const encumbranceValue = encumbranceInput.value
+		const armorValue = armorInput.value
 
-		let candidate_combinations = []; // Store candidate combinations before applying tolerance
+		let candidate_combinations = [] // Store candidate combinations before applying tolerance
 
 		for (const head of armor_list['Head']) {
 			for (const body of armor_list['Body']) {
 				for (const legs of armor_list['Legs']) {
 					for (const gloves of armor_list['Gloves']) {
 						// Check if the armor pieces match the selected dropdown values
-						const headMatch = headSelected.length === 0 || headSelected.includes("any") || headSelected.includes(head[0]);
-						const bodyMatch = bodySelected.length === 0 || bodySelected.includes("any") || bodySelected.includes(body[0]);
-						const legsMatch = legsSelected.length === 0 || legsSelected.includes("any") || legsSelected.includes(legs[0]);
-						const glovesMatch = glovesSelected.length === 0 || glovesSelected.includes("any") || glovesSelected.includes(gloves[0]);
+						const headMatch = headSelected.length === 0 || headSelected.includes("any") || headSelected.includes(head[0])
+						const bodyMatch = bodySelected.length === 0 || bodySelected.includes("any") || bodySelected.includes(body[0])
+						const legsMatch = legsSelected.length === 0 || legsSelected.includes("any") || legsSelected.includes(legs[0])
+						const glovesMatch = glovesSelected.length === 0 || glovesSelected.includes("any") || glovesSelected.includes(gloves[0])
 
 						if (headMatch && bodyMatch && legsMatch && glovesMatch) {
-							total_weight = (((head[2] + body[2] + legs[2] + gloves[2]) - strongdrinkFactor - twistedidolFactor - navigatorspendantFactor - rustednavigatorspendantFactor - faeprotectorsignetFactor - dranmementoFactor - elevatedringFactor + shardringFactor) * letoAmuletFactor);
+							total_weight = (((head[2] + body[2] + legs[2] + gloves[2]) - strongdrinkFactor - twistedidolFactor - navigatorspendantFactor - rustednavigatorspendantFactor - faeprotectorsignetFactor - dranmementoFactor - elevatedringFactor + shardringFactor) * letoAmuletFactor)
 							DR = Math.round(10 * (head[1] + body[1] + legs[1] + gloves[1])) / 10
 
 							if (total_weight <= encumbranceValue && total_weight <= weight_limit && armorValue <= DR) {
@@ -1103,67 +1086,67 @@
 								'Legs': legs,
 								'Gloves': gloves,
 								'DamageReduction': DR
-								});
+								})
 							}
 						}
 					}
 				}
 			}
 		}
-		tolerance = parseInt(document.getElementById("toleranceInput").value); // Ensure tolerance is not negative
+
+		tolerance = parseInt(document.getElementById("toleranceInput").value) // Ensure tolerance is not negative
 
 		const DRwithFactors = (DR + ringoftherobustFactor) * (twistedidolarmorFactor + FortifyTraitModifier - 1)
-		const roundedDR = Number.isInteger(DRwithFactors) ? DRwithFactors : (Math.round(10 * DRwithFactors) / 10);
+		const roundedDR = Number.isInteger(DRwithFactors) ? DRwithFactors : (Math.round(10 * DRwithFactors) / 10)
 		// Assuming candidate_combinations is sorted beforehand, if not, sort it
-		candidate_combinations.sort((a, b) => b.DamageReduction - a.DamageReduction);
+		candidate_combinations.sort((a, b) => b.DamageReduction - a.DamageReduction)
 		// Collect the best combinations based on the specified layers
-		const best_combinations = [];
-		let currentLayer = 0;
-		let currentDamageReduction = null;
+		const best_combinations = []
+		let currentLayer = 0
+		let currentDamageReduction = null
 
 		for (const combination of candidate_combinations) {
 			if (combination.DamageReduction !== currentDamageReduction) {
-				currentDamageReduction = combination.DamageReduction;
-				currentLayer++;
+				currentDamageReduction = combination.DamageReduction
+				currentLayer++
 				if (currentLayer > tolerance + 1)
-					break;
+					break
 			}
 			if (currentLayer <= tolerance + 1)
-				best_combinations.push(combination);
+				best_combinations.push(combination)
 			else
-				break; // Break once a lower damage reduction combination is encountered
+				break // Break once a lower damage reduction combination is encountered
 		}
 
 		// Sort the best_combinations array based on total damage reduction and then total resistance
 		best_combinations.sort((a, b) => {
 			const totalDamageA = (a.Head[1] + a.Body[1] + a.Legs[1] + a.Gloves[1] + ringoftherobustFactor) * (twistedidolarmorFactor + FortifyTraitModifier - 1)
-			const totalDamageAwithFactors = Number.isInteger(totalDamageA) ? totalDamageA : (Math.round(10 * totalDamageA) / 10);
+			const totalDamageAwithFactors = Number.isInteger(totalDamageA) ? totalDamageA : (Math.round(10 * totalDamageA) / 10)
 			const totalDamageB = (b.Head[1] + b.Body[1] + b.Legs[1] + b.Gloves[1] + ringoftherobustFactor) * (twistedidolarmorFactor + FortifyTraitModifier - 1)
-			const totalDamageBwithFactors = Number.isInteger(totalDamageB) ? totalDamageB : (Math.round(10 * totalDamageB) / 10);
+			const totalDamageBwithFactors = Number.isInteger(totalDamageB) ? totalDamageB : (Math.round(10 * totalDamageB) / 10)
 
 			if(totalDamageAwithFactors !== totalDamageBwithFactors) {
-				return totalDamageBwithFactors - totalDamageAwithFactors; // Sort by total damage reduction in descending order
+				return totalDamageBwithFactors - totalDamageAwithFactors // Sort by total damage reduction in descending order
 			}
 			<!-- // If total damage reduction is the same, sort by total resistance in descending order -->
-			const totalResistanceA = a.Head[3] + a.Body[3] + a.Legs[3] + a.Gloves[3] + a.Head[4] + a.Body[4] + a.Legs[4] + a.Gloves[4] + a.Head[5] + a.Body[5] + a.Legs[5] + a.Gloves[5] + a.Head[7] + a.Body[7] + a.Legs[7] + a.Gloves[7] + a.Head[6] + a.Body[6] + a.Legs[6] + a.Gloves[6] + (ShadeskinTraitModifier * 3);
-			const totalResistanceB = b.Head[3] + b.Body[3] + b.Legs[3] + b.Gloves[3] + b.Head[4] + b.Body[4] + b.Legs[4] + b.Gloves[4] + b.Head[5] + b.Body[5] + b.Legs[5] + b.Gloves[5] + b.Head[7] + b.Body[7] + b.Legs[7] + b.Gloves[7] + b.Head[6] + b.Body[6] + b.Legs[6] + b.Gloves[6] + (ShadeskinTraitModifier * 3);
-			return totalResistanceB - totalResistanceA; // Sort by total resistance in descending order
-		});
+			const totalResistanceA = a.Head[3] + a.Body[3] + a.Legs[3] + a.Gloves[3] + a.Head[4] + a.Body[4] + a.Legs[4] + a.Gloves[4] + a.Head[5] + a.Body[5] + a.Legs[5] + a.Gloves[5] + a.Head[7] + a.Body[7] + a.Legs[7] + a.Gloves[7] + a.Head[6] + a.Body[6] + a.Legs[6] + a.Gloves[6] + (ShadeskinTraitModifier * 3)
+			const totalResistanceB = b.Head[3] + b.Body[3] + b.Legs[3] + b.Gloves[3] + b.Head[4] + b.Body[4] + b.Legs[4] + b.Gloves[4] + b.Head[5] + b.Body[5] + b.Legs[5] + b.Gloves[5] + b.Head[7] + b.Body[7] + b.Legs[7] + b.Gloves[7] + b.Head[6] + b.Body[6] + b.Legs[6] + b.Gloves[6] + (ShadeskinTraitModifier * 3)
+			return totalResistanceB - totalResistanceA // Sort by total resistance in descending order
+		})
 
-		const resultContainer = document.getElementById("resultContainer");
-		resultContainer.innerHTML = "";
+		document.getElementById("resultContainer").innerHTML = ""
 
 		if(best_combinations.length > 0) {
 			best_combinations.forEach((combination) => {
-				const totalWeight = Math.max(0, (n => Number.isInteger(n) ? n : Math.round(n * 10) / 10)(((combination.Head[2] + combination.Body[2] + combination.Legs[2] + combination.Gloves[2]) - strongdrinkFactor - twistedidolFactor - navigatorspendantFactor - rustednavigatorspendantFactor - faeprotectorsignetFactor - dranmementoFactor - elevatedringFactor + shardringFactor) * letoAmuletFactor));
-				const totalBleed = (combination.Head[3] + combination.Body[3] + combination.Legs[3] + combination.Gloves[3]);
-				const totalFire = (combination.Head[4] + combination.Body[4] + combination.Legs[4] + combination.Gloves[4]) + ShadeskinTraitModifier;
-				const totalShock = (combination.Head[5] + combination.Body[5] + combination.Legs[5] + combination.Gloves[5]) + ShadeskinTraitModifier;
-				const totalToxin = (combination.Head[6] + combination.Body[6] + combination.Legs[6] + combination.Gloves[6]) + ShadeskinTraitModifier;
-				const totalBlight = (combination.Head[7] + combination.Body[7] + combination.Legs[7] + combination.Gloves[7]);
+				const totalWeight = Math.max(0, (n => Number.isInteger(n) ? n : Math.round(n * 10) / 10)(((combination.Head[2] + combination.Body[2] + combination.Legs[2] + combination.Gloves[2]) - strongdrinkFactor - twistedidolFactor - navigatorspendantFactor - rustednavigatorspendantFactor - faeprotectorsignetFactor - dranmementoFactor - elevatedringFactor + shardringFactor) * letoAmuletFactor))
+				const totalBleed = (combination.Head[3] + combination.Body[3] + combination.Legs[3] + combination.Gloves[3])
+				const totalFire = (combination.Head[4] + combination.Body[4] + combination.Legs[4] + combination.Gloves[4]) + ShadeskinTraitModifier
+				const totalShock = (combination.Head[5] + combination.Body[5] + combination.Legs[5] + combination.Gloves[5]) + ShadeskinTraitModifier
+				const totalToxin = (combination.Head[6] + combination.Body[6] + combination.Legs[6] + combination.Gloves[6]) + ShadeskinTraitModifier
+				const totalBlight = (combination.Head[7] + combination.Body[7] + combination.Legs[7] + combination.Gloves[7])
 
 				const DRwithFactors = (combination.Head[1] + combination.Body[1] + combination.Legs[1] + combination.Gloves[1] + ringoftherobustFactor) * (twistedidolarmorFactor + FortifyTraitModifier - 1)
-				const roundedDR = Number.isInteger(DRwithFactors) ? DRwithFactors : (Math.round(10 * DRwithFactors) / 10);
+				const roundedDR = Number.isInteger(DRwithFactors) ? DRwithFactors : (Math.round(10 * DRwithFactors) / 10)
 
 				var weightColor =
 				(totalWeight - StrongBackTraitModifier - elevatedringFactor - eggdrinkFactor - dullsteelringFactor + burdenofthemasonFactor <= 25) ? color1 :
@@ -1174,11 +1157,11 @@
 				const TotalDR = 1 - (1 - (ArmorDR / 100)) * (1)
 				const TotalDRformat = Number.isInteger(TotalDR * 100) ? TotalDR * 100 + '%' : Math.floor(10 * TotalDR * 100) / 10  + '%'
 
-				let isBetter = true; // Flag to determine if the armor set is better than any previous sets
+				let isBetter = true // Flag to determine if the armor set is better than any previous sets
 
 				if(isBetter) {
-					const armorCard = document.createElement("div");
-					armorCard.classList.add("armor-card");
+					const armorCard = document.createElement("div")
+					armorCard.classList.add("armor-card")
 					armorCard.innerHTML = `<
 						<span style="display: inline-block; color: #ffee69; margin-top: -22px; position: relative; left: -2.5%">
 							Armor: ${roundedDR}
@@ -1237,42 +1220,42 @@
 						<\/div>
 						<span class="text-tooltip-right" data-tooltip="Sum of Status Resistances"><span style="color: #d6e0d0 ;">Total: ${totalBleed + totalFire + totalShock + totalToxin + totalBlight}<\/span><\/span>
 						<\/div>
-					`;
-					resultContainer.appendChild(armorCard);
+					`
+					resultContainer.appendChild(armorCard)
 				}
-			});
+			})
 		} else {
-			const noCombinationMessage = document.createElement("p");
-			noCombinationMessage.textContent = "No armor matching current weight/weight class";
-			noCombinationMessage.style.color = "red"; // Set the color using the style property
-			resultContainer.appendChild(noCombinationMessage);
+			const noCombinationMessage = document.createElement("p")
+			noCombinationMessage.textContent = "No armor matching current weight/weight class"
+			noCombinationMessage.style.color = "red" // Set the color using the style property
+			resultContainer.appendChild(noCombinationMessage)
 		}
-		document.getElementById('loading-circle').style.display = 'none';
+		document.getElementById('loading-circle').style.display = 'none'
 	}
 
-	var backgroundColor = "#adffff"; // Declare backgroundColor as a global variable
-	var color1 = "#adffff"; // Declare backgroundColor as a global variable
-	var color2 = "#adffad";
-	var color3 = "#ffffad";
+	var backgroundColor = "#adffff" // Declare backgroundColor as a global variable
+	var color1 = "#adffff" // Declare backgroundColor as a global variable
+	var color2 = "#adffad"
+	var color3 = "#ffffad"
 
 	function updateBackgroundColor() {
-		var selectElement = document.getElementById("weightInput");
-		var selectedOption = selectElement.options[selectElement.selectedIndex];
+		var selectElement = document.getElementById("weightInput")
+		var selectedOption = selectElement.options[selectElement.selectedIndex]
 		switch (selectedOption.value) {
 			case "25":
-			backgroundColor = "#adffff";
+			backgroundColor = "#adffff"
 			break
 			case "50":
-			backgroundColor = "#adffad";
+			backgroundColor = "#adffad"
 			break
 			case "75":
-			backgroundColor = "#ffffad";
+			backgroundColor = "#ffffad"
 			break
 			case "1000000":
-			backgroundColor = "#f56e6e";
+			backgroundColor = "#f56e6e"
 			break
 		}
-		selectElement.style.backgroundColor = backgroundColor;
+		selectElement.style.backgroundColor = backgroundColor
 	}
 
 	const elementsToWatch = [
@@ -1280,14 +1263,14 @@
 		"armorInput", "ring1", "ring2", "ring3", "ring4", "strongDrinkCheckbox",
 		"eggDrinkCheckbox", "headDropdown", "bodyDropdown", "legsDropdown",
 		"glovesDropdown", "StrongBackTrait", "FortifyTrait", "ShadeskinTrait"
-	];
+	]
 
 	elementsToWatch.forEach(id => {
-		document.getElementById(id).addEventListener("change", calculateAndUpdate);
-		document.getElementById(id).addEventListener("input", calculateAndUpdate);
-	});
+		document.getElementById(id).addEventListener("change", calculateAndUpdate)
+		document.getElementById(id).addEventListener("input", calculateAndUpdate)
+	})
 
-	calculateAndUpdate(); // Initialize the result display when the page loads
+	calculateAndUpdate() // Initialize the result display when the page loads
 
 	const imageUrls = [
 		'https://images.hdqwalls.com/download/remnant-2-r7-3840x2400.jpg',
@@ -1304,89 +1287,89 @@
 		'https://gamemag.ru/images/imagemanager/cache/2f/9531/2f9531_remnant-2-game-monster-2k-wallpaper-uhdpaper.com-631-1-l.jpg',
 		'https://p2.bahamut.com.tw/B/2KU/48/95fe3eae92331247d8fec450a51jjq85.JPG',
 		'https://p2.bahamut.com.tw/B/2KU/51/3894796e8a54ce6365aa70fdf81jjqb5.JPG',
-	];
+	]
 
-	let currentImageIndex = 0;
-	let lastImageIndex = -1; // Initialize the last image index to an invalid value
-	const backgroundImages = document.querySelectorAll('.background-image');
+	let currentImageIndex = 0
+	let lastImageIndex = -1 // Initialize the last image index to an invalid value
+	const backgroundImages = document.querySelectorAll('.background-image')
 
 	function shuffle(array) {
 		for (let i = array.length - 1; i > 0; i--) {
 			const j = Math.floor(Math.random() * (i + 1));
-			[array[i], array[j]] = [array[j], array[i]];
+			[array[i], array[j]] = [array[j], array[i]]
 		}
-		return array;
+		return array
 	}
 
 	function setBackgroundImage() {
-		const shuffledImageUrls = shuffle(imageUrls);
-		let nextImageIndex;
+		const shuffledImageUrls = shuffle(imageUrls)
+		let nextImageIndex
 
 		do {
-			nextImageIndex = Math.floor(Math.random() * shuffledImageUrls.length);
-		} while (nextImageIndex === lastImageIndex); // Keep generating a new index until it's different from the last one
+			nextImageIndex = Math.floor(Math.random() * shuffledImageUrls.length)
+		} while (nextImageIndex === lastImageIndex) // Keep generating a new index until it's different from the last one
 
-		lastImageIndex = nextImageIndex; // Update the last image index
+		lastImageIndex = nextImageIndex // Update the last image index
 
-		const currentBackgroundImage = backgroundImages[currentImageIndex % 2];
-		const nextBackgroundImage = backgroundImages[(currentImageIndex + 1) % 2];
+		const currentBackgroundImage = backgroundImages[currentImageIndex % 2]
+		const nextBackgroundImage = backgroundImages[(currentImageIndex + 1) % 2]
 
-		nextBackgroundImage.style.backgroundImage = `url('${shuffledImageUrls[nextImageIndex]}')`;
-		nextBackgroundImage.style.opacity = 0; // Start with 0 opacity
+		nextBackgroundImage.style.backgroundImage = `url('${shuffledImageUrls[nextImageIndex]}')`
+		nextBackgroundImage.style.opacity = 0 // Start with 0 opacity
 
-		nextBackgroundImage.offsetHeight;
+		nextBackgroundImage.offsetHeight
 
-		const maxOpacity = 0.3;
-		const fadeDuration = 5000; // Duration of fade in milliseconds
-		nextBackgroundImage.style.transition = `opacity ${fadeDuration}ms ease`;
-		currentBackgroundImage.style.transition = `opacity ${fadeDuration}ms ease`;
+		const maxOpacity = 0.3
+		const fadeDuration = 5000 // Duration of fade in milliseconds
+		nextBackgroundImage.style.transition = `opacity ${fadeDuration}ms ease`
+		currentBackgroundImage.style.transition = `opacity ${fadeDuration}ms ease`
 
-		nextBackgroundImage.style.opacity = maxOpacity;
-		currentBackgroundImage.style.opacity = 0;
+		nextBackgroundImage.style.opacity = maxOpacity
+		currentBackgroundImage.style.opacity = 0
 
 		setTimeout(() => {
-			nextBackgroundImage.style.transition = '';
-			currentBackgroundImage.style.transition = '';
-			currentImageIndex++;
-		}, fadeDuration);
+			nextBackgroundImage.style.transition = ''
+			currentBackgroundImage.style.transition = ''
+			currentImageIndex++
+		}, fadeDuration)
 	}
 
-	setBackgroundImage();
-	setInterval(setBackgroundImage, 7000);
+	setBackgroundImage()
+	setInterval(setBackgroundImage, 7000)
 
 	function copyToClipboard(text, button) {
-		const el = document.createElement('textarea');
-		el.value = text;
-		document.body.appendChild(el);
-		el.select();
-		document.execCommand('copy');
-		document.body.removeChild(el);
+		const el = document.createElement('textarea')
+		el.value = text
+		document.body.appendChild(el)
+		el.select()
+		document.execCommand('copy')
+		document.body.removeChild(el)
 
-		const notification = document.createElement('div');
-		notification.textContent = 'Copied to clipboard';
-		notification.style.position = 'fixed';
-		notification.style.top = '0px'; // Position 20px from the bottom
-		notification.style.left = '50%'; // Center horizontally
-		notification.style.transform = 'translateX(-50%)'; // Center horizontally
-		notification.style.padding = '10px';
-		notification.style.backgroundColor = 'rgba(32, 32, 64, 0.2)'; // Lighter and more transparent background
-		notification.style.color = 'rgba(255, 255, 255, 0.8)'; // Slightly more transparent font color
-		notification.style.borderRadius = '10px';
-		notification.style.opacity = '0';
-		notification.style.transition = 'opacity 0.5s ease';
-		notification.style.fontSize = '14px'; // Slightly bigger font size
+		const notification = document.createElement('div')
+		notification.textContent = 'Copied to clipboard'
+		notification.style.position = 'fixed'
+		notification.style.top = '0px' // Position 20px from the bottom
+		notification.style.left = '50%' // Center horizontally
+		notification.style.transform = 'translateX(-50%)' // Center horizontally
+		notification.style.padding = '10px'
+		notification.style.backgroundColor = 'rgba(32, 32, 64, 0.2)' // Lighter and more transparent background
+		notification.style.color = 'rgba(255, 255, 255, 0.8)' // Slightly more transparent font color
+		notification.style.borderRadius = '10px'
+		notification.style.opacity = '0'
+		notification.style.transition = 'opacity 0.5s ease'
+		notification.style.fontSize = '14px' // Slightly bigger font size
 
-		document.body.appendChild(notification);
+		document.body.appendChild(notification)
 
 		setTimeout(() => {
-			notification.style.opacity = '1';
-		}, 100);
+			notification.style.opacity = '1'
+		}, 100)
 		setTimeout(() => {
-			notification.style.opacity = '0';
+			notification.style.opacity = '0'
 			setTimeout(() => {
-				document.body.removeChild(notification);
-			}, 500);
-		}, 1000);
+				document.body.removeChild(notification)
+			}, 500)
+		}, 1000)
 	}
 </script>
 </body>
