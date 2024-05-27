@@ -299,12 +299,14 @@
 		margin-right: 0px;
 	}
 
-	label[for="StrongBackdropdown"] {
+	label[for="FortifyTrait"],
+	label[for="StrongBackTrait"],
+	label[for="ShadeskinTrait"] {
 		margin-right: 0px;
 		margin-left: 0px;
-		color: #f2e5f2 ;
+		color: #f2e5f2;
 		font-size: 15px;
-		width: 100px
+		width: 100px;
 	}
 
 	.trait-select {
@@ -353,16 +355,6 @@
 		margin-bottom: 0px;
 	}
 
-	#toleranceInput {
-		text-align: left;
-		width: 170px;
-		/* Adjust the font size as needed */
-		/* Adjust the width as needed */
-		background-color: #ebefe7
-		user-drag: none;
-		user-select: none;
-	}
-
 	#weightInput {
 		text-align: center;
 		width: 150px;
@@ -403,19 +395,22 @@
 	@media screen and (max-width: 1285px) {
 		html {zoom: 75%}
 	    .button-container {
-        top: 100px;
-        transform: translateX(-25%);
+			top: 100px;
+			transform: translateX(-25%);
 		}
 	    .contact-container {
-        top: 10px;
-	    right: 15px;
-        transform: none;
+			top: 10px;
+			right: 15px;
+			transform: none;
 		}
 		.content-container {
 			display: flex;
 			flex-wrap: wrap;
 			justify-content: center;
 			align-items: center;
+		}
+		#loading-circle {
+			top: 1%;
 		}
 	}
 
@@ -449,11 +444,49 @@
 		border: 1px solid #000;
 	}
 
+	.sort-select {
+		text-align: center;
+		width: 140px;
+		font-size: 14px;
+		background-color: #ebefe7;
+		border-radius: 3px;
+	}
+	.sorting-container {
+		display: flex;
+		flex-direction: row;
+		align-items: flex-start;
+		justify-content: center;
+		gap: 5px;
+		margin-bottom: 10px;
+		margin-left: 10px;
+	}
+	.tolerance, .sort-select-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		margin-top: -5px;
+		background-color: rgba(128, 128, 128, 0.1);
+		padding: 5px;
+		border-radius: 5px;
+		border: 1px solid #000;
+	}
+	.tolerance label, .sort-select-container label {
+		margin-bottom: 5px;
+	}
+
+	#toleranceInput {
+		text-align: left;
+		width: 140px;
+		background-color: #ebefe7
+		user-drag: none;
+		user-select: none;
+	}
+
 	#resultContainerWrapper {
 		user-drag: none;
 		user-select: none;
 		text-align: center;
-		<!-- margin-top: 0px; -->
+		margin-top: -15px;
 	}
 
 	#resultContainer {
@@ -481,27 +514,21 @@
 	.itemName {
 		color: #FFFFCC;
 	}
-
 	.redColor {
 		color: #FF0000;
 	}
-
 	.orangeColor {
 		color: #FF8C00;
 	}
-
 	.purpleColor {
 		color: #7df9ff;
 	}
-
 	.greenColor {
 		color: #80ff00;
 	}
-
 	.greyColor {
 		color: #f3f6f4;
 	}
-
 	.text-tooltip {
 		position: relative;
 		display: inline-block;
@@ -512,11 +539,8 @@
 		display: inline-block;
 		max-width: 1000px;
 		white-space: nowrap;
-		/* Prevent line breaks */
 		overflow: hidden;
-		/* Hide any overflow */
 		text-overflow: ellipsis;
-		/* Truncate with ellipsis if content overflows */
 		position: absolute;
 		bottom: 100%;
 		left: 50%;
@@ -530,7 +554,6 @@
 		visibility: hidden;
 		transition: opacity 0.2s, visibility 0.2s;
 		pointer-events: none;
-		/* Make the tooltip image ignore pointer events */
 	}
 
 	.text-tooltip:hover::before {
@@ -567,7 +590,6 @@
 		visibility: hidden;
 		transition: opacity 0.2s, visibility 0.2s;
 		pointer-events: none;
-		/* Make the tooltip image ignore pointer events */
 	}
 
 	.text-tooltip-right:hover::before {
@@ -586,13 +608,9 @@
 		content: '';
 		display: inline-block;
 		width: 150px;
-		/* Adjust the width of the tooltip as needed */
 		height: 150px;
-		/* Adjust the height of the tooltip as needed */
 		background: var(--tooltip-bg-image), radial-gradient(circle at center, rgba(192, 255, 240, 0.2) 10%, transparent 65%);
-		/* Combine gradient and background image */
 		background-size: cover;
-		/* Scale the background image to cover the tooltip */
 		position: absolute;
 		bottom: -300%;
 		left: 100%;
@@ -601,11 +619,8 @@
 		visibility: hidden;
 		transition: opacity 0.2s, visibility 0s;
 		pointer-events: none;
-		/* Make the tooltip image ignore pointer events */
 		border-radius: 50%;
-		/* Make the tooltip image circular */
 		z-index: 1;
-		/* Place the tooltip background behind the image */
 	}
 
 	.armor-img-tooltip:hover::before {
@@ -648,7 +663,7 @@
 	  height: 22px;
 	}
 	.armor-select-row label {
-		width: 35px; /* Adjust this width as needed */
+		width: 35px;
 		margin-right: 10px;
 		color: #fff2cc;
 	}
@@ -680,7 +695,6 @@
 			<span style="font-family: Trebuchet ms, sans-serif; font-size: 14px; color: #edf0e4;">weshuggah</span>
 		</a>
 	</div>
-
     <br><br>
 	<div class="content-container">
 		<!-- Align the elements using the new label-container class -->
@@ -703,11 +717,10 @@
 				&nbsp;&nbsp;<input type="number" id="armorInput" min="0" max="999" value="0" step="0.1">
 			</div>
 		</div>
-
 		<div class="trait-container">
 			<h2 class="armor-filter-title">Trait Level</h2>
 			<div class="trait-select-row">
-				<label for="StrongBackdropdown">Fortify (Engineer)</label>
+				<label for="FortifyTrait">Fortify (Engineer)</label>
 				<select class="trait-select" id="FortifyTrait">
 					<option value="1">0</option>
 					<option value="1.05">1</option>
@@ -723,7 +736,7 @@
 				</select>
 			</div>
 			<div class="trait-select-row">
-				<label for="StrongBackdropdown">Strong Back (Challenger)</label>
+				<label for="StrongBackTrait">Strong Back (Challenger)</label>
 				<select class="trait-select" id="StrongBackTrait">
 					<option value="0">0</option>
 					<option value="1.5">1</option>
@@ -739,8 +752,7 @@
 				</select>
 			</div>
 			<div class="trait-select-row">
-				<label for="StrongBackdropdown" style=
-				"line-height: 2.5;">Shadeskin</label>
+				<label for="ShadeskinTrait" style="line-height: 2.5;">Shadeskin</label>
 				<select class="trait-select" id="ShadeskinTrait">
 					<option value="0">0</option>
 					<option value="2">1</option>
@@ -767,7 +779,7 @@
 			</select>
 		</div>
 		<div class="label-container ring-dropdown-container">
-			<label for="ring-dropdown-group">Rings</label>
+			<label for="ring1">Rings</label>
 			<div class="ring-dropdown-group">
 				<select class="ring-select" id="ring1" onchange="equipRing('ring1')">
 				</select>
@@ -789,17 +801,16 @@
 				"unequipAllRings(); calculateAndUpdate();">Unequip Rings</button>
 			</div>
 		</div>
-<div class="label-container concoction-checkbox-container">
-    <div class="checkbox-label-container">
-        <label for="strongDrinkCheckbox">Strong Drink Concoction</label>
-        <input id="strongDrinkCheckbox" type="checkbox">
-    </div>
-    <div class="checkbox-label-container">&nbsp;
-        <label for="eggDrinkCheckbox">Egg Drink Concoction</label>
-        <input id="eggDrinkCheckbox" type="checkbox">
-    </div>
-</div>
-
+		<div class="label-container concoction-checkbox-container">
+			<div class="checkbox-label-container">
+				<label for="strongDrinkCheckbox">Strong Drink Concoction</label>
+				<input id="strongDrinkCheckbox" type="checkbox">
+			</div>
+			<div class="checkbox-label-container">&nbsp;
+				<label for="eggDrinkCheckbox">Egg Drink Concoction</label>
+				<input id="eggDrinkCheckbox" type="checkbox">
+			</div>
+		</div>
 		<div class="armor-filter-container">
 			<h2 class="armor-filter-title">Armor Filter</h2>
 			<div class="armor-select-row">
@@ -835,10 +846,32 @@
 			</div>
 		</div>
 	</div>
+	<br>
+	<div class="sorting-container">
+		<div class="sort-select-container">
+			<label for="SortSelect">
+				<span style="color: #ebefe7;">Sort by: </span>
+			</label>
+			<select class="sort-select" id="SortSelect">
+				<option value="DamageReduction" selected>Armor (DR)</option>
+				<option value="Bleed">Bleed</option>
+				<option value="Burn">Burn</option>
+				<option value="Shock">Shock</option>
+				<option value="Corrosion">Corrosion</option>
+				<option value="Blight">Blight</option>
+				<option value="TotalRes">Total Resistance</option>
+			</select>
+		</div>
+		<div class="tolerance">
+			<label for="toleranceInput">
+				<span style="color: #ebefe7;">
+					<span class="text-tooltip" data-tooltip="Display more armor sets, potentially with better Status resistances but lower Damage Reduction"></span>
+				</span>
+			</label>
+			<input id="toleranceInput" max="10" min="0" step="1" type="range" value="0">
+		</div>
+	</div>
 	<div id="resultContainerWrapper">
-		<br>
-		<label for="toleranceInput"><span style="color: #ebefe7;"><span class="text-tooltip" data-tooltip="Display more armor sets, potentially with better Status resistances but lower Damage Reduction"></span></span></label>
-		<input id="toleranceInput" max="10" min="0" step="1" type="range" value="0">
 		<h2 id="totalDamageReduction"></h2>
 		<div id="resultContainer"></div>
 	</div>
@@ -952,7 +985,7 @@
     }
 
 	const toleranceInput = document.getElementById("toleranceInput")
-	const toleranceLabel = document.querySelector("#resultContainerWrapper label span span")
+	const toleranceLabel = document.querySelector("label span span")
 	toleranceInput.addEventListener("input", function() {
 		const enteredValue = parseInt(toleranceInput.value)
 		toleranceLabel.textContent = `Tolerance: ${enteredValue}`
@@ -1030,30 +1063,27 @@
 
 		const armor_list = await fetchArmorData()
 
-		StrongBackTraitModifier = parseFloat(StrongBackTrait.value)
-		FortifyTraitModifier = parseFloat(FortifyTrait.value)
-		ShadeskinTraitModifier = parseFloat(ShadeskinTrait.value)
+		const StrongBackTraitModifier = parseFloat(StrongBackTrait.value)
+		const FortifyTraitModifier = parseFloat(FortifyTrait.value)
+		const ShadeskinTraitModifier = parseFloat(ShadeskinTrait.value)
 
-		letoAmuletFactor = document.getElementById("amuletDropdown").value === "leto" ? 0.6 : 1
-		twistedidolFactor = document.getElementById("amuletDropdown").value === "twistedidol" ? 20 : 0
-		twistedidolarmorFactor = document.getElementById("amuletDropdown").value === "twistedidol" ? 1.35 : 1
-		navigatorspendantFactor = document.getElementById("amuletDropdown").value === "navigatorspendant" ? 10 : 0
-		rustednavigatorspendantFactor = document.getElementById("amuletDropdown").value === "rustednavigatorspendant" ? 15 : 0
+		const letoAmuletFactor = document.getElementById("amuletDropdown").value === "leto" ? 0.6 : 1
+		const twistedidolFactor = document.getElementById("amuletDropdown").value === "twistedidol" ? 20 : 0
+		const twistedidolarmorFactor = document.getElementById("amuletDropdown").value === "twistedidol" ? 1.35 : 1
+		const navigatorspendantFactor = document.getElementById("amuletDropdown").value === "navigatorspendant" ? 10 : 0
+		const rustednavigatorspendantFactor = document.getElementById("amuletDropdown").value === "rustednavigatorspendant" ? 15 : 0
 
 		const ringSlots = ['ring1', 'ring2', 'ring3', 'ring4']
-			elevatedringFactor = ringSlots.some(slot => equippedRings[slot] === "Elevated Ring") ? 10 : 0
-			dullsteelringFactor = ringSlots.some(slot => equippedRings[slot] === "Dull Steel Ring") ? 25 : 0
-			burdenofthemasonFactor = ringSlots.some(slot => equippedRings[slot] === "Burden of the Mason") ? 25 : 0
-			faeprotectorsignetFactor = ringSlots.some(slot => equippedRings[slot] === "Fae Protector Signet") ? 5 : 0
-			dranmementoFactor = ringSlots.some(slot => equippedRings[slot] === "Dran Memento") ? 5 : 0
-			shardringFactor = ringSlots.some(slot => equippedRings[slot] === "Meteorite Shard Ring") ? 50 : 0
-			elevatedringFactor = ringSlots.some(slot => equippedRings[slot] === "Elevated Ring") ? 10 : 0
-			ringoftherobustFactor = ringSlots.some(slot => equippedRings[slot] === "Ring of the Robust") ? 20 : 0
+			const elevatedringFactor = ringSlots.some(slot => equippedRings[slot] === "Elevated Ring") ? 10 : 0
+			const dullsteelringFactor = ringSlots.some(slot => equippedRings[slot] === "Dull Steel Ring") ? 25 : 0
+			const burdenofthemasonFactor = ringSlots.some(slot => equippedRings[slot] === "Burden of the Mason") ? 25 : 0
+			const faeprotectorsignetFactor = ringSlots.some(slot => equippedRings[slot] === "Fae Protector Signet") ? 5 : 0
+			const dranmementoFactor = ringSlots.some(slot => equippedRings[slot] === "Dran Memento") ? 5 : 0
+			const shardringFactor = ringSlots.some(slot => equippedRings[slot] === "Meteorite Shard Ring") ? 50 : 0
+			const ringoftherobustFactor = ringSlots.some(slot => equippedRings[slot] === "Ring of the Robust") ? 20 : 0
 
-		strongdrinkFactor = document.getElementById('strongDrinkCheckbox').checked ? 10 : 0
-		eggdrinkFactor = document.getElementById('eggDrinkCheckbox').checked ? 10 : 0
-
-		weight_limit = parseInt(document.getElementById("weightInput").value) + StrongBackTraitModifier + elevatedringFactor + eggdrinkFactor + dullsteelringFactor - burdenofthemasonFactor
+		const strongdrinkFactor = document.getElementById('strongDrinkCheckbox').checked ? 10 : 0
+		const eggdrinkFactor = document.getElementById('eggDrinkCheckbox').checked ? 10 : 0
 
 		const headSelected = Array.from(document.getElementById("headDropdown").selectedOptions).map(option => option.value)
 		const bodySelected = Array.from(document.getElementById("bodyDropdown").selectedOptions).map(option => option.value)
@@ -1062,30 +1092,42 @@
 
 		const encumbranceValue = encumbranceInput.value
 		const armorValue = armorInput.value
+		const weight_limit = parseInt(document.getElementById("weightInput").value) + StrongBackTraitModifier + elevatedringFactor + eggdrinkFactor + dullsteelringFactor - burdenofthemasonFactor
 
 		let candidate_combinations = [] // Store candidate combinations before applying tolerance
 
 		for (const head of armor_list['Head']) {
-			for (const body of armor_list['Body']) {
-				for (const legs of armor_list['Legs']) {
-					for (const gloves of armor_list['Gloves']) {
-						// Check if the armor pieces match the selected dropdown values
-						const headMatch = headSelected.length === 0 || headSelected.includes("any") || headSelected.includes(head[0])
-						const bodyMatch = bodySelected.length === 0 || bodySelected.includes("any") || bodySelected.includes(body[0])
-						const legsMatch = legsSelected.length === 0 || legsSelected.includes("any") || legsSelected.includes(legs[0])
-						const glovesMatch = glovesSelected.length === 0 || glovesSelected.includes("any") || glovesSelected.includes(gloves[0])
-
-						if (headMatch && bodyMatch && legsMatch && glovesMatch) {
-							total_weight = (((head[2] + body[2] + legs[2] + gloves[2]) - strongdrinkFactor - twistedidolFactor - navigatorspendantFactor - rustednavigatorspendantFactor - faeprotectorsignetFactor - dranmementoFactor - elevatedringFactor + shardringFactor) * letoAmuletFactor)
-							DR = Math.round(10 * (head[1] + body[1] + legs[1] + gloves[1])) / 10
+			for (const gloves of armor_list['Gloves']) {
+				for (const body of armor_list['Body']) {
+					for (const legs of armor_list['Legs']) {
+						if ((headSelected.length === 0 || headSelected.includes("any") || headSelected.includes(head[0])) &&
+							(bodySelected.length === 0 || bodySelected.includes("any") || bodySelected.includes(body[0])) &&
+							(legsSelected.length === 0 || legsSelected.includes("any") || legsSelected.includes(legs[0])) &&
+							(glovesSelected.length === 0 || glovesSelected.includes("any") || glovesSelected.includes(gloves[0])))
+						{
+							const total_weight = (((head[2] + body[2] + legs[2] + gloves[2]) - strongdrinkFactor - twistedidolFactor - navigatorspendantFactor - rustednavigatorspendantFactor - faeprotectorsignetFactor - dranmementoFactor - elevatedringFactor + shardringFactor) * letoAmuletFactor)
+							const DR = Math.round(10 * (head[1] + body[1] + legs[1] + gloves[1])) / 10
 
 							if (total_weight <= encumbranceValue && total_weight <= weight_limit && armorValue <= DR) {
+								const Bleed = head[3] + body[3] + legs[3] + gloves[3]
+								const Burn = head[4] + body[4] + legs[4] + gloves[4] + ShadeskinTraitModifier
+								const Shock = head[5] + body[5] + legs[5] + gloves[5] + ShadeskinTraitModifier
+								const Corrosion = head[6] + body[6] + legs[6] + gloves[6] + ShadeskinTraitModifier
+								const Blight = head[7] + body[7] + legs[7] + gloves[7]
+
 								candidate_combinations.push({
 								'Head': head,
 								'Body': body,
 								'Legs': legs,
 								'Gloves': gloves,
-								'DamageReduction': DR
+								'DamageReduction': DR,
+								'Bleed': Bleed,
+								'Burn': Burn,
+								'Shock': Shock,
+								'Corrosion': Corrosion,
+								'Blight': Blight,
+								'TotalRes': Bleed + Burn + Shock + Corrosion + Blight,
+								<!-- 'Armor/Weight ratio': (((DR + 0) / Math.max(total_weight, 1) * 1000) / 1000), -->
 								})
 							}
 						}
@@ -1094,45 +1136,80 @@
 			}
 		}
 
-		tolerance = parseInt(document.getElementById("toleranceInput").value) // Ensure tolerance is not negative
-
-		const DRwithFactors = (DR + ringoftherobustFactor) * (twistedidolarmorFactor + FortifyTraitModifier - 1)
-		const roundedDR = Number.isInteger(DRwithFactors) ? DRwithFactors : (Math.round(10 * DRwithFactors) / 10)
-		// Assuming candidate_combinations is sorted beforehand, if not, sort it
-		candidate_combinations.sort((a, b) => b.DamageReduction - a.DamageReduction)
-		// Collect the best combinations based on the specified layers
-		const best_combinations = []
+		const filter = document.getElementById("SortSelect").value;
+		let currentFilter = null
 		let currentLayer = 0
-		let currentDamageReduction = null
+		const tolerance = parseInt(document.getElementById("toleranceInput").value)
+		const best_combinations = []
+
+		candidate_combinations.sort((a, b) => b[filter] - a[filter])
 
 		for (const combination of candidate_combinations) {
-			if (combination.DamageReduction !== currentDamageReduction) {
-				currentDamageReduction = combination.DamageReduction
+			if (combination[filter] !== currentFilter) {
+				currentFilter = combination[filter]
 				currentLayer++
 				if (currentLayer > tolerance + 1)
 					break
 			}
-			if (currentLayer <= tolerance + 1)
+			if (currentLayer <= tolerance + 1 && best_combinations.length < 75)
 				best_combinations.push(combination)
-			else
-				break // Break once a lower damage reduction combination is encountered
 		}
 
-		// Sort the best_combinations array based on total damage reduction and then total resistance
-		best_combinations.sort((a, b) => {
-			const totalDamageA = (a.Head[1] + a.Body[1] + a.Legs[1] + a.Gloves[1] + ringoftherobustFactor) * (twistedidolarmorFactor + FortifyTraitModifier - 1)
-			const totalDamageAwithFactors = Number.isInteger(totalDamageA) ? totalDamageA : (Math.round(10 * totalDamageA) / 10)
-			const totalDamageB = (b.Head[1] + b.Body[1] + b.Legs[1] + b.Gloves[1] + ringoftherobustFactor) * (twistedidolarmorFactor + FortifyTraitModifier - 1)
-			const totalDamageBwithFactors = Number.isInteger(totalDamageB) ? totalDamageB : (Math.round(10 * totalDamageB) / 10)
+		if(best_combinations.length > 1) {
+			best_combinations.sort((a, b) => {
+				const totalDamageA = (a.Head[1] + a.Body[1] + a.Legs[1] + a.Gloves[1] + ringoftherobustFactor) * (twistedidolarmorFactor + FortifyTraitModifier - 1)
+				const totalDamageAwithFactors = Number.isInteger(totalDamageA) ? totalDamageA : (Math.round(10 * totalDamageA) / 10)
+				const totalDamageB = (b.Head[1] + b.Body[1] + b.Legs[1] + b.Gloves[1] + ringoftherobustFactor) * (twistedidolarmorFactor + FortifyTraitModifier - 1)
+				const totalDamageBwithFactors = Number.isInteger(totalDamageB) ? totalDamageB : (Math.round(10 * totalDamageB) / 10)
 
-			if(totalDamageAwithFactors !== totalDamageBwithFactors) {
-				return totalDamageBwithFactors - totalDamageAwithFactors // Sort by total damage reduction in descending order
-			}
-			<!-- // If total damage reduction is the same, sort by total resistance in descending order -->
-			const totalResistanceA = a.Head[3] + a.Body[3] + a.Legs[3] + a.Gloves[3] + a.Head[4] + a.Body[4] + a.Legs[4] + a.Gloves[4] + a.Head[5] + a.Body[5] + a.Legs[5] + a.Gloves[5] + a.Head[7] + a.Body[7] + a.Legs[7] + a.Gloves[7] + a.Head[6] + a.Body[6] + a.Legs[6] + a.Gloves[6] + (ShadeskinTraitModifier * 3)
-			const totalResistanceB = b.Head[3] + b.Body[3] + b.Legs[3] + b.Gloves[3] + b.Head[4] + b.Body[4] + b.Legs[4] + b.Gloves[4] + b.Head[5] + b.Body[5] + b.Legs[5] + b.Gloves[5] + b.Head[7] + b.Body[7] + b.Legs[7] + b.Gloves[7] + b.Head[6] + b.Body[6] + b.Legs[6] + b.Gloves[6] + (ShadeskinTraitModifier * 3)
-			return totalResistanceB - totalResistanceA // Sort by total resistance in descending order
-		})
+				const totalResistanceA = a.Head[3] + a.Body[3] + a.Legs[3] + a.Gloves[3] + a.Head[4] + a.Body[4] + a.Legs[4] + a.Gloves[4] + a.Head[5] + a.Body[5] + a.Legs[5] + a.Gloves[5] + a.Head[7] + a.Body[7] + a.Legs[7] + a.Gloves[7] + a.Head[6] + a.Body[6] + a.Legs[6] + a.Gloves[6] + (ShadeskinTraitModifier * 3)
+				const totalResistanceB = b.Head[3] + b.Body[3] + b.Legs[3] + b.Gloves[3] + b.Head[4] + b.Body[4] + b.Legs[4] + b.Gloves[4] + b.Head[5] + b.Body[5] + b.Legs[5] + b.Gloves[5] + b.Head[7] + b.Body[7] + b.Legs[7] + b.Gloves[7] + b.Head[6] + b.Body[6] + b.Legs[6] + b.Gloves[6] + (ShadeskinTraitModifier * 3)
+
+				if (filter === "DamageReduction") {
+					if(totalDamageAwithFactors !== totalDamageBwithFactors)
+						return totalDamageBwithFactors - totalDamageAwithFactors // Sort by total damage reduction in descending order
+
+						return totalResistanceB - totalResistanceA // Sort by total resistance in descending order
+				}
+
+				else if (filter === "TotalRes") {
+					if(totalResistanceA !== totalResistanceB)
+						return totalResistanceB - totalResistanceA // Sort by total resistance in descending order
+
+						return totalDamageBwithFactors - totalDamageAwithFactors // Sort by total damage reduction in descending order
+				}
+
+				<!-- else if (filter === "Armor/Weight ratio") { -->
+					<!-- const totalWeightA = (a.Head[2] + a.Body[2] + a.Legs[2] + a.Gloves[2]) -->
+					<!-- const totalWeightB = (b.Head[2] + b.Body[2] + b.Legs[2] + b.Gloves[2]) -->
+					<!-- const RatioA = (((totalDamageAwithFactors + 0) / Math.max(totalWeightA, 1) * 1000) / 1000) -->
+					<!-- const RatioB = (((totalDamageBwithFactors + 0) / Math.max(totalWeightB, 1) * 1000) / 1000) -->
+
+					<!-- if(RatioA !== RatioB) -->
+						<!-- return RatioB - RatioA -->
+
+						<!-- return totalDamageBwithFactors - totalDamageAwithFactors // Sort by total damage reduction in descending order -->
+						<!-- return totalResistanceB - totalResistanceA // Sort by total resistance in descending order -->
+				<!-- } -->
+
+				else {
+					resIndex = filter === "Bleed" ? 3 :
+							   filter === "Burn" ? 4 :
+							   filter === "Shock" ? 5 :
+							   filter === "Corrosion" ? 6 :
+							   filter === "Blight" ? 7 : 0
+
+					const resistanceA = a.Head[resIndex] + a.Body[resIndex] + a.Legs[resIndex] + a.Gloves[resIndex]
+					const resistanceB = b.Head[resIndex] + b.Body[resIndex] + b.Legs[resIndex] + b.Gloves[resIndex]
+
+					if(resistanceA !== resistanceB)
+						return resistanceB - resistanceA // Sort by total resistance in descending order
+
+						return totalDamageBwithFactors - totalDamageAwithFactors // Sort by total damage reduction in descending order
+						return totalResistanceB - totalResistanceA // Sort by total resistance in descending order
+				}
+			})
+		}
 
 		document.getElementById("resultContainer").innerHTML = ""
 
@@ -1148,81 +1225,77 @@
 				const DRwithFactors = (combination.Head[1] + combination.Body[1] + combination.Legs[1] + combination.Gloves[1] + ringoftherobustFactor) * (twistedidolarmorFactor + FortifyTraitModifier - 1)
 				const roundedDR = Number.isInteger(DRwithFactors) ? DRwithFactors : (Math.round(10 * DRwithFactors) / 10)
 
-				var weightColor =
-				(totalWeight - StrongBackTraitModifier - elevatedringFactor - eggdrinkFactor - dullsteelringFactor + burdenofthemasonFactor <= 25) ? color1 :
-				(totalWeight - StrongBackTraitModifier - elevatedringFactor - eggdrinkFactor - dullsteelringFactor + burdenofthemasonFactor <= 50) ? color2 :
-				(totalWeight - StrongBackTraitModifier - elevatedringFactor - eggdrinkFactor - dullsteelringFactor + burdenofthemasonFactor <= 75) ? color3 : backgroundColor
+				const weightColor =
+					(totalWeight - StrongBackTraitModifier - elevatedringFactor - eggdrinkFactor - dullsteelringFactor + burdenofthemasonFactor <= 25) ? color1 :
+					(totalWeight - StrongBackTraitModifier - elevatedringFactor - eggdrinkFactor - dullsteelringFactor + burdenofthemasonFactor <= 50) ? color2 :
+					(totalWeight - StrongBackTraitModifier - elevatedringFactor - eggdrinkFactor - dullsteelringFactor + burdenofthemasonFactor <= 75) ? color3 : backgroundColor
 
 				const ArmorDR = (((DRwithFactors / (DRwithFactors + 200)) * 100)).toFixed(1)
 				const TotalDR = 1 - (1 - (ArmorDR / 100)) * (1)
 				const TotalDRformat = Number.isInteger(TotalDR * 100) ? TotalDR * 100 + '%' : Math.floor(10 * TotalDR * 100) / 10  + '%'
 
-				let isBetter = true // Flag to determine if the armor set is better than any previous sets
+				const armorCard = document.createElement("div")
+				armorCard.classList.add("armor-card")
+				armorCard.innerHTML = `<
+					<span style="display: inline-block; color: #ffee69; margin-top: -22px; position: relative; left: -2.5%">
+						Armor: ${roundedDR}
+						<span class="text-tooltip" data-tooltip="Total DR" style="position: absolute; left: 122%; top: 10%; color: #ffee69; font-size: 14px;">
+						<span style="opacity: 0.85">
+							${TotalDRformat}
+						<\/span><\/span>
+						<span class="text-tooltip" data-tooltip="Armor/Weight ratio" style="position: absolute; left: -60%; top: 85%; color: #d6e0d0; font-size: 13px;">
+						<span style="opacity: 0.75">
+							${Number((Math.floor((roundedDR + 0) / Math.max(totalWeight, 1) * 1000) / 1000).toFixed(2))}
+						<\/span><\/span>
+					<\/span>
 
-				if(isBetter) {
-					const armorCard = document.createElement("div")
-					armorCard.classList.add("armor-card")
-					armorCard.innerHTML = `<
-						<span style="display: inline-block; color: #ffee69; margin-top: -22px; position: relative; left: -2.5%">
-							Armor: ${roundedDR}
-							<span class="text-tooltip" data-tooltip="Total DR" style="position: absolute; left: 122%; top: 10%; color: #ffee69; font-size: 14px;">
-							<span style="opacity: 0.85">
-								${TotalDRformat}
-							<\/span><\/span>
-							<span class="text-tooltip" data-tooltip="Armor/Weight ratio" style="position: absolute; left: -60%; top: 85%; color: #d6e0d0; font-size: 13px;">
-							<span style="opacity: 0.75">
-								${Number((Math.floor((roundedDR + 0) / Math.max(totalWeight, 1) * 1000) / 1000).toFixed(2))}
-							<\/span><\/span>
-						<\/span>
+					<span id="weightDisplay"  class="weight-display" style="display: block; line-height: 2; color: ${weightColor}; font-size: 15px;">Weight: ${totalWeight}<\/span>
 
-						<span id="weightDisplay"  class="weight-display" style="display: block; line-height: 2; color: ${weightColor}; font-size: 15px;">Weight: ${totalWeight}<\/span>
+					<div class="content-wrapper">
+					<div class="gear-container">
+					<p><span style="color: #d6e0d0;">Head:<\/span>
+					<span class="itemName headColor">
+					<span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Head/${combination.Head[0].replace(/ /g, '_').replace(/'/g, "\\'")}.png')">
+					${combination.Head[0].trim() === "none" ? `<span style="color: #99997a;">none<\/span>` : combination.Head[0]}
+					<\/span>
+					<\/span>
+					<\/p>
+					<p><span style="color: #d6e0d0;">Body:<\/span>
+					<span class="itemName bodyColor">
+					<span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Body/${combination.Body[0].replace(/ /g, '_').replace(/'/g, "\\'")}.png')">
+					${combination.Body[0].trim() === "none" ? `<span style="color: #99997a;">none<\/span>` : combination.Body[0]}
+					<\/span>
+					<\/span>
+					<\/p>
+					<p><span style="color: #d6e0d0;">Legs:&nbsp;<\/span>
+					<span class="itemName legsColor">
+					<span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Legs/${combination.Legs[0].replace(/ /g, '_').replace(/'/g, "\\'")}.png')">
+					${combination.Legs[0].trim() === "none" ? `<span style="color: #99997a;">none<\/span>` : combination.Legs[0]}
+					<\/span>
+					<\/span>
+					<\/p>
+					<p><span style="color: #d6e0d0;">Arms:<\/span>
+					<span class="itemName glovesColor">
+					<span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Gloves/${combination.Gloves[0].replace(/ /g, '_').replace(/'/g, "\\'")}.png')">
+					${combination.Gloves[0].trim() === "none" ? `<span style="color: #99997a;">none<\/span>` : combination.Gloves[0]}
+					<\/span>
+					<\/span>
+					<\/p>
+					<\/div>
+					<\/div>
 
-						<div class="content-wrapper">
-						<div class="gear-container">
-						<p><span style="color: #d6e0d0;">Head:<\/span>
-						<span class="itemName headColor">
-						<span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Head/${combination.Head[0].replace(/ /g, '_').replace(/'/g, "\\'")}.png')">
-						${combination.Head[0].trim() === "none" ? `<span style="color: #99997a;">none<\/span>` : combination.Head[0]}
-						<\/span>
-						<\/span>
-						<\/p>
-						<p><span style="color: #d6e0d0;">Body:<\/span>
-						<span class="itemName bodyColor">
-						<span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Body/${combination.Body[0].replace(/ /g, '_').replace(/'/g, "\\'")}.png')">
-						${combination.Body[0].trim() === "none" ? `<span style="color: #99997a;">none<\/span>` : combination.Body[0]}
-						<\/span>
-						<\/span>
-						<\/p>
-						<p><span style="color: #d6e0d0;">Legs:&nbsp;<\/span>
-						<span class="itemName legsColor">
-						<span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Legs/${combination.Legs[0].replace(/ /g, '_').replace(/'/g, "\\'")}.png')">
-						${combination.Legs[0].trim() === "none" ? `<span style="color: #99997a;">none<\/span>` : combination.Legs[0]}
-						<\/span>
-						<\/span>
-						<\/p>
-						<p><span style="color: #d6e0d0;">Arms:<\/span>
-						<span class="itemName glovesColor">
-						<span class="armor-img-tooltip" style="--tooltip-bg-image: url('https://raw.githubusercontent.com/ScoutHunter/R2AG/main/Data/Img/Armor/Gloves/${combination.Gloves[0].replace(/ /g, '_').replace(/'/g, "\\'")}.png')">
-						${combination.Gloves[0].trim() === "none" ? `<span style="color: #99997a;">none<\/span>` : combination.Gloves[0]}
-						<\/span>
-						<\/span>
-						<\/p>
-						<\/div>
-						<\/div>
-
-						<div class="status-global-wrapper">
-						<div class="status-wrapper">
-						<span class="text-tooltip" data-tooltip="Bleed"><span class="redColor">${totalBleed}<\/span>&nbsp <\/span>
-						<span class="text-tooltip" data-tooltip="Burn"><span class="orangeColor">${totalFire}<\/span>&nbsp <\/span>
-						<span class="text-tooltip" data-tooltip="Shock"><span class="purpleColor">${totalShock}<\/span>&nbsp <\/span>
-						<span class="text-tooltip" data-tooltip="Corrosion"><span class="greenColor">${totalToxin}<\/span>&nbsp <\/span>
-						<span class="text-tooltip" data-tooltip="Blight"><span class="greyColor">${totalBlight}<\/span> <\/span>
-						<\/div>
-						<span class="text-tooltip-right" data-tooltip="Sum of Status Resistances"><span style="color: #d6e0d0 ;">Total: ${totalBleed + totalFire + totalShock + totalToxin + totalBlight}<\/span><\/span>
-						<\/div>
-					`
-					resultContainer.appendChild(armorCard)
-				}
+					<div class="status-global-wrapper">
+					<div class="status-wrapper">
+					<span class="text-tooltip" data-tooltip="Bleed"><span class="redColor">${totalBleed}<\/span>&nbsp <\/span>
+					<span class="text-tooltip" data-tooltip="Burn"><span class="orangeColor">${totalFire}<\/span>&nbsp <\/span>
+					<span class="text-tooltip" data-tooltip="Shock"><span class="purpleColor">${totalShock}<\/span>&nbsp <\/span>
+					<span class="text-tooltip" data-tooltip="Corrosion"><span class="greenColor">${totalToxin}<\/span>&nbsp <\/span>
+					<span class="text-tooltip" data-tooltip="Blight"><span class="greyColor">${totalBlight}<\/span> <\/span>
+					<\/div>
+					<span class="text-tooltip-right" data-tooltip="Sum of Status Resistances"><span style="color: #d6e0d0 ;">Total: ${totalBleed + totalFire + totalShock + totalToxin + totalBlight}<\/span><\/span>
+					<\/div>
+				`
+				resultContainer.appendChild(armorCard)
 			})
 		} else {
 			const noCombinationMessage = document.createElement("p")
@@ -1233,15 +1306,14 @@
 		document.getElementById('loading-circle').style.display = 'none'
 	}
 
-	var backgroundColor = "#adffff" // Declare backgroundColor as a global variable
-	var color1 = "#adffff" // Declare backgroundColor as a global variable
-	var color2 = "#adffad"
-	var color3 = "#ffffad"
+	let backgroundColor = "#adffff" // Declare backgroundColor as a global variable
+	let color1 = "#adffff" // Declare backgroundColor as a global variable
+	let color2 = "#adffad"
+	let color3 = "#ffffad"
 
 	function updateBackgroundColor() {
-		var selectElement = document.getElementById("weightInput")
-		var selectedOption = selectElement.options[selectElement.selectedIndex]
-		switch (selectedOption.value) {
+		const selectElement = document.getElementById("weightInput")
+		switch (selectElement.options[selectElement.selectedIndex].value) {
 			case "25":
 			backgroundColor = "#adffff"
 			break
@@ -1259,12 +1331,13 @@
 	}
 
 	const elementsToWatch = [
-		"weightInput", "amuletDropdown", "toleranceInput", "encumbranceInput",
-		"armorInput", "ring1", "ring2", "ring3", "ring4", "strongDrinkCheckbox",
-		"eggDrinkCheckbox", "headDropdown", "bodyDropdown", "legsDropdown",
-		"glovesDropdown", "StrongBackTrait", "FortifyTrait", "ShadeskinTrait"
+		"weightInput", "toleranceInput", "encumbranceInput", "armorInput", "SortSelect",
+		"amuletDropdown",
+		"ring1", "ring2", "ring3", "ring4",
+		"strongDrinkCheckbox", "eggDrinkCheckbox",
+		"headDropdown", "bodyDropdown", "legsDropdown", "glovesDropdown",
+		"StrongBackTrait", "FortifyTrait", "ShadeskinTrait"
 	]
-
 	elementsToWatch.forEach(id => {
 		document.getElementById(id).addEventListener("change", calculateAndUpdate)
 		document.getElementById(id).addEventListener("input", calculateAndUpdate)
