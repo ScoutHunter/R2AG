@@ -1085,37 +1085,38 @@
 		const strongdrinkFactor = document.getElementById('strongDrinkCheckbox').checked ? 10 : 0
 		const eggdrinkFactor = document.getElementById('eggDrinkCheckbox').checked ? 10 : 0
 
+		const encumbranceValue = encumbranceInput.value
+		const armorValue = armorInput.value
+		const weight_limit = parseInt(document.getElementById("weightInput").value) + StrongBackTraitModifier + elevatedringFactor + eggdrinkFactor + dullsteelringFactor - burdenofthemasonFactor
+
 		const headSelected = Array.from(document.getElementById("headDropdown").selectedOptions).map(option => option.value)
 		const bodySelected = Array.from(document.getElementById("bodyDropdown").selectedOptions).map(option => option.value)
 		const legsSelected = Array.from(document.getElementById("legsDropdown").selectedOptions).map(option => option.value)
 		const glovesSelected = Array.from(document.getElementById("glovesDropdown").selectedOptions).map(option => option.value)
 
-		const encumbranceValue = encumbranceInput.value
-		const armorValue = armorInput.value
-		const weight_limit = parseInt(document.getElementById("weightInput").value) + StrongBackTraitModifier + elevatedringFactor + eggdrinkFactor + dullsteelringFactor - burdenofthemasonFactor
+		const filteredHead = headSelected.length === 0 || headSelected.includes("any") ? armor_list['Head'] : armor_list['Head'].filter(item => headSelected.includes(item[0]))
+		const filteredGloves = glovesSelected.length === 0 || glovesSelected.includes("any") ? armor_list['Gloves'] : armor_list['Gloves'].filter(item => glovesSelected.includes(item[0]))
+		const filteredBody = bodySelected.length === 0 || bodySelected.includes("any") ? armor_list['Body'] : armor_list['Body'].filter(item => bodySelected.includes(item[0]))
+		const filteredLegs = legsSelected.length === 0 || legsSelected.includes("any") ? armor_list['Legs'] : armor_list['Legs'].filter(item => legsSelected.includes(item[0]))
 
-		let candidate_combinations = [] // Store candidate combinations before applying tolerance
+		filter = document.getElementById("SortSelect").value
+		let candidate_combinations = []
 
-		for (const head of armor_list['Head']) {
-			for (const gloves of armor_list['Gloves']) {
-				for (const body of armor_list['Body']) {
-					for (const legs of armor_list['Legs']) {
-						if ((headSelected.length === 0 || headSelected.includes("any") || headSelected.includes(head[0])) &&
-							(bodySelected.length === 0 || bodySelected.includes("any") || bodySelected.includes(body[0])) &&
-							(legsSelected.length === 0 || legsSelected.includes("any") || legsSelected.includes(legs[0])) &&
-							(glovesSelected.length === 0 || glovesSelected.includes("any") || glovesSelected.includes(gloves[0])))
-						{
-							const total_weight = (((head[2] + body[2] + legs[2] + gloves[2]) - strongdrinkFactor - twistedidolFactor - navigatorspendantFactor - rustednavigatorspendantFactor - faeprotectorsignetFactor - dranmementoFactor - elevatedringFactor + shardringFactor) * letoAmuletFactor)
-							const DR = Math.round(10 * (head[1] + body[1] + legs[1] + gloves[1])) / 10
+		for (const head of filteredHead) {
+			for (const gloves of filteredGloves) {
+				for (const body of filteredBody) {
+					for (const legs of filteredLegs) {
+						const total_weight = (((head[2] + body[2] + legs[2] + gloves[2]) - strongdrinkFactor - twistedidolFactor - navigatorspendantFactor - rustednavigatorspendantFactor - faeprotectorsignetFactor - dranmementoFactor - elevatedringFactor + shardringFactor) * letoAmuletFactor)
+						const DR = Math.round((head[1] + body[1] + legs[1] + gloves[1]) * 10) / 10
 
-							if (total_weight <= encumbranceValue && total_weight <= weight_limit && armorValue <= DR) {
-								const Bleed = head[3] + body[3] + legs[3] + gloves[3]
-								const Burn = head[4] + body[4] + legs[4] + gloves[4] + ShadeskinTraitModifier
-								const Shock = head[5] + body[5] + legs[5] + gloves[5] + ShadeskinTraitModifier
-								const Corrosion = head[6] + body[6] + legs[6] + gloves[6] + ShadeskinTraitModifier
-								const Blight = head[7] + body[7] + legs[7] + gloves[7]
+						if (total_weight <= encumbranceValue && total_weight <= weight_limit && armorValue <= DR) {
+							const Bleed = head[3] + body[3] + legs[3] + gloves[3]
+							const Burn = head[4] + body[4] + legs[4] + gloves[4]
+							const Shock = head[5] + body[5] + legs[5] + gloves[5]
+							const Corrosion = head[6] + body[6] + legs[6] + gloves[6]
+							const Blight = head[7] + body[7] + legs[7] + gloves[7]
 
-								candidate_combinations.push({
+							const combination = {
 								'Head': head,
 								'Body': body,
 								'Legs': legs,
@@ -1126,9 +1127,15 @@
 								'Shock': Shock,
 								'Corrosion': Corrosion,
 								'Blight': Blight,
-								'TotalRes': Bleed + Burn + Shock + Corrosion + Blight,
-								<!-- 'Armor/Weight ratio': (((DR + 0) / Math.max(total_weight, 1) * 1000) / 1000), -->
-								})
+								'TotalRes': Bleed + Burn + Shock + Corrosion + Blight
+							}
+
+							if (candidate_combinations.length < 50) {
+								candidate_combinations.push(combination);
+								candidate_combinations.sort((a, b) => a[filter] - b[filter])
+							} else if (combination[filter] > candidate_combinations[0][filter]) {
+								candidate_combinations[0] = combination;
+								candidate_combinations.sort((a, b) => a[filter] - b[filter])
 							}
 						}
 					}
@@ -1136,10 +1143,10 @@
 			}
 		}
 
-		const filter = document.getElementById("SortSelect").value;
 		let currentFilter = null
 		let currentLayer = 0
-		const tolerance = parseInt(document.getElementById("toleranceInput").value)
+		const tolerance = parseInt(document.getElementById("toleranceInput").value) + 1
+		const effectiveTolerance = tolerance >= 5 ? tolerance + (tolerance - 4) : tolerance
 		const best_combinations = []
 
 		candidate_combinations.sort((a, b) => b[filter] - a[filter])
@@ -1148,10 +1155,8 @@
 			if (combination[filter] !== currentFilter) {
 				currentFilter = combination[filter]
 				currentLayer++
-				if (currentLayer > tolerance + 1)
-					break
-			}
-			if (currentLayer <= tolerance + 1 && best_combinations.length < 75)
+				if (currentLayer > effectiveTolerance) break
+			} if (currentLayer <= effectiveTolerance)
 				best_combinations.push(combination)
 		}
 
@@ -1170,29 +1175,12 @@
 						return totalDamageBwithFactors - totalDamageAwithFactors // Sort by total damage reduction in descending order
 
 						return totalResistanceB - totalResistanceA // Sort by total resistance in descending order
-				}
-
-				else if (filter === "TotalRes") {
+				} else if (filter === "TotalRes") {
 					if(totalResistanceA !== totalResistanceB)
 						return totalResistanceB - totalResistanceA // Sort by total resistance in descending order
 
 						return totalDamageBwithFactors - totalDamageAwithFactors // Sort by total damage reduction in descending order
-				}
-
-				<!-- else if (filter === "Armor/Weight ratio") { -->
-					<!-- const totalWeightA = (a.Head[2] + a.Body[2] + a.Legs[2] + a.Gloves[2]) -->
-					<!-- const totalWeightB = (b.Head[2] + b.Body[2] + b.Legs[2] + b.Gloves[2]) -->
-					<!-- const RatioA = (((totalDamageAwithFactors + 0) / Math.max(totalWeightA, 1) * 1000) / 1000) -->
-					<!-- const RatioB = (((totalDamageBwithFactors + 0) / Math.max(totalWeightB, 1) * 1000) / 1000) -->
-
-					<!-- if(RatioA !== RatioB) -->
-						<!-- return RatioB - RatioA -->
-
-						<!-- return totalDamageBwithFactors - totalDamageAwithFactors // Sort by total damage reduction in descending order -->
-						<!-- return totalResistanceB - totalResistanceA // Sort by total resistance in descending order -->
-				<!-- } -->
-
-				else {
+				} else {
 					resIndex = filter === "Bleed" ? 3 :
 							   filter === "Burn" ? 4 :
 							   filter === "Shock" ? 5 :
