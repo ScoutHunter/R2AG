@@ -1130,7 +1130,7 @@
 								'TotalRes': Bleed + Burn + Shock + Corrosion + Blight
 							}
 
-							if (candidate_combinations.length < 50) {
+							if (candidate_combinations.length < 100) {
 								candidate_combinations.push(combination);
 								candidate_combinations.sort((a, b) => a[filter] - b[filter])
 							} else if (combination[filter] > candidate_combinations[0][filter]) {
@@ -1146,7 +1146,7 @@
 		let currentFilter = null
 		let currentLayer = 0
 		const tolerance = parseInt(document.getElementById("toleranceInput").value) + 1
-		const effectiveTolerance = tolerance >= 5 ? tolerance + (tolerance - 4) : tolerance
+		const effectiveTolerance = tolerance >= 6 ? Math.pow(tolerance, 1.5) : tolerance
 		const best_combinations = []
 
 		candidate_combinations.sort((a, b) => b[filter] - a[filter])
@@ -1185,7 +1185,7 @@
 							   filter === "Burn" ? 4 :
 							   filter === "Shock" ? 5 :
 							   filter === "Corrosion" ? 6 :
-							   filter === "Blight" ? 7 : 0
+							   filter === "Blight" ? 7 : null
 
 					const resistanceA = a.Head[resIndex] + a.Body[resIndex] + a.Legs[resIndex] + a.Gloves[resIndex]
 					const resistanceB = b.Head[resIndex] + b.Body[resIndex] + b.Legs[resIndex] + b.Gloves[resIndex]
