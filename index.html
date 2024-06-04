@@ -172,16 +172,6 @@
 		margin-left: 15px;
 	}
 
-	label {
-		display: block;
-		margin-bottom: 3px;
-	}
-
-	input {
-		width: 100px;
-		margin-bottom: 0px;
-	}
-
 	#amuletDropdown {
 		display: flex;
 		text-align: center;
@@ -252,18 +242,6 @@
 		align-items: center;
 	}
 
-	.trait-container {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(185, 160, 247, 0.2));
-		padding: 0px 10px;
-		border: 1px solid #000;
-		border-radius: 10px;
-		align-items: center;
-		width: 500px;
-	}
-
 	.armor-filter-container {
 		display: flex;
 		flex-direction: column;
@@ -291,30 +269,68 @@
 		font-weight: 400;
 	}
 
+	.trait-filter-title {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 16px;
+		background-color: rgba(0, 0, 0, 0.6);
+		padding: 5px 10px;
+		border-radius: 6px;
+		color: #d6e0d0;
+		margin-bottom: 8px;
+		margin-right: 15px;
+		font-family: Trebuchet ms, sans-serif;
+		font-weight: 400;
+	}
+	.trait-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(185, 160, 247, 0.2));
+	padding: 0px 7px;
+	border: 1px solid #000;
+	border-radius: 10px;
+	align-items: center;
+	width: 500px;
+	}
+	label {
+		display: block;
+		margin-bottom: 3px;
+	}
+
 	.trait-select-row {
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		margin-bottom: 3px;
 		margin-right: 0px;
+		background-color: rgba(0, 0, 0, 0.2); /* Semi-transparent black background */
+		border-radius: 7px; /* Adjust the radius value as needed */
+		padding: 2px; /* Adjust the padding value as needed */
+		border: 1px solid rgba(0, 0, 0, 0.7);
+		margin-top: -4px;
 	}
 
 	label[for="FortifyTrait"],
 	label[for="StrongBackTrait"],
 	label[for="ShadeskinTrait"] {
-		margin-right: 0px;
-		margin-left: 0px;
 		color: #f2e5f2;
 		font-size: 15px;
-		width: 100px;
+		width: 95px;
 	}
-
-	.trait-select {
-		text-align: center;
-		width: 50px;
+	.slider-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+	.trait-slider {
+		width: 95px;
+		margin-top: -2px;
+	}
+	.slider-container span {
 		font-size: 15px;
-		background-color: #ebefe7;
-		border-radius: 5px;
+		color: #f2e5f2;
 	}
 
 	.reset-armor-button-container {
@@ -348,7 +364,7 @@
 
 	.label-container label {
 		margin-right: 10px;
-		background-color: #011;
+		background-color: rgba(0, 0, 0, 0.6);
 		padding: 5px 15px;
 		border-radius: 6px;
 		color: #d6e0d0;
@@ -373,6 +389,10 @@
 		background-color: #ebefe7;
 		border-radius: 5px;
 		overflow: visible;
+	}
+	input {
+		width: 100px;
+		margin-bottom: 0px;
 	}
 
 	.content-container {
@@ -718,54 +738,27 @@
 			</div>
 		</div>
 		<div class="trait-container">
-			<h2 class="armor-filter-title">Trait Level</h2>
+			<h2 class="trait-filter-title">Trait Level</h2>
 			<div class="trait-select-row">
 				<label for="FortifyTrait">Fortify (Engineer)</label>
-				<select class="trait-select" id="FortifyTrait">
-					<option value="1">0</option>
-					<option value="1.05">1</option>
-					<option value="1.1">2</option>
-					<option value="1.15">3</option>
-					<option value="1.2">4</option>
-					<option value="1.25">5</option>
-					<option value="1.3">6</option>
-					<option value="1.35">7</option>
-					<option value="1.4">8</option>
-					<option value="1.45">9</option>
-					<option value="1.5">10</option>
-				</select>
+				<div class="slider-container">
+					<span id="FortifyValue">0</span>
+					<input type="range" class="trait-slider" id="FortifyTrait" min="0" max="10" step="1" value="0">
+				</div>
 			</div>
 			<div class="trait-select-row">
 				<label for="StrongBackTrait">Strong Back (Challenger)</label>
-				<select class="trait-select" id="StrongBackTrait">
-					<option value="0">0</option>
-					<option value="1.5">1</option>
-					<option value="3">2</option>
-					<option value="4.5">3</option>
-					<option value="6">4</option>
-					<option value="7.5">5</option>
-					<option value="9">6</option>
-					<option value="10.5">7</option>
-					<option value="12">8</option>
-					<option value="13.5">9</option>
-					<option value="15">10</option>
-				</select>
+				<div class="slider-container">
+					<span id="StrongBackValue">0</span>
+					<input type="range" class="trait-slider" id="StrongBackTrait" min="0" max="10" step="1" value="0">
+				</div>
 			</div>
 			<div class="trait-select-row">
-				<label for="ShadeskinTrait" style="line-height: 2.5;">Shadeskin</label>
-				<select class="trait-select" id="ShadeskinTrait">
-					<option value="0">0</option>
-					<option value="2">1</option>
-					<option value="4">2</option>
-					<option value="6">3</option>
-					<option value="8">4</option>
-					<option value="10">5</option>
-					<option value="12">6</option>
-					<option value="14">7</option>
-					<option value="16">8</option>
-					<option value="18">9</option>
-					<option value="20">10</option>
-				</select>
+				<label for="ShadeskinTrait" style="line-height: 2;">Shadeskin</label>
+				<div class="slider-container">
+					<span id="ShadeskinValue">0</span>
+					<input type="range" class="trait-slider" id="ShadeskinTrait" min="0" max="10" step="1" value="0">
+				</div>
 			</div>
 		</div>
 		<div class="label-container amulet-container">
@@ -1058,14 +1051,26 @@
 		handleBlurEvent(armorInput, armorInput.value)
 	})
 
+
+    document.querySelectorAll('.trait-slider').forEach(slider => {
+        slider.addEventListener('input', function() {
+            // Update the corresponding value element
+            const valueElementId = this.id.replace('Trait', 'Value');
+            document.getElementById(valueElementId).textContent = this.value;
+        });
+    });
+	const fortifyTraitMap = {0: 1, 1: 1.05, 2: 1.1, 3: 1.15, 4: 1.2, 5: 1.25, 6: 1.3, 7: 1.35, 8: 1.4, 9: 1.45, 10: 1.5};
+	const strongBackTraitMap = {0: 0, 1: 1.5, 2: 3, 3: 4.5, 4: 6, 5: 7.5, 6: 9, 7: 10.5, 8: 12, 9: 13.5, 10: 15};
+	const shadeskinTraitMap = {0: 0, 1: 2, 2: 4, 3: 6, 4: 8, 5: 10, 6: 12, 7: 14, 8: 16, 9: 18, 10: 20};
+
 	async function calculateAndUpdate() {
 		document.getElementById('loading-circle').style.display = 'block'
 
 		const armor_list = await fetchArmorData()
 
-		const StrongBackTraitModifier = parseFloat(StrongBackTrait.value)
-		const FortifyTraitModifier = parseFloat(FortifyTrait.value)
-		const ShadeskinTraitModifier = parseFloat(ShadeskinTrait.value)
+		const StrongBackTraitModifier = strongBackTraitMap[parseInt(StrongBackTrait.value)]
+		const FortifyTraitModifier = fortifyTraitMap[parseInt(FortifyTrait.value)]
+		const ShadeskinTraitModifier = shadeskinTraitMap[parseInt(ShadeskinTrait.value)]
 
 		const letoAmuletFactor = document.getElementById("amuletDropdown").value === "leto" ? 0.6 : 1
 		const twistedidolFactor = document.getElementById("amuletDropdown").value === "twistedidol" ? 20 : 0
@@ -1111,9 +1116,9 @@
 
 						if (total_weight <= encumbranceValue && total_weight <= weight_limit && armorValue <= DR) {
 							const Bleed = head[3] + body[3] + legs[3] + gloves[3]
-							const Burn = head[4] + body[4] + legs[4] + gloves[4]
-							const Shock = head[5] + body[5] + legs[5] + gloves[5]
-							const Corrosion = head[6] + body[6] + legs[6] + gloves[6]
+							const Burn = head[4] + body[4] + legs[4] + gloves[4] + ShadeskinTraitModifier
+							const Shock = head[5] + body[5] + legs[5] + gloves[5] + ShadeskinTraitModifier
+							const Corrosion = head[6] + body[6] + legs[6] + gloves[6] + ShadeskinTraitModifier
 							const Blight = head[7] + body[7] + legs[7] + gloves[7]
 
 							const combination = {
@@ -1146,7 +1151,8 @@
 		let currentFilter = null
 		let currentLayer = 0
 		const tolerance = parseInt(document.getElementById("toleranceInput").value) + 1
-		const effectiveTolerance = tolerance >= 6 ? Math.pow(tolerance, 1.5) : tolerance
+		const effectiveTolerance = tolerance >= 6 ? Math.pow(tolerance, 1.35).toFixed(0) : tolerance
+		<!-- const effectiveTolerance = Math.pow((parseInt(document.getElementById("toleranceInput").value) + 1), 1.35).toFixed(0) -->
 		const best_combinations = []
 
 		candidate_combinations.sort((a, b) => b[filter] - a[filter])
@@ -1155,7 +1161,8 @@
 			if (combination[filter] !== currentFilter) {
 				currentFilter = combination[filter]
 				currentLayer++
-				if (currentLayer > effectiveTolerance) break
+				if (currentLayer > effectiveTolerance)
+					break
 			} if (currentLayer <= effectiveTolerance)
 				best_combinations.push(combination)
 		}
