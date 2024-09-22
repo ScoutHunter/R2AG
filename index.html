@@ -1112,7 +1112,7 @@
 				for (const body of filteredBody) {
 					for (const legs of filteredLegs) {
 						const total_weight = (((head[2] + body[2] + legs[2] + gloves[2]) - strongdrinkFactor - twistedidolFactor - navigatorspendantFactor - rustednavigatorspendantFactor - faeprotectorsignetFactor - dranmementoFactor - elevatedringFactor + shardringFactor) * letoAmuletFactor)
-						const DR = Math.round((head[1] + body[1] + legs[1] + gloves[1]) * 10) / 10
+						const DR = Math.round(((head[1] + body[1] + legs[1] + gloves[1]) * FortifyTraitModifier) * 10) / 10
 
 						if (total_weight <= encumbranceValue && total_weight <= weight_limit && armorValue <= DR) {
 							const Bleed = head[3] + body[3] + legs[3] + gloves[3]
